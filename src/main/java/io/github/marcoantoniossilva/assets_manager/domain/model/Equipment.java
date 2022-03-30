@@ -1,5 +1,7 @@
 package io.github.marcoantoniossilva.assets_manager.domain.model;
 
+import io.github.marcoantoniossilva.assets_manager.domain.enumeration.Status;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
