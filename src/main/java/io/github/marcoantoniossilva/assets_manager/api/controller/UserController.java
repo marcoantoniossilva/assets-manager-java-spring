@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController()
+@RestController
 @RequestMapping("/users")
 public class UserController {
 
   @Autowired
   private UserRepository userRepository;
 
-  @GetMapping()
+  @GetMapping
   public List<User> list() {
     return userRepository.findAll();
   }
@@ -28,7 +28,7 @@ public class UserController {
         .orElse(ResponseEntity.notFound().build());
   }
 
-  @PostMapping()
+  @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public User add(@RequestBody User user) {
     return userRepository.save(user);
@@ -40,8 +40,8 @@ public class UserController {
       return ResponseEntity.notFound().build();
     }
     user.setId(userId);
-    user = userRepository.save(user);
-    return ResponseEntity.ok(user);
+    User savedUser = userRepository.save(user);
+    return ResponseEntity.ok(savedUser);
 
   }
 

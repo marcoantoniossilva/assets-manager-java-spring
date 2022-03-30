@@ -1,6 +1,6 @@
 # Rest API para sistema de gerenciamento de ativos de uma empresa
 
-Api desenvolvida utilizando o [Ecossistema Spring](https://spring.io/) em conjunto com [Jakarta Persistence JPA](https://jakarta.ee/specifications/persistence/), [Jakarta Bean Validation](https://jakarta.ee/specifications/bean-validation/) e [ModelMapper](http://modelmapper.org/).
+Api desenvolvida utilizando o [Ecossistema Spring](https://spring.io/) em conjunto com [Jakarta Persistence JPA](https://jakarta.ee/specifications/persistence/), [Jakarta Bean Validation](https://jakarta.ee/specifications/bean-validation/), [ModelMapper](http://modelmapper.org/)  e [Flyway](https://flywaydb.org/).
 
 Recursos da API (endpoints):
 
