@@ -1,5 +1,7 @@
 package io.github.marcoantoniossilva.assets_manager.api.controller;
 
+import io.github.marcoantoniossilva.assets_manager.api.assembler.UserAssembler;
+import io.github.marcoantoniossilva.assets_manager.api.model.UserModel;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.UserRepository;
 import io.github.marcoantoniossilva.assets_manager.domain.service.UserService;
@@ -18,33 +20,38 @@ public class UserController {
   private UserRepository userRepository;
   @Autowired
   private UserService userService;
+  @Autowired
+  private UserAssembler userAssembler;
 
   @GetMapping
-  public List<User> list() {
-    return userRepository.findAll();
+  public List<UserModel> list() {
+    List<User> users = userRepository.findAll();
+    return userAssembler.toCollectionModel(users);
   }
 
   @GetMapping("{userId}")
-  public ResponseEntity<User> search(@PathVariable Integer userId) {
+  public ResponseEntity<UserModel> search(@PathVariable Integer userId) {
     return userRepository.findById(userId)
-        .map(ResponseEntity::ok)
+        .map(user ->
+            ResponseEntity.ok(userAssembler.toModel(user))
+        )
         .orElse(ResponseEntity.notFound().build());
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public User add(@RequestBody User user) {
-    return userService.save(user);
+  public UserModel add(@RequestBody User user) {
+    return userAssembler.toModel(userService.save(user));
   }
 
   @PutMapping("{userId}")
-  public ResponseEntity<User> update(@PathVariable Integer userId, @RequestBody User user) {
+  public ResponseEntity<UserModel> update(@PathVariable Integer userId, @RequestBody User user) {
     if (!userRepository.existsById(userId)) {
       return ResponseEntity.notFound().build();
     }
     user.setId(userId);
     User savedUser = userService.save(user);
-    return ResponseEntity.ok(savedUser);
+    return ResponseEntity.ok(userAssembler.toModel(savedUser));
   }
 
   @DeleteMapping("{userId}")
