@@ -2,6 +2,7 @@ package io.github.marcoantoniossilva.assets_manager.api.controller;
 
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.UserRepository;
+import io.github.marcoantoniossilva.assets_manager.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,8 @@ public class UserController {
 
   @Autowired
   private UserRepository userRepository;
+  @Autowired
+  private UserService userService;
 
   @GetMapping
   public List<User> list() {
@@ -31,7 +34,7 @@ public class UserController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public User add(@RequestBody User user) {
-    return userRepository.save(user);
+    return userService.save(user);
   }
 
   @PutMapping("{userId}")
@@ -40,7 +43,7 @@ public class UserController {
       return ResponseEntity.notFound().build();
     }
     user.setId(userId);
-    User savedUser = userRepository.save(user);
+    User savedUser = userService.save(user);
     return ResponseEntity.ok(savedUser);
   }
 
