@@ -42,7 +42,6 @@ public class UserController {
     user.setId(userId);
     User savedUser = userRepository.save(user);
     return ResponseEntity.ok(savedUser);
-
   }
 
   @DeleteMapping("{userId}")

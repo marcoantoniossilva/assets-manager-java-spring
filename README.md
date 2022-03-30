@@ -8,7 +8,7 @@ Recursos da API (endpoints):
 2 - Empresas - /companies; (EM DESENVOLVIMENTO)<br>
 3 - Equipamentos - /equipments; (EM DESENVOLVIMENTO)<br>
 4 - Setores - /sectors; (EM DESENVOLVIMENTO)<br>
-5 - Tipos de equipamentos - /types. (EM DESENVOLVIMENTO)<br>
+5 - Tipos de equipamentos - /types.<br>
 
 ## Uso de endpoints
 
