@@ -1,6 +1,7 @@
 package io.github.marcoantoniossilva.assets_manager.api.assembler;
 
 import io.github.marcoantoniossilva.assets_manager.api.model.UserModel;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.UserInput;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class UserAssembler {
+  public class UserAssembler {
 
   private ModelMapper modelMapper;
 
@@ -25,6 +26,10 @@ public class UserAssembler {
     return users.stream()
         .map(this::toModel)
         .collect(Collectors.toList());
+  }
+
+  public User toEntity(UserInput userInput) {
+    return modelMapper.map(userInput, User.class);
   }
 
 }
