@@ -5,9 +5,9 @@ Api desenvolvida utilizando o [Ecossistema Spring](https://spring.io/) em conjun
 Recursos da API (endpoints):
 
 1 - Usuários - /users;<br>
-2 - Empresas - /companies; (EM DESENVOLVIMENTO)<br>
+2 - Empresas - /companies;<br>
 3 - Equipamentos - /equipments; (EM DESENVOLVIMENTO)<br>
-4 - Setores - /sectors; (EM DESENVOLVIMENTO)<br>
+4 - Setores - /sectors;<br>
 5 - Tipos de equipamentos - /types.<br>
 
 ## Uso de endpoints
