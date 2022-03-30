@@ -3,6 +3,7 @@ package io.github.marcoantoniossilva.assets_manager.api.controller;
 
 import io.github.marcoantoniossilva.assets_manager.domain.model.Company;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.CompanyRepository;
+import io.github.marcoantoniossilva.assets_manager.domain.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,8 @@ public class CompanyController {
 
   @Autowired
   private CompanyRepository companyRepository;
+  @Autowired
+  private CompanyService companyService;
 
   @GetMapping
   public List<Company> list() {
@@ -32,7 +35,7 @@ public class CompanyController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public Company add(@RequestBody Company company) {
-    return companyRepository.save(company);
+    return companyService.save(company);
   }
 
   @PutMapping("{companyId}")
@@ -41,7 +44,7 @@ public class CompanyController {
       return ResponseEntity.notFound().build();
     }
     company.setId(companyId);
-    Company savedCompany = companyRepository.save(company);
+    Company savedCompany = companyService.save(company);
     return ResponseEntity.ok(savedCompany);
   }
 

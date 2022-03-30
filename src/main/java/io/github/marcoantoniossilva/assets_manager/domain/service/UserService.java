@@ -16,13 +16,11 @@ public class UserService {
   @Transactional
   public User save(User user) {
     boolean loginInUse = userRepository.findByLogin(user.getLogin())
-        .stream()
-        .anyMatch(existentUser -> !existentUser.equals(user));
+        .stream().anyMatch(existentUser -> !existentUser.equals(user));
 
     if(loginInUse) {
       throw new BusinessException("Já existe um usuário cadastrado com este login.");
     }
-
     return userRepository.save(user);
   }
 
