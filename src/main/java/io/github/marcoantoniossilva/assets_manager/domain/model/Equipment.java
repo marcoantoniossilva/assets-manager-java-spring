@@ -25,6 +25,7 @@ public class Equipment {
   @Column(name = "nfe_path")
   private String nfePath;
 
+  @Enumerated(EnumType.STRING)
   private Status status;
 
   @ManyToOne
