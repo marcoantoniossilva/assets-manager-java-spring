@@ -2,6 +2,7 @@ package io.github.marcoantoniossilva.assets_manager.api.controller;
 
 import io.github.marcoantoniossilva.assets_manager.api.assembler.UserAssembler;
 import io.github.marcoantoniossilva.assets_manager.api.model.UserModel;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.UserInput;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.UserRepository;
 import io.github.marcoantoniossilva.assets_manager.domain.service.UserService;
@@ -40,16 +41,20 @@ public class UserController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public UserModel add(@RequestBody User user) {
-    return userAssembler.toModel(userService.save(user));
+  public UserModel add(@RequestBody UserInput userInput) {
+    User user = userAssembler.toEntity(userInput);
+    User savedUser = userService.save(user);
+
+    return userAssembler.toModel(savedUser);
   }
 
   @PutMapping("{userId}")
-  public ResponseEntity<UserModel> update(@PathVariable Integer userId, @RequestBody User user) {
+  public ResponseEntity<UserModel> update(@PathVariable Integer userId, @RequestBody UserInput userInput) {
     if (!userRepository.existsById(userId)) {
       return ResponseEntity.notFound().build();
     }
-    user.setId(userId);
+    userInput.setId(userId);
+    User user = userAssembler.toEntity(userInput);
     User savedUser = userService.save(user);
     return ResponseEntity.ok(userAssembler.toModel(savedUser));
   }
