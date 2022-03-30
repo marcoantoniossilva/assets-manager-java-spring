@@ -21,7 +21,7 @@ public class SectorController {
     return sectorRepository.findAll();
   }
 
-  @GetMapping("/{sectorId}")
+  @GetMapping("{sectorId}")
   public ResponseEntity<Sector> search(@PathVariable Integer sectorId) {
     return sectorRepository.findById(sectorId)
         .map(ResponseEntity::ok)
