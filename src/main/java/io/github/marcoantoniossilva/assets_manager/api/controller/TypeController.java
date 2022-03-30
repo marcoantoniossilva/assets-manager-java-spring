@@ -49,10 +49,8 @@ public class TypeController {
     if (!typeRepository.existsById(typeId)) {
       return ResponseEntity.notFound().build();
     }
-
     typeRepository.deleteById(typeId);
     return ResponseEntity.noContent().build();
-
   }
 
 }
