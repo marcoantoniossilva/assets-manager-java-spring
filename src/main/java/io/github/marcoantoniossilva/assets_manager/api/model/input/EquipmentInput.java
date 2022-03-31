@@ -8,13 +8,13 @@ import java.time.LocalDate;
 
 public class EquipmentInput extends BaseEntityDTO {
 
-  private UserIdInput userIdInput;
+  private UserIdInput user;
 
-  private TypeIdInput typeIdInput;
+  private TypeIdInput type;
 
-  private SectorIdInput sectorIdInput;
+  private SectorIdInput sector;
 
-  private CompanyIdInput companyIdInput;
+  private CompanyIdInput company;
 
   private String description;
 
@@ -29,12 +29,12 @@ public class EquipmentInput extends BaseEntityDTO {
   public EquipmentInput() {
   }
 
-  public EquipmentInput(Integer id, UserIdInput userIdInput, TypeIdInput typeIdInput, SectorIdInput sectorIdInput, CompanyIdInput companyIdInput, String description, BigDecimal acquisitionValue, LocalDate acquisitionDate, String nfePath, Status status) {
+  public EquipmentInput(Integer id, UserIdInput user, TypeIdInput type, SectorIdInput sector, CompanyIdInput company, String description, BigDecimal acquisitionValue, LocalDate acquisitionDate, String nfePath, Status status) {
     super(id);
-    this.userIdInput = userIdInput;
-    this.typeIdInput = typeIdInput;
-    this.sectorIdInput = sectorIdInput;
-    this.companyIdInput = companyIdInput;
+    this.user = user;
+    this.type = type;
+    this.sector = sector;
+    this.company = company;
     this.description = description;
     this.acquisitionValue = acquisitionValue;
     this.acquisitionDate = acquisitionDate;
@@ -42,36 +42,36 @@ public class EquipmentInput extends BaseEntityDTO {
     this.status = status;
   }
 
-  public UserIdInput getUserIdInput() {
-    return userIdInput;
+  public UserIdInput getUser() {
+    return user;
   }
 
-  public void setUserIdInput(UserIdInput userIdInput) {
-    this.userIdInput = userIdInput;
+  public void setUser(UserIdInput user) {
+    this.user = user;
   }
 
-  public TypeIdInput getTypeIdInput() {
-    return typeIdInput;
+  public TypeIdInput getType() {
+    return type;
   }
 
-  public void setTypeIdInput(TypeIdInput typeIdInput) {
-    this.typeIdInput = typeIdInput;
+  public void setType(TypeIdInput type) {
+    this.type = type;
   }
 
-  public SectorIdInput getSectorIdInput() {
-    return sectorIdInput;
+  public SectorIdInput getSector() {
+    return sector;
   }
 
-  public void setSectorIdInput(SectorIdInput sectorIdInput) {
-    this.sectorIdInput = sectorIdInput;
+  public void setSector(SectorIdInput sector) {
+    this.sector = sector;
   }
 
-  public CompanyIdInput getCompanyIdInput() {
-    return companyIdInput;
+  public CompanyIdInput getCompany() {
+    return company;
   }
 
-  public void setCompanyIdInput(CompanyIdInput companyIdInput) {
-    this.companyIdInput = companyIdInput;
+  public void setCompany(CompanyIdInput company) {
+    this.company = company;
   }
 
   public String getDescription() {
