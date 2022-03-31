@@ -13,8 +13,11 @@ import java.util.List;
 @RequestMapping("/types")
 public class TypeController {
 
-  @Autowired
-  private TypeRepository typeRepository;
+  private final TypeRepository typeRepository;
+
+  public TypeController(TypeRepository typeRepository) {
+    this.typeRepository = typeRepository;
+  }
 
   @GetMapping
   public List<Type> list() {

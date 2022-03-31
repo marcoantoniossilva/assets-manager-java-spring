@@ -4,7 +4,6 @@ package io.github.marcoantoniossilva.assets_manager.api.controller;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Company;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.CompanyRepository;
 import io.github.marcoantoniossilva.assets_manager.domain.service.CompanyService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +14,14 @@ import java.util.List;
 @RequestMapping("/companies")
 public class CompanyController {
 
-  @Autowired
-  private CompanyRepository companyRepository;
-  @Autowired
-  private CompanyService companyService;
+
+  private final CompanyRepository companyRepository;
+  private final CompanyService companyService;
+
+  public CompanyController(CompanyRepository companyRepository, CompanyService companyService) {
+    this.companyRepository = companyRepository;
+    this.companyService = companyService;
+  }
 
   @GetMapping
   public List<Company> list() {

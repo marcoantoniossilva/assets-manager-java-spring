@@ -3,7 +3,6 @@ package io.github.marcoantoniossilva.assets_manager.domain.service;
 import io.github.marcoantoniossilva.assets_manager.domain.exception.BusinessException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Company;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.CompanyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,8 +12,11 @@ import java.util.Optional;
 @Service
 public class CompanyService {
 
-  @Autowired
-  private CompanyRepository companyRepository;
+  private final CompanyRepository companyRepository;
+
+  public CompanyService(CompanyRepository companyRepository) {
+    this.companyRepository = companyRepository;
+  }
 
   @Transactional
   public Company save(Company company) {

@@ -13,8 +13,11 @@ import java.util.List;
 @RequestMapping("/sectors")
 public class SectorController {
 
-  @Autowired
-  private SectorRepository sectorRepository;
+  private final SectorRepository sectorRepository;
+
+  public SectorController(SectorRepository sectorRepository) {
+    this.sectorRepository = sectorRepository;
+  }
 
   @GetMapping
   public List<Sector> list() {

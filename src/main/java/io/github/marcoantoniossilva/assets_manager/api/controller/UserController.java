@@ -17,12 +17,15 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-  @Autowired
-  private UserRepository userRepository;
-  @Autowired
-  private UserService userService;
-  @Autowired
-  private UserAssembler userAssembler;
+  private final UserRepository userRepository;
+  private final UserService userService;
+  private final UserAssembler userAssembler;
+
+  public UserController(UserRepository userRepository, UserService userService, UserAssembler userAssembler) {
+    this.userRepository = userRepository;
+    this.userService = userService;
+    this.userAssembler = userAssembler;
+  }
 
   @GetMapping
   public List<UserModel> list() {
