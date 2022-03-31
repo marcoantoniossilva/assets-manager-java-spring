@@ -3,11 +3,13 @@ package io.github.marcoantoniossilva.assets_manager.api.controller;
 import io.github.marcoantoniossilva.assets_manager.api.assembler.UserAssembler;
 import io.github.marcoantoniossilva.assets_manager.api.model.UserModel;
 import io.github.marcoantoniossilva.assets_manager.api.model.input.UserInput;
+import io.github.marcoantoniossilva.assets_manager.common.PasswordConfig;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.UserRepository;
 import io.github.marcoantoniossilva.assets_manager.domain.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,11 +21,13 @@ public class UserController {
   private final UserRepository userRepository;
   private final UserService userService;
   private final UserAssembler userAssembler;
+  private final PasswordConfig passwordConfig;
 
-  public UserController(UserRepository userRepository, UserService userService, UserAssembler userAssembler) {
+  public UserController(UserRepository userRepository, UserService userService, UserAssembler userAssembler, PasswordConfig passwordConfig) {
     this.userRepository = userRepository;
     this.userService = userService;
     this.userAssembler = userAssembler;
+    this.passwordConfig = passwordConfig;
   }
 
   @GetMapping
@@ -45,8 +49,9 @@ public class UserController {
   @ResponseStatus(HttpStatus.CREATED)
   public UserModel add(@RequestBody UserInput userInput) {
     User user = userAssembler.toEntity(userInput);
-    User savedUser = userService.save(user);
 
+    user.setPassword(passwordConfig.passwordEncoder().encode(user.getPassword()));
+    User savedUser = userService.save(user);
     return userAssembler.toModel(savedUser);
   }
 
