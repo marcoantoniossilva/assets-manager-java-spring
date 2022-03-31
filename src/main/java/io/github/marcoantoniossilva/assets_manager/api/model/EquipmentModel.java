@@ -19,28 +19,28 @@ public class EquipmentModel extends BaseEntityDTO{
 
   private Status status;
 
-  private UserResumeModel userResumeModel;
+  private UserResumeModel user;
 
   private Type type;
 
   private Sector sector;
 
-  private CompanyResumeModel companyResumeModel;
+  private CompanyResumeModel company;
 
   public EquipmentModel() {
   }
 
-  public EquipmentModel(Integer id, String description, BigDecimal acquisitionValue, LocalDate acquisitionDate, String nfePath, Status status, UserResumeModel userResumeModel, Type type, Sector sector, CompanyResumeModel companyResumeModel) {
+  public EquipmentModel(Integer id, String description, BigDecimal acquisitionValue, LocalDate acquisitionDate, String nfePath, Status status, UserResumeModel userResumeModel, Type type, Sector sector, CompanyResumeModel company) {
     super(id);
     this.description = description;
     this.acquisitionValue = acquisitionValue;
     this.acquisitionDate = acquisitionDate;
     this.nfePath = nfePath;
     this.status = status;
-    this.userResumeModel = userResumeModel;
+    this.user = userResumeModel;
     this.type = type;
     this.sector = sector;
-    this.companyResumeModel = companyResumeModel;
+    this.company = company;
   }
 
   public String getDescription() {
@@ -83,12 +83,12 @@ public class EquipmentModel extends BaseEntityDTO{
     this.status = status;
   }
 
-  public UserResumeModel getUserResumeModel() {
-    return userResumeModel;
+  public UserResumeModel getUser() {
+    return user;
   }
 
-  public void setUserResumeModel(UserResumeModel userResumeModel) {
-    this.userResumeModel = userResumeModel;
+  public void setUser(UserResumeModel user) {
+    this.user = user;
   }
 
   public Type getType() {
@@ -107,11 +107,11 @@ public class EquipmentModel extends BaseEntityDTO{
     this.sector = sector;
   }
 
-  public CompanyResumeModel getCompanyResumeModel() {
-    return companyResumeModel;
+  public CompanyResumeModel getCompany() {
+    return company;
   }
 
-  public void setCompanyResumeModel(CompanyResumeModel companyResumeModel) {
-    this.companyResumeModel = companyResumeModel;
+  public void setCompany(CompanyResumeModel company) {
+    this.company = company;
   }
 }
