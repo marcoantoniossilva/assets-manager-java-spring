@@ -8,11 +8,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "equipments")
-public class Equipment {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+public class Equipment extends BaseEntity{
 
   private String description;
 
@@ -53,14 +49,6 @@ public class Equipment {
     this.user = user;
     this.type = type;
     this.sector = sector;
-  }
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
   }
 
   public String getDescription() {
@@ -138,7 +126,7 @@ public class Equipment {
   @Override
   public String toString() {
     return "Equipment{" +
-        "id=" + id +
+        "id=" + super.getId() +
         ", description='" + description + '\'' +
         ", acquisitionValue=" + acquisitionValue +
         ", acquisitionDate=" + acquisitionDate +

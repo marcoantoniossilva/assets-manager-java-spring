@@ -4,11 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "companies")
-public class Company {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+public class Company extends BaseEntity{
 
   @Column(name = "corporate_name")
   private String corporateName;
@@ -25,14 +21,6 @@ public class Company {
     this.corporateName = corporateName;
     this.fantasyName = fantasyName;
     this.cnpj = cnpj;
-  }
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
   }
 
   public String getCorporateName() {
@@ -62,7 +50,7 @@ public class Company {
   @Override
   public String toString() {
     return "Company{" +
-        "id=" + id +
+        "id=" + super.getId() +
         ", corporateName='" + corporateName + '\'' +
         ", fantasyName='" + fantasyName + '\'' +
         ", cnpj='" + cnpj + '\'' +

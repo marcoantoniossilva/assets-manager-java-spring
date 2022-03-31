@@ -5,11 +5,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "types")
-public class Type {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+public class Type extends BaseEntity{
 
   private String description;
 
@@ -25,14 +21,6 @@ public class Type {
     this.description = description;
     this.depreciation = depreciation;
     this.depreciationTerm = depreciationTerm;
-  }
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
   }
 
   public String getDescription() {
@@ -62,7 +50,7 @@ public class Type {
   @Override
   public String toString() {
     return "Type{" +
-        "id=" + id +
+        "id=" + super.getId() +
         ", description='" + description + '\'' +
         ", depreciation=" + depreciation +
         ", depreciationTerm=" + depreciationTerm +

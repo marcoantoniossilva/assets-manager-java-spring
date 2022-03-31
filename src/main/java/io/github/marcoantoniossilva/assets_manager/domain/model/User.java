@@ -6,11 +6,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
-public class User {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+public class User extends BaseEntity{
 
   private String name;
 
@@ -36,14 +32,6 @@ public class User {
     this.password = password;
     this.lastAccess = lastAccess;
     this.registerIn = registerIn;
-  }
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
   }
 
   public String getName() {
@@ -97,7 +85,7 @@ public class User {
   @Override
   public String toString() {
     return "User{" +
-        "id=" + id +
+        "id=" + super.getId() +
         ", name='" + name + '\'' +
         ", email='" + email + '\'' +
         ", login='" + login + '\'' +
