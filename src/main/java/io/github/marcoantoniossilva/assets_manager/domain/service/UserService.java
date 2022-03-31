@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -15,10 +18,13 @@ public class UserService {
 
   @Transactional
   public User save(User user) {
-    boolean loginInUse = userRepository.findByLogin(user.getLogin())
-        .stream().anyMatch(existentUser -> !existentUser.equals(user));
 
-    if(loginInUse) {
+    Optional<User> userWithSameLogin = userRepository.findByLogin(user.getLogin());
+    boolean differentsUsersSameLogins = userWithSameLogin.stream()
+        .anyMatch(existentUser -> !Objects.equals(existentUser.getId(), user.getId()));
+
+
+    if (differentsUsersSameLogins) { // Se estiver criando um usuário
       throw new BusinessException("Já existe um usuário cadastrado com este login.");
     }
     return userRepository.save(user);
