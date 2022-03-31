@@ -6,7 +6,6 @@ import io.github.marcoantoniossilva.assets_manager.api.model.input.UserInput;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.UserRepository;
 import io.github.marcoantoniossilva.assets_manager.domain.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
