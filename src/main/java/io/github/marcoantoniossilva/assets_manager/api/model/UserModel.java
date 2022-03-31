@@ -1,12 +1,9 @@
 package io.github.marcoantoniossilva.assets_manager.api.model;
 
-import javax.persistence.Column;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class UserModel {
-
-  private Integer id;
+public class UserModel extends BaseEntityDTO{
 
   private String name;
 
@@ -17,15 +14,6 @@ public class UserModel {
   private LocalDateTime lastAccess;
 
   private LocalDate registerIn;
-
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
 
   public String getName() {
     return name;

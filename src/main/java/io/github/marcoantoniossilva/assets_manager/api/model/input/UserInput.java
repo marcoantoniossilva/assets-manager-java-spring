@@ -1,7 +1,8 @@
 package io.github.marcoantoniossilva.assets_manager.api.model.input;
 
-public class UserInput {
-  private Integer id;
+import io.github.marcoantoniossilva.assets_manager.api.model.BaseEntityDTO;
+
+public class UserInput extends BaseEntityDTO {
 
   private String name;
 
@@ -11,23 +12,12 @@ public class UserInput {
 
   private String password;
 
-  public UserInput() {
-  }
-
   public UserInput(Integer id, String name, String email, String login, String password) {
-    this.id = id;
+    super(id);
     this.name = name;
     this.email = email;
     this.login = login;
     this.password = password;
-  }
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
   }
 
   public String getName() {
