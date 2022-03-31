@@ -21,13 +21,13 @@ public class UserController {
   private final UserRepository userRepository;
   private final UserService userService;
   private final UserAssembler userAssembler;
-  private final PasswordConfig passwordConfig;
+  private final PasswordEncoder passwordEncoder;
 
-  public UserController(UserRepository userRepository, UserService userService, UserAssembler userAssembler, PasswordConfig passwordConfig) {
+  public UserController(UserRepository userRepository, UserService userService, UserAssembler userAssembler, PasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
     this.userService = userService;
     this.userAssembler = userAssembler;
-    this.passwordConfig = passwordConfig;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @GetMapping
@@ -50,7 +50,7 @@ public class UserController {
   public UserModel add(@RequestBody UserInput userInput) {
     User user = userAssembler.toEntity(userInput);
 
-    user.setPassword(passwordConfig.passwordEncoder().encode(user.getPassword()));
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
     User savedUser = userService.save(user);
     return userAssembler.toModel(savedUser);
   }
