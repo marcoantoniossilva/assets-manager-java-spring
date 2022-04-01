@@ -2,7 +2,6 @@ package io.github.marcoantoniossilva.assets_manager.api.controller;
 
 
 import io.github.marcoantoniossilva.assets_manager.domain.model.Company;
-import io.github.marcoantoniossilva.assets_manager.domain.repository.CompanyRepository;
 import io.github.marcoantoniossilva.assets_manager.domain.service.CompanyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,23 +13,20 @@ import java.util.List;
 @RequestMapping("/companies")
 public class CompanyController {
 
-
-  private final CompanyRepository companyRepository;
   private final CompanyService companyService;
 
-  public CompanyController(CompanyRepository companyRepository, CompanyService companyService) {
-    this.companyRepository = companyRepository;
+  public CompanyController(CompanyService companyService) {
     this.companyService = companyService;
   }
 
   @GetMapping
   public List<Company> list() {
-    return companyRepository.findAll();
+    return companyService.list();
   }
 
   @GetMapping("{companyId}")
   public ResponseEntity<Company> search(@PathVariable Integer companyId) {
-    return companyRepository.findById(companyId)
+    return companyService.findById(companyId)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
   }
@@ -43,7 +39,7 @@ public class CompanyController {
 
   @PutMapping("{companyId}")
   public ResponseEntity<Company> update(@PathVariable Integer companyId, @RequestBody Company company) {
-    if (!companyRepository.existsById(companyId)) {
+    if (!companyService.existsById(companyId)) {
       return ResponseEntity.notFound().build();
     }
     company.setId(companyId);
@@ -53,10 +49,10 @@ public class CompanyController {
 
   @DeleteMapping("{companyId}")
   public ResponseEntity<Void> delete(@PathVariable Integer companyId) {
-    if (!companyRepository.existsById(companyId)) {
+    if (!companyService.existsById(companyId)) {
       return ResponseEntity.notFound().build();
     }
-    companyRepository.deleteById(companyId);
+    companyService.deleteById(companyId);
     return ResponseEntity.noContent().build();
   }
 }

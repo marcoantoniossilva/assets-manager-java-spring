@@ -51,10 +51,12 @@ public class UserService {
     return userRepository.save(user);
   }
 
+  @Transactional
   public boolean existsById(Integer userId) {
     return userRepository.existsById(userId);
   }
 
+  @Transactional
   public void deleteById(Integer userId) {
     userRepository.deleteById(userId);
   }

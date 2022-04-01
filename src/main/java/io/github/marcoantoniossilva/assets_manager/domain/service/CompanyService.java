@@ -6,6 +6,7 @@ import io.github.marcoantoniossilva.assets_manager.domain.repository.CompanyRepo
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -16,6 +17,16 @@ public class CompanyService {
 
   public CompanyService(CompanyRepository companyRepository) {
     this.companyRepository = companyRepository;
+  }
+
+  @Transactional
+  public List<Company> list() {
+    return companyRepository.findAll();
+  }
+
+  @Transactional
+  public Optional<Company> findById(Integer companyId) {
+    return companyRepository.findById(companyId);
   }
 
   @Transactional
@@ -30,6 +41,16 @@ public class CompanyService {
       throw new BusinessException("Já existe uma empresa com este CNPJ!");
     }
     return companyRepository.save(company);
+  }
+
+  @Transactional
+  public boolean existsById(Integer companyId) {
+    return companyRepository.existsById(companyId);
+  }
+
+  @Transactional
+  public void deleteById(Integer companyId) {
+    companyRepository.deleteById(companyId);
   }
 
 }
