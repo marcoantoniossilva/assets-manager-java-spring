@@ -3,9 +3,7 @@ package io.github.marcoantoniossilva.assets_manager.api.controller;
 import io.github.marcoantoniossilva.assets_manager.api.assembler.UserAssembler;
 import io.github.marcoantoniossilva.assets_manager.api.model.UserModel;
 import io.github.marcoantoniossilva.assets_manager.api.model.input.UserInput;
-import io.github.marcoantoniossilva.assets_manager.common.PasswordConfig;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
-import io.github.marcoantoniossilva.assets_manager.domain.repository.UserRepository;
 import io.github.marcoantoniossilva.assets_manager.domain.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +16,11 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-  private final UserRepository userRepository;
   private final UserService userService;
   private final UserAssembler userAssembler;
   private final PasswordEncoder passwordEncoder;
 
-  public UserController(UserRepository userRepository, UserService userService, UserAssembler userAssembler, PasswordEncoder passwordEncoder) {
-    this.userRepository = userRepository;
+  public UserController(UserService userService, UserAssembler userAssembler, PasswordEncoder passwordEncoder) {
     this.userService = userService;
     this.userAssembler = userAssembler;
     this.passwordEncoder = passwordEncoder;
@@ -32,13 +28,13 @@ public class UserController {
 
   @GetMapping
   public List<UserModel> list() {
-    List<User> users = userRepository.findAll();
+    List<User> users = userService.list();
     return userAssembler.toCollectionModel(users);
   }
 
   @GetMapping("{userId}")
   public ResponseEntity<UserModel> search(@PathVariable Integer userId) {
-    return userRepository.findById(userId)
+    return userService.findById(userId)
         .map(user ->
             ResponseEntity.ok(userAssembler.toModel(user))
         )
@@ -57,7 +53,7 @@ public class UserController {
 
   @PutMapping("{userId}")
   public ResponseEntity<UserModel> update(@PathVariable Integer userId, @RequestBody UserInput userInput) {
-    if (!userRepository.existsById(userId)) {
+    if (!userService.existsById(userId)) {
       return ResponseEntity.notFound().build();
     }
     userInput.setId(userId);
@@ -68,10 +64,10 @@ public class UserController {
 
   @DeleteMapping("{userId}")
   public ResponseEntity<Void> delete(@PathVariable Integer userId) {
-    if (!userRepository.existsById(userId)) {
+    if (!userService.existsById(userId)) {
       return ResponseEntity.notFound().build();
     }
-    userRepository.deleteById(userId);
+    userService.deleteById(userId);
     return ResponseEntity.noContent().build();
   }
 
