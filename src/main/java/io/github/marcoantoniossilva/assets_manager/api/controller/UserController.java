@@ -7,7 +7,6 @@ import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,12 +17,10 @@ public class UserController {
 
   private final UserService userService;
   private final UserAssembler userAssembler;
-  private final PasswordEncoder passwordEncoder;
 
-  public UserController(UserService userService, UserAssembler userAssembler, PasswordEncoder passwordEncoder) {
+  public UserController(UserService userService, UserAssembler userAssembler) {
     this.userService = userService;
     this.userAssembler = userAssembler;
-    this.passwordEncoder = passwordEncoder;
   }
 
   @GetMapping
@@ -46,7 +43,6 @@ public class UserController {
   public UserModel add(@RequestBody UserInput userInput) {
     User user = userAssembler.toEntity(userInput);
 
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
     User savedUser = userService.save(user);
     return userAssembler.toModel(savedUser);
   }
