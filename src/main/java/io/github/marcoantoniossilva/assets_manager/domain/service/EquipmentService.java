@@ -6,6 +6,9 @@ import io.github.marcoantoniossilva.assets_manager.domain.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class EquipmentService {
 
@@ -21,6 +24,16 @@ public class EquipmentService {
     this.userRepository = userRepository;
     this.sectorRepository = sectorRepository;
     this.typeRepository = typeRepository;
+  }
+
+  @Transactional
+  public List<Equipment> list() {
+    return equipmentRepository.findAll();
+  }
+
+  @Transactional
+  public Optional<Equipment> findById(Integer equipmentId) {
+    return equipmentRepository.findById(equipmentId);
   }
 
   @Transactional
@@ -47,5 +60,15 @@ public class EquipmentService {
     equipment.setSector(sector);
 
     return equipmentRepository.save(equipment);
+  }
+
+  @Transactional
+  public boolean existsById(Integer equipmentId) {
+    return equipmentRepository.existsById(equipmentId);
+  }
+
+  @Transactional
+  public void deleteById(Integer equipmentId) {
+    equipmentRepository.deleteById(equipmentId);
   }
 }
