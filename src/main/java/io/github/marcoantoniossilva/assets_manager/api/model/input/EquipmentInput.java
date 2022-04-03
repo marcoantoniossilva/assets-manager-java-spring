@@ -1,12 +1,12 @@
 package io.github.marcoantoniossilva.assets_manager.api.model.input;
 
-import io.github.marcoantoniossilva.assets_manager.api.model.BaseEntityDTO;
+import io.github.marcoantoniossilva.assets_manager.api.model.BaseEntityModel;
 import io.github.marcoantoniossilva.assets_manager.domain.enumeration.Status;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class EquipmentInput extends BaseEntityDTO {
+public class EquipmentInput extends BaseEntityModel {
 
   private UserIdInput user;
 

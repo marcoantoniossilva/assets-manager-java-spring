@@ -1,8 +1,8 @@
 package io.github.marcoantoniossilva.assets_manager.api.model.input;
 
-import io.github.marcoantoniossilva.assets_manager.api.model.BaseEntityDTO;
+import io.github.marcoantoniossilva.assets_manager.api.model.BaseEntityModel;
 
-public class UserIdInput extends BaseEntityDTO {
+public class UserIdInput extends BaseEntityModel {
 
   public UserIdInput() {
   }

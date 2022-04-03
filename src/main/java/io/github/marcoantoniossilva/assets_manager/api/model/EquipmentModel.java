@@ -7,7 +7,7 @@ import io.github.marcoantoniossilva.assets_manager.domain.model.Type;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class EquipmentModel extends BaseEntityDTO{
+public class EquipmentModel extends BaseEntityModel {
 
   private String description;
 

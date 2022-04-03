@@ -1,13 +1,13 @@
 package io.github.marcoantoniossilva.assets_manager.api.model;
 
-public abstract class BaseEntityDTO {
+public abstract class BaseEntityModel {
 
   private Integer id;
 
-  protected BaseEntityDTO() {
+  protected BaseEntityModel() {
   }
 
-  protected BaseEntityDTO(Integer id) {
+  protected BaseEntityModel(Integer id) {
     this.id = id;
   }
 

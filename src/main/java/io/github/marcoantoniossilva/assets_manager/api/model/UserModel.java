@@ -3,7 +3,7 @@ package io.github.marcoantoniossilva.assets_manager.api.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class UserModel extends BaseEntityDTO{
+public class UserModel extends BaseEntityModel {
 
   private String name;
 

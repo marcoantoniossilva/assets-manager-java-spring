@@ -1,6 +1,6 @@
 package io.github.marcoantoniossilva.assets_manager.api.model;
 
-public class CompanyResumeModel extends BaseEntityDTO{
+public class CompanyResumeModel extends BaseEntityModel {
 
   private String fantasyName;
 

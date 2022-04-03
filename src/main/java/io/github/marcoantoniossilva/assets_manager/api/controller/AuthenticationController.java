@@ -3,7 +3,6 @@ package io.github.marcoantoniossilva.assets_manager.api.controller;
 import io.github.marcoantoniossilva.assets_manager.api.model.input.UserLoginInput;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.service.AuthenticationService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
