@@ -1,6 +1,7 @@
 package io.github.marcoantoniossilva.assets_manager.domain.service;
 
 import io.github.marcoantoniossilva.assets_manager.domain.exception.BusinessException;
+import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -49,6 +50,16 @@ public class UserService {
       throw new BusinessException("Já existe um usuário cadastrado com este login.");
     }
     return userRepository.save(user);
+  }
+
+  @Transactional
+  public User findByLogin(String login) {
+    Optional<User> user = userRepository.findByLogin(login);
+    return user.orElseThrow(() -> new BusinessException("Usuário não encontrado com este login."));
+  }
+
+  public Optional<User> findByToken(Token token){
+    return userRepository.findByTokens(token);
   }
 
   @Transactional

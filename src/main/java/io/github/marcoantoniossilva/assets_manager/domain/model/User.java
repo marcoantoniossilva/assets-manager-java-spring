@@ -3,6 +3,7 @@ package io.github.marcoantoniossilva.assets_manager.domain.model;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -16,6 +17,9 @@ public class User extends BaseEntity{
 
   private String password;
 
+  @OneToMany(mappedBy = "user", cascade=CascadeType.ALL)
+  private List<Token> tokens;
+
   @Column(name = "last_access")
   private LocalDateTime lastAccess;
 
@@ -25,11 +29,12 @@ public class User extends BaseEntity{
   public User() {
   }
 
-  public User(String name, String email, String login, String password, LocalDateTime lastAccess, LocalDate registerIn) {
+  public User(String name, String email, String login, String password, List<Token> tokens, LocalDateTime lastAccess, LocalDate registerIn) {
     this.name = name;
     this.email = email;
     this.login = login;
     this.password = password;
+    this.tokens = tokens;
     this.lastAccess = lastAccess;
     this.registerIn = registerIn;
   }
@@ -80,6 +85,14 @@ public class User extends BaseEntity{
 
   public void setRegisterIn(LocalDate registerIn) {
     this.registerIn = registerIn;
+  }
+
+  public List<Token> getTokens() {
+    return tokens;
+  }
+
+  public void setTokens(List<Token> tokens) {
+    this.tokens = tokens;
   }
 
   @Override
