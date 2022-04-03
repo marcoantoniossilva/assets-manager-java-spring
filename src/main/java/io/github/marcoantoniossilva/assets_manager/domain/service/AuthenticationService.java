@@ -1,7 +1,6 @@
 package io.github.marcoantoniossilva.assets_manager.domain.service;
 
 import io.github.marcoantoniossilva.assets_manager.api.model.input.UserLoginInput;
-import io.github.marcoantoniossilva.assets_manager.domain.exception.BusinessException;
 import io.github.marcoantoniossilva.assets_manager.domain.exception.IncorrectLoginException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
@@ -10,10 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.security.auth.login.LoginException;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -32,22 +28,31 @@ public class AuthenticationService {
   @Transactional
   public Token auth(UserLoginInput userLoginInput) {
     if (validateLoginPassword(userLoginInput)) {
-      return getToken(userLoginInput.getLogin());
+      User user = userService.findByLogin(userLoginInput.getLogin());
+      deleteAllExpiredTokensByUserId(user.getId());
+      verifyAndDeleteOldToken(user.getId());
+      return tokenService.create(UUID.randomUUID().toString(), user);
     } else {
       throw new IncorrectLoginException("Dados do login incorretos!");
     }
   }
 
   @Transactional
-  private Token getToken(String login) {
-    User user = userService.findByLogin(login);
-    return new Token(UUID.randomUUID().toString(), user);
+  private void deleteAllExpiredTokensByUserId(Integer userId) {
+    tokenService.deleteAllExpiredTokensByUserId(userId);
   }
 
   @Transactional
   private boolean validateLoginPassword(UserLoginInput userLoginInput) {
     User user = userService.findByLogin(userLoginInput.getLogin());
     return passwordEncoder.matches(userLoginInput.getPassword(), user.getPassword());
+  }
+
+  private void verifyAndDeleteOldToken(Integer userId) {
+    List<Token> allTokensByUserId = tokenService.findAllByUserIdOrderByExpirationTime(userId);
+    if (allTokensByUserId.size() > 1) {
+      tokenService.delete(allTokensByUserId.get(0));
+    }
   }
 
 }

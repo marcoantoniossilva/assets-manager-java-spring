@@ -24,7 +24,7 @@ public class Token extends BaseEntity {
   public Token(String token, User user) {
     this.token = token;
     this.user = user;
-    this.expirationTime = LocalDateTime.now().plusHours(5);
+    this.expirationTime = LocalDateTime.now().plusMinutes(30);
   }
 
   public Token(String token, LocalDateTime expirationTime) {
