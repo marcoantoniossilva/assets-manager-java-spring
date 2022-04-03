@@ -1,6 +1,7 @@
 package io.github.marcoantoniossilva.assets_manager.domain.service;
 
 import io.github.marcoantoniossilva.assets_manager.api.model.input.UserLoginInput;
+import io.github.marcoantoniossilva.assets_manager.common.TokenConfigurationsProperties;
 import io.github.marcoantoniossilva.assets_manager.domain.exception.IncorrectLoginException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
@@ -18,11 +19,13 @@ public class AuthenticationService {
   private final PasswordEncoder passwordEncoder;
   private final UserService userService;
   private final TokenService tokenService;
+  private final TokenConfigurationsProperties tokenConfigurationsProperties;
 
-  public AuthenticationService(PasswordEncoder passwordEncoder, UserService userService, TokenRepository tokenRepository, TokenService tokenService) {
+  public AuthenticationService(PasswordEncoder passwordEncoder, UserService userService, TokenRepository tokenRepository, TokenService tokenService, TokenConfigurationsProperties tokenConfigurationsProperties) {
     this.passwordEncoder = passwordEncoder;
     this.userService = userService;
     this.tokenService = tokenService;
+    this.tokenConfigurationsProperties = tokenConfigurationsProperties;
   }
 
   @Transactional
@@ -42,7 +45,8 @@ public class AuthenticationService {
 
   private void verifyAndDeleteOldToken(Integer userId) {
     List<Token> allTokensByUserId = tokenService.findAllByUserIdOrderByExpirationTime(userId);
-    if (allTokensByUserId.size() > 1) {
+    Integer maxTokensByUser = tokenConfigurationsProperties.getMaxTokensByUser();
+    if (allTokensByUserId.size() >= maxTokensByUser) {
       tokenService.delete(allTokensByUserId.get(0));
     }
   }

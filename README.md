@@ -24,9 +24,24 @@ READ     | GET
 UPDATE   | PUT
 DELETE   | DELETE
 
+## Configuração de tokens
+
+É possível configurar a duração em tempo dos tokens gerados e a quantidade máxima de tokens por usuário. 
+Para realizar essas configurações, é necessário acessar o arquivo
+[application.properties](src/main/resources/application.properties) e alterar respectivamente as propriedades:<br><br>
+api.token.expirationtime<br>
+api.token.maxtokensbyuser<br><br>
+OBS: A propriedade api.token.expirationtime será convertida em um atributo do tipo Duration, 
+o que significa que é necessário especificar após o valor, um sufixo de tempo que pode ser: ns, us, ms, s, m, h e d para nanossegundos, microssegundos, milissegundos, 
+segundos, minutos, horas e dias, respectivamente.<br><br>
+A unidade padrão é milissegundos, o que significa que se não for especificado uma unidade 
+ao lado do valor numérico, o Spring converterá o valor em milissegundos.<br>
+
+
 ## Authenticação
 
-Para consumir a API, primeiro é necessário logar no endpoint /auth/login passando um corpo contendo login e senha com o abaixo:<br>
+Para consumir a API, primeiro é necessário logar no endpoint /auth/login 
+passando um corpo contendo login e senha com o abaixo:<br>
 
   ```JSON
   {

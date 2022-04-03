@@ -1,9 +1,12 @@
 package io.github.marcoantoniossilva.assets_manager.domain.model;
 
+import io.github.marcoantoniossilva.assets_manager.common.TokenConfigurationsProperties;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,10 +24,10 @@ public class Token extends BaseEntity {
   public Token() {
   }
 
-  public Token(String token, User user) {
+  public Token(String token, User user, Duration duration) {
     this.token = token;
     this.user = user;
-    this.expirationTime = LocalDateTime.now().plusMinutes(30);
+    this.expirationTime = LocalDateTime.now().plus(duration);
   }
 
   public Token(String token, LocalDateTime expirationTime) {
