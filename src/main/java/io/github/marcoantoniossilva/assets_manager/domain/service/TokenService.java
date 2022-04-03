@@ -40,12 +40,17 @@ public class TokenService {
   }
 
   @Transactional
-  public List<Token> findAllByUserIdOrderByExpirationTime(Integer userId){
+  public List<Token> findAllByUserIdOrderByExpirationTime(Integer userId) {
     return tokenRepository.findAllByUserIdOrderByExpirationTime(userId);
   }
 
   @Transactional
   public void delete(Token token) {
     tokenRepository.delete(token);
+  }
+
+  @Transactional
+  public Optional<Token> findByToken(String token) {
+    return tokenRepository.findByToken(token);
   }
 }
