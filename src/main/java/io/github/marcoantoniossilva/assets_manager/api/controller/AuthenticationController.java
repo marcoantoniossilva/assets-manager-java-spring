@@ -3,13 +3,12 @@ package io.github.marcoantoniossilva.assets_manager.api.controller;
 import io.github.marcoantoniossilva.assets_manager.api.model.input.UserLoginInput;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.service.AuthenticationService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("auth")
 public class AuthenticationController {
 
   private final AuthenticationService authenticationService;
@@ -18,9 +17,21 @@ public class AuthenticationController {
     this.authenticationService = authenticationService;
   }
 
-  @PostMapping
+  @PostMapping("login")
   private Token auth(@RequestBody UserLoginInput userLoginInput) {
     return authenticationService.auth(userLoginInput);
+  }
+
+  @GetMapping("logout")
+  private ResponseEntity<Void> logout(@RequestHeader(name = "Authorization") String token) {
+
+    boolean existentToken = authenticationService.existsByStringToken(token);
+
+    if (existentToken) {
+      authenticationService.deleteByStringToken(token);
+      return ResponseEntity.noContent().build();
+    }
+    return ResponseEntity.notFound().build();
   }
 
 }

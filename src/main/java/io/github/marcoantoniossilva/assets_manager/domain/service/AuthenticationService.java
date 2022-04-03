@@ -48,11 +48,22 @@ public class AuthenticationService {
     return passwordEncoder.matches(userLoginInput.getPassword(), user.getPassword());
   }
 
+  @Transactional
   private void verifyAndDeleteOldToken(Integer userId) {
     List<Token> allTokensByUserId = tokenService.findAllByUserIdOrderByExpirationTime(userId);
     if (allTokensByUserId.size() > 1) {
       tokenService.delete(allTokensByUserId.get(0));
     }
+  }
+
+  @Transactional
+  public void deleteByStringToken(String stringToken) {
+    tokenService.deleteByStringToken(stringToken);
+  }
+
+  @Transactional
+  public boolean existsByStringToken(String stringToken) {
+    return tokenService.existsByStringToken(stringToken);
   }
 
 }

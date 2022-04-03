@@ -53,4 +53,13 @@ public class TokenService {
   public Optional<Token> findByToken(String token) {
     return tokenRepository.findByToken(token);
   }
+
+  @Transactional
+  public void deleteByStringToken(String stringToken) {
+    tokenRepository.deleteByToken(stringToken);
+  }
+
+  public boolean existsByStringToken(String stringToken){
+    return tokenRepository.existsByToken(stringToken);
+  }
 }

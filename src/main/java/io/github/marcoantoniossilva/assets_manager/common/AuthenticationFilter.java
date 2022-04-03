@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,22 +30,22 @@ public class AuthenticationFilter extends OncePerRequestFilter {
       HttpServletResponse response,
       FilterChain filterChain) throws
       ServletException, IOException {
-    String authentication = request.getHeader("Authentication");
-    if (authenticate(authentication) ||
+    String authorization = request.getHeader("Authorization");
+    if (authenticate(authorization) ||
         PUBLIC_URLS.stream()
             .anyMatch(url -> request.getRequestURL().toString().contains(url))) {
       filterChain.doFilter(request, response);
     } else {
       response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-          "Token de autenticação expirado ou incorreto!");
+          "Token de autorização expirado ou incorreto!");
     }
   }
 
-  private boolean authenticate(String authentication) {
-    if (authentication == null || authentication.isEmpty() || authentication.isBlank()) {
+  private boolean authenticate(String authorization) {
+    if (authorization == null || authorization.isEmpty() || authorization.isBlank()) {
       return false;
     }
-    Optional<Token> token = tokenService.findByToken(authentication);
+    Optional<Token> token = tokenService.findByToken(authorization);
     return token.filter(savedToken -> savedToken.getExpirationTime().isAfter(LocalDateTime.now())).isPresent();
   }
 }

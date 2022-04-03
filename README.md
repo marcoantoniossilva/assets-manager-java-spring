@@ -12,9 +12,10 @@ Recursos da API (endpoints):
 3 - Equipamentos - /equipments;<br>
 4 - Setores - /sectors;<br>
 5 - Tipos de equipamentos - /types;<br>
-6 - Autenticação (Login) - /auth.<br>
+6 - Autenticação (Login) - /auth/login;<br>
+7 - Logout - /auth/logout.<br>
 
-Todos os endoins com exceção do /auth suportam as operações CRUD.<br>
+Todos os endoins com exceção de /auth/login e /auth/logout suportam as operações CRUD.<br>
 
 Operação | Método
 :---------:|:-------:
@@ -25,7 +26,7 @@ DELETE   | DELETE
 
 ## Authenticação
 
-Para consumir a API, primeiro é necessário logar no endpoint /auth passando um corpo contendo login e senha com o abaixo:<br>
+Para consumir a API, primeiro é necessário logar no endpoint /auth/login passando um corpo contendo login e senha com o abaixo:<br>
 
   ```JSON
   {
@@ -43,12 +44,12 @@ O retorno será algo como:<br>
   "expirationTime": "2022-04-03T01:38:33.706536919"
 }
 ```
-O token retornado no corpo da requisição deverá ser passado no cabeçalho "Authentication" 
+O token retornado no corpo da requisição deverá ser passado no cabeçalho "Authorization" 
 de todas as outras requisições e tem duração de 30 minutos.<br>
 
 ## Uso de endpoints
 
-A usabilidade dos endpoins seguem o mesmo padrão, abeixo é possível ver o exemplo de consumo do recurso "Usuários".
+A usabilidade dos endpoins seguem o mesmo padrão, abaixo é possível ver o exemplo de consumo do recurso "Usuários".
 
 ### Usuários
 
