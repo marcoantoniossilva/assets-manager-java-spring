@@ -1,4 +1,4 @@
-package io.github.marcoantoniossilva.assets_manager.api.filter;
+package io.github.marcoantoniossilva.assets_manager.common;
 
 import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.service.TokenService;
