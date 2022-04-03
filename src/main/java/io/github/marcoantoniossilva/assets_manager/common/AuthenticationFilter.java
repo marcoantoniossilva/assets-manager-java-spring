@@ -11,12 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Component
 public class AuthenticationFilter extends OncePerRequestFilter {
 
   private final TokenService tokenService;
+  private final List<String> PUBLIC_URLS = List.of("/auth");
 
   public AuthenticationFilter(TokenService tokenService) {
     this.tokenService = tokenService;
@@ -29,10 +33,13 @@ public class AuthenticationFilter extends OncePerRequestFilter {
       FilterChain filterChain) throws
       ServletException, IOException {
     String authentication = request.getHeader("Authentication");
-    if (authenticate(authentication)) {
+    if (authenticate(authentication) ||
+        PUBLIC_URLS.stream()
+            .anyMatch(url -> request.getRequestURL().toString().contains(url))) {
       filterChain.doFilter(request, response);
     } else {
-      response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Token de autenticação expirado ou incorreto!");
+      response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+          "Token de autenticação expirado ou incorreto!");
     }
   }
 

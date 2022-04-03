@@ -1,14 +1,50 @@
 # Rest API para sistema de gerenciamento de ativos de uma empresa
 
-Api desenvolvida utilizando o [Ecossistema Spring](https://spring.io/) em conjunto com [Jakarta Persistence JPA](https://jakarta.ee/specifications/persistence/), [Jakarta Bean Validation](https://jakarta.ee/specifications/bean-validation/), [ModelMapper](http://modelmapper.org/)  e [Flyway](https://flywaydb.org/).
+Api desenvolvida utilizando o [Ecossistema Spring](https://spring.io/) em conjunto
+com [Jakarta Persistence JPA](https://jakarta.ee/specifications/persistence/)
+, [Jakarta Bean Validation](https://jakarta.ee/specifications/bean-validation/), [ModelMapper](http://modelmapper.org/)
+e [Flyway](https://flywaydb.org/).
 
 Recursos da API (endpoints):
 
 1 - Usuários - /users;<br>
 2 - Empresas - /companies;<br>
-3 - Equipamentos - /equipments; (EM DESENVOLVIMENTO)<br>
+3 - Equipamentos - /equipments;<br>
 4 - Setores - /sectors;<br>
-5 - Tipos de equipamentos - /types.<br>
+5 - Tipos de equipamentos - /types;<br>
+6 - Autenticação (Login) - /auth.<br>
+
+Todos os endoins com exceção do /auth suportam as operações CRUD.<br>
+
+Operação | Método
+:---------:|:-------:
+CREATE   | POST
+READ     | GET
+UPDATE   | PUT
+DELETE   | DELETE
+
+## Authenticação
+
+Para consumir a API, primeiro é necessário logar no endpoint /auth passando um corpo contendo login e senha com o abaixo:<br>
+
+  ```JSON
+  {
+  "login": "fernando",
+  "password": "minhasenha123456"
+}
+  ```
+
+O retorno será algo como:<br>
+
+  ```JSON
+{
+  "id": 96,
+  "token": "TOKEN_GERADO",
+  "expirationTime": "2022-04-03T01:38:33.706536919"
+}
+```
+O token retornado no corpo da requisição deverá ser passado no cabeçalho "Authentication" 
+de todas as outras requisições e tem duração de 30 minutos.<br>
 
 ## Uso de endpoints
 
@@ -21,6 +57,7 @@ A usabilidade dos endpoins seguem o mesmo padrão, abeixo é possível ver o exe
 - Adicionar um usuário (POST localhost:8080/users);<br>
   Exemplo de corpo:
   ```JSON
+  Authentication: {TOKEN_GERADO_NA_ETAPA_DE_AUTENTICAÇÃO}
   {
     "name": "Fernando",
     "email": "fernando@gmail.com",
@@ -31,6 +68,7 @@ A usabilidade dos endpoins seguem o mesmo padrão, abeixo é possível ver o exe
 - Atualizar um usuário (PUT localhost:8080/users/{userId});<br>
   Exemplo de corpo:
   ```JSON
+  Authentication: {TOKEN_GERADO_NA_ETAPA_DE_AUTENTICAÇÃO}
   {
     "name": "Fernando Souza",
     "email": "fernando1@gmail.com",
