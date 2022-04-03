@@ -19,7 +19,6 @@ public class TokenService {
     this.tokenRepository = tokenRepository;
   }
 
-  @Transactional
   public Optional<Token> findById(Integer tokenId) {
     return tokenRepository.findById(tokenId);
   }
@@ -39,7 +38,6 @@ public class TokenService {
     tokenRepository.deleteAllByUserIdAndExpirationTimeBefore(userId, LocalDateTime.now());
   }
 
-  @Transactional
   public List<Token> findAllByUserIdOrderByExpirationTime(Integer userId) {
     return tokenRepository.findAllByUserIdOrderByExpirationTime(userId);
   }
@@ -49,7 +47,6 @@ public class TokenService {
     tokenRepository.delete(token);
   }
 
-  @Transactional
   public Optional<Token> findByToken(String token) {
     return tokenRepository.findByToken(token);
   }
@@ -59,7 +56,4 @@ public class TokenService {
     tokenRepository.deleteByToken(stringToken);
   }
 
-  public boolean existsByStringToken(String stringToken){
-    return tokenRepository.existsByToken(stringToken);
-  }
 }

@@ -13,44 +13,44 @@ import java.util.Optional;
 public class EquipmentService {
 
   private final EquipmentRepository equipmentRepository;
-  private final CompanyRepository companyRepository;
-  private final UserRepository userRepository;
-  private final SectorRepository sectorRepository;
-  private final TypeRepository typeRepository;
+  private final CompanyService companyService;
+  private final UserService userService;
+  private final TypeService typeService;
+  private final SectorService sectorService;
 
-  public EquipmentService(EquipmentRepository equipmentRepository, CompanyRepository companyRepository, UserRepository userRepository, SectorRepository sectorRepository, TypeRepository typeRepository) {
-    this.equipmentRepository = equipmentRepository;
-    this.companyRepository = companyRepository;
-    this.userRepository = userRepository;
-    this.sectorRepository = sectorRepository;
-    this.typeRepository = typeRepository;
+
+  public EquipmentService(EquipmentRepository equipmentRepository1, CompanyService companyService, UserService userService, TypeService typeService, SectorService sectorService) {
+
+    this.equipmentRepository = equipmentRepository1;
+    this.companyService = companyService;
+    this.userService = userService;
+    this.typeService = typeService;
+    this.sectorService = sectorService;
   }
 
-  @Transactional
   public List<Equipment> list() {
     return equipmentRepository.findAll();
   }
 
-  @Transactional
   public Optional<Equipment> findById(Integer equipmentId) {
     return equipmentRepository.findById(equipmentId);
   }
 
   @Transactional
   public Equipment save(Equipment equipment) {
-    Company company = companyRepository
+    Company company = companyService
         .findById(equipment.getCompany().getId())
         .orElseThrow(() -> new BusinessException("Empresa não encontrada!"));
 
-    User user = userRepository
+    User user = userService
         .findById(equipment.getUser().getId())
         .orElseThrow(() -> new BusinessException("Usuário não encontrado!"));
 
-    Type type = typeRepository
+    Type type = typeService
         .findById(equipment.getType().getId())
         .orElseThrow(() -> new BusinessException("Tipo de equipamento não encontrado!"));
 
-    Sector sector = sectorRepository
+    Sector sector = sectorService
         .findById(equipment.getSector().getId())
         .orElseThrow(() -> new BusinessException("Setor não encontrado!"));
 
@@ -62,7 +62,6 @@ public class EquipmentService {
     return equipmentRepository.save(equipment);
   }
 
-  @Transactional
   public boolean existsById(Integer equipmentId) {
     return equipmentRepository.existsById(equipmentId);
   }

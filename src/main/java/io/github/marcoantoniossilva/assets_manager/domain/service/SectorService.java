@@ -18,12 +18,10 @@ public class SectorService {
     this.sectorRepository = sectorRepository;
   }
 
-  @Transactional
   public List<Sector> list() {
     return sectorRepository.findAll();
   }
 
-  @Transactional
   public Optional<Sector> findById(Integer sectorId) {
     return sectorRepository.findById(sectorId);
   }
@@ -33,7 +31,6 @@ public class SectorService {
     return sectorRepository.save(sector);
   }
 
-  @Transactional
   public boolean existsById(Integer sectorId) {
     return sectorRepository.existsById(sectorId);
   }

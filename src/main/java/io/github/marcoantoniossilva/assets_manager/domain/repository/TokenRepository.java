@@ -13,8 +13,6 @@ public interface TokenRepository extends JpaRepository<Token, Integer> {
 
   void deleteByToken(String stringToken);
 
-  boolean existsByToken(String stringToken);
-
   List<Token> findAllByUserIdOrderByExpirationTime(Integer userId);
 
   Optional<Token> findByToken(String token);

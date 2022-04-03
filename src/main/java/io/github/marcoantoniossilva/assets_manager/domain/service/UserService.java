@@ -24,12 +24,10 @@ public class UserService {
     this.passwordEncoder = passwordEncoder;
   }
 
-  @Transactional
   public List<User> list() {
     return userRepository.findAll();
   }
 
-  @Transactional
   public Optional<User> findById(Integer userId) {
     return userRepository.findById(userId);
   }
@@ -40,29 +38,28 @@ public class UserService {
     boolean differentsUsersSameLogins = userWithSameLogin.stream()
         .anyMatch(existentUser -> !Objects.equals(existentUser.getId(), user.getId()));
 
+    if (differentsUsersSameLogins) { // Se estiver criando um usuário
+      throw new BusinessException("Já existe um usuário cadastrado com este login.");
+    }
+
     if (user.getId() == null) { // Criação de usuário
       user.setPassword(passwordEncoder.encode(user.getPassword()));
     } else { // Edição de usuário
       user.setPassword(userRepository.getById(user.getId()).getPassword());
     }
 
-    if (differentsUsersSameLogins) { // Se estiver criando um usuário
-      throw new BusinessException("Já existe um usuário cadastrado com este login.");
-    }
     return userRepository.save(user);
   }
 
-  @Transactional
   public User findByLogin(String login) {
     Optional<User> user = userRepository.findByLogin(login);
     return user.orElseThrow(() -> new BusinessException("Usuário não encontrado com este login."));
   }
 
-  public Optional<User> findByToken(Token token){
+  public Optional<User> findByToken(Token token) {
     return userRepository.findByTokens(token);
   }
 
-  @Transactional
   public boolean existsById(Integer userId) {
     return userRepository.existsById(userId);
   }

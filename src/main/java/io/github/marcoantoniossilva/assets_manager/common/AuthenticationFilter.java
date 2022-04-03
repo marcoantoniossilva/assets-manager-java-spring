@@ -18,7 +18,7 @@ import java.util.Optional;
 public class AuthenticationFilter extends OncePerRequestFilter {
 
   private final TokenService tokenService;
-  private final List<String> PUBLIC_URLS = List.of("/auth");
+  private final List<String> PUBLIC_URLS = List.of("/login");
 
   public AuthenticationFilter(TokenService tokenService) {
     this.tokenService = tokenService;
@@ -31,14 +31,17 @@ public class AuthenticationFilter extends OncePerRequestFilter {
       FilterChain filterChain) throws
       ServletException, IOException {
     String authorization = request.getHeader("Authorization");
-    if (authenticate(authorization) ||
-        PUBLIC_URLS.stream()
-            .anyMatch(url -> request.getRequestURL().toString().contains(url))) {
+    if (isPublicUrl(request) || authenticate(authorization)) {
       filterChain.doFilter(request, response);
     } else {
       response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
           "Token de autorização expirado ou incorreto!");
     }
+  }
+
+  private boolean isPublicUrl(HttpServletRequest request) {
+    return PUBLIC_URLS.stream()
+        .anyMatch(url -> request.getRequestURL().toString().contains(url));
   }
 
   private boolean authenticate(String authorization) {

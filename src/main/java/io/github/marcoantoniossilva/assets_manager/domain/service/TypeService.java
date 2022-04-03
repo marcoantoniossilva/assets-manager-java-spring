@@ -17,12 +17,10 @@ public class TypeService {
     this.typeRepository = typeRepository;
   }
 
-  @Transactional
   public List<Type> list() {
     return typeRepository.findAll();
   }
 
-  @Transactional
   public Optional<Type> findById(Integer typeId) {
     return typeRepository.findById(typeId);
   }
@@ -32,7 +30,6 @@ public class TypeService {
     return typeRepository.save(Type);
   }
 
-  @Transactional
   public boolean existsById(Integer typeId) {
     return typeRepository.existsById(typeId);
   }

@@ -27,43 +27,24 @@ public class AuthenticationService {
 
   @Transactional
   public Token auth(UserLoginInput userLoginInput) {
-    if (validateLoginPassword(userLoginInput)) {
-      User user = userService.findByLogin(userLoginInput.getLogin());
-      deleteAllExpiredTokensByUserId(user.getId());
+    User user = userService.findByLogin(userLoginInput.getLogin());
+    if (validateLoginPassword(user, userLoginInput)) {
+      tokenService.deleteAllExpiredTokensByUserId(user.getId());
       verifyAndDeleteOldToken(user.getId());
       return tokenService.create(UUID.randomUUID().toString(), user);
-    } else {
-      throw new IncorrectLoginException("Dados do login incorretos!");
     }
+    throw new IncorrectLoginException("Dados do login incorretos!");
   }
 
-  @Transactional
-  private void deleteAllExpiredTokensByUserId(Integer userId) {
-    tokenService.deleteAllExpiredTokensByUserId(userId);
-  }
-
-  @Transactional
-  private boolean validateLoginPassword(UserLoginInput userLoginInput) {
-    User user = userService.findByLogin(userLoginInput.getLogin());
+  private boolean validateLoginPassword(User user, UserLoginInput userLoginInput) {
     return passwordEncoder.matches(userLoginInput.getPassword(), user.getPassword());
   }
 
-  @Transactional
   private void verifyAndDeleteOldToken(Integer userId) {
     List<Token> allTokensByUserId = tokenService.findAllByUserIdOrderByExpirationTime(userId);
     if (allTokensByUserId.size() > 1) {
       tokenService.delete(allTokensByUserId.get(0));
     }
-  }
-
-  @Transactional
-  public void deleteByStringToken(String stringToken) {
-    tokenService.deleteByStringToken(stringToken);
-  }
-
-  @Transactional
-  public boolean existsByStringToken(String stringToken) {
-    return tokenService.existsByStringToken(stringToken);
   }
 
 }

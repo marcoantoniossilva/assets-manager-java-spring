@@ -19,12 +19,10 @@ public class CompanyService {
     this.companyRepository = companyRepository;
   }
 
-  @Transactional
   public List<Company> list() {
     return companyRepository.findAll();
   }
 
-  @Transactional
   public Optional<Company> findById(Integer companyId) {
     return companyRepository.findById(companyId);
   }
@@ -43,7 +41,6 @@ public class CompanyService {
     return companyRepository.save(company);
   }
 
-  @Transactional
   public boolean existsById(Integer companyId) {
     return companyRepository.existsById(companyId);
   }
