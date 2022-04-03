@@ -29,8 +29,8 @@ DELETE   | DELETE
 É possível configurar a duração em tempo dos tokens gerados e a quantidade máxima de tokens por usuário. 
 Para realizar essas configurações, é necessário acessar o arquivo
 [application.properties](src/main/resources/application.properties) e alterar respectivamente as propriedades:<br><br>
-api.token.expirationtime<br>
-api.token.maxtokensbyuser<br><br>
+api.token.expiration-time<br>
+api.token.max-tokens-by-user<br><br>
 OBS: A propriedade api.token.expirationtime será convertida em um atributo do tipo Duration, 
 o que significa que é necessário especificar após o valor, um sufixo de tempo que pode ser: ns, us, ms, s, m, h e d para nanossegundos, microssegundos, milissegundos, 
 segundos, minutos, horas e dias, respectivamente.<br><br>
