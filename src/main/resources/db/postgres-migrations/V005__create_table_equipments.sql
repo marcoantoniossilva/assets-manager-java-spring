@@ -1,3 +1,5 @@
+CREATE TYPE status_enum AS ENUM ('ACTIVE','RESERVE','INACTIVE');
+
 CREATE SEQUENCE equipments_seq;
 
 CREATE TABLE equipments (
@@ -10,12 +12,8 @@ CREATE TABLE equipments (
   description varchar(120) DEFAULT NULL,
   acquisition_date date DEFAULT NULL,
   nfe_path varchar(120) DEFAULT NULL,
-  status enum(ACTIVE,RESERVE,INACTIVE) DEFAULT NULL,
+  status status_enum,
   PRIMARY KEY (id),
-  KEY company_id (company_id),
-  KEY sector_id (sector_id),
-  KEY type_id (type_id),
-  KEY user_id (user_id),
   CONSTRAINT equipments_ibfk_1 FOREIGN KEY (type_id) REFERENCES types (id) ON DELETE CASCADE,
   CONSTRAINT equipments_ibfk_2 FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE CASCADE,
   CONSTRAINT equipments_ibfk_3 FOREIGN KEY (sector_id) REFERENCES sectors (id) ON DELETE CASCADE,
