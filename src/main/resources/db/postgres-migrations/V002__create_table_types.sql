@@ -6,4 +6,4 @@ CREATE TABLE types (
   depreciation smallint check (depreciation > 0) DEFAULT NULL,
   depreciation_term smallint check (depreciation_term > 0) DEFAULT NULL,
   PRIMARY KEY (id)
-)  ;
+);

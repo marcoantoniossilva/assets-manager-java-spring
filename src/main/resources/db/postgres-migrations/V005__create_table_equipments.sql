@@ -20,4 +20,4 @@ CREATE TABLE equipments (
   CONSTRAINT equipments_ibfk_2 FOREIGN KEY (company_id) REFERENCES companies (id) ON DELETE CASCADE,
   CONSTRAINT equipments_ibfk_3 FOREIGN KEY (sector_id) REFERENCES sectors (id) ON DELETE CASCADE,
   CONSTRAINT equipments_ibfk_4 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-) CHARSET=utf8 COLLATE=utf8_unicode_ci;
+);

@@ -6,4 +6,4 @@ CREATE TABLE companies (
   fantasy_name varchar(120) NOT NULL,
   cnpj varchar(18) DEFAULT NULL,
   PRIMARY KEY (id)
-)  ;
+);

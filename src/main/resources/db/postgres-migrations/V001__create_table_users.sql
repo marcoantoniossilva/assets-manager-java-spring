@@ -9,6 +9,4 @@ CREATE TABLE users (
   last_access timestamp(0) DEFAULT NULL,
   register_in timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
-)   ;
-
-ALTER SEQUENCE users_seq RESTART WITH 12;
+);
