@@ -1,4 +1,4 @@
-INSERT INTO `sectors` VALUES
+INSERT INTO 'sectors' VALUES
     (2,'PRODUÇÃO SUPER JIBOIA'),
     (10,'CORTE'),
     (11,'PRODUÇÃO LINDA JIBOIA'),
