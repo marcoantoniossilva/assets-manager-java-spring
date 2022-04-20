@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +35,8 @@ public class AuthenticationService {
     if (validateLoginPassword(user, userLoginInput)) {
       tokenService.deleteAllExpiredTokensByUserId(user.getId());
       verifyAndDeleteOldToken(user.getId());
+      user.setLastAccess(LocalDateTime.now());
+      userService.save(user);
       return tokenService.create(UUID.randomUUID().toString(), user);
     }
     throw new IncorrectLoginException("Dados do login incorretos!");
