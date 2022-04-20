@@ -19,7 +19,7 @@ import java.util.Optional;
 public class AuthenticationFilter extends OncePerRequestFilter {
 
   private final TokenService tokenService;
-  private final List<String> PUBLIC_URLS = List.of("/login");
+  private final List<String> PUBLIC_URLS = List.of("/login","/users");
 
   public AuthenticationFilter(TokenService tokenService) {
     this.tokenService = tokenService;
