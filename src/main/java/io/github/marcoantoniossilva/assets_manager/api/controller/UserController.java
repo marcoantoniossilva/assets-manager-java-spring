@@ -2,7 +2,10 @@ package io.github.marcoantoniossilva.assets_manager.api.controller;
 
 import io.github.marcoantoniossilva.assets_manager.api.assembler.UserAssembler;
 import io.github.marcoantoniossilva.assets_manager.api.model.UserModel;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.UserAlterPasswordInput;
 import io.github.marcoantoniossilva.assets_manager.api.model.input.UserInput;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.UserLoginInput;
+import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -67,5 +70,16 @@ public class UserController {
     return ResponseEntity.noContent().build();
   }
 
+  @PostMapping("alterPassword/{userId}")
+  private ResponseEntity<Void> alterPassword(@RequestBody UserAlterPasswordInput userAlterPasswordInput, @PathVariable Integer userId) {
+    if (!userService.existsById(userId)) {
+      return ResponseEntity.notFound().build();
+    }
+    String newPassword = userAlterPasswordInput.getNewPassword();
+    String oldPassword = userAlterPasswordInput.getOldPassword();
+
+    userService.alterPassword(userId, newPassword, oldPassword);
+    return ResponseEntity.ok().build();
+  }
 
 }

@@ -69,4 +69,17 @@ public class UserService {
     userRepository.deleteById(userId);
   }
 
+  @Transactional
+  public void alterPassword(Integer userId, String newPassword, String oldPassword) {
+    User user = userRepository.getById(userId);
+
+    if (!validateLoginPassword(oldPassword, user.getPassword())) {
+      throw new BusinessException("A senha antiga não confere!");
+    }
+    userRepository.updatePasswordById(userId, passwordEncoder.encode(newPassword));
+  }
+
+  public boolean validateLoginPassword(String passwordInput, String userPassword) {
+    return passwordEncoder.matches(passwordInput, userPassword);
+  }
 }

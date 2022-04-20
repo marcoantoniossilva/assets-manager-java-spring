@@ -6,7 +6,6 @@ import io.github.marcoantoniossilva.assets_manager.domain.exception.IncorrectLog
 import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.TokenRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,13 +16,11 @@ import java.util.UUID;
 @Service
 public class AuthenticationService {
 
-  private final PasswordEncoder passwordEncoder;
   private final UserService userService;
   private final TokenService tokenService;
   private final TokenConfigurationsProperties tokenConfigurationsProperties;
 
-  public AuthenticationService(PasswordEncoder passwordEncoder, UserService userService, TokenRepository tokenRepository, TokenService tokenService, TokenConfigurationsProperties tokenConfigurationsProperties) {
-    this.passwordEncoder = passwordEncoder;
+  public AuthenticationService(UserService userService, TokenRepository tokenRepository, TokenService tokenService, TokenConfigurationsProperties tokenConfigurationsProperties) {
     this.userService = userService;
     this.tokenService = tokenService;
     this.tokenConfigurationsProperties = tokenConfigurationsProperties;
@@ -32,7 +29,10 @@ public class AuthenticationService {
   @Transactional
   public Token auth(UserLoginInput userLoginInput) {
     User user = userService.findByLogin(userLoginInput.getLogin());
-    if (validateLoginPassword(user, userLoginInput)) {
+    String passwordInput = userLoginInput.getPassword();
+    String userPassword = user.getPassword();
+
+    if (userService.validateLoginPassword(passwordInput, userPassword)) {
       tokenService.deleteAllExpiredTokensByUserId(user.getId());
       verifyAndDeleteOldToken(user.getId());
       user.setLastAccess(LocalDateTime.now());
@@ -40,10 +40,6 @@ public class AuthenticationService {
       return tokenService.create(UUID.randomUUID().toString(), user);
     }
     throw new IncorrectLoginException("Dados do login incorretos!");
-  }
-
-  private boolean validateLoginPassword(User user, UserLoginInput userLoginInput) {
-    return passwordEncoder.matches(userLoginInput.getPassword(), user.getPassword());
   }
 
   private void verifyAndDeleteOldToken(Integer userId) {
