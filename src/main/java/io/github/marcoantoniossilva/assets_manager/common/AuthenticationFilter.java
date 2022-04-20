@@ -2,6 +2,7 @@ package io.github.marcoantoniossilva.assets_manager.common;
 
 import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.service.TokenService;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -11,39 +12,50 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+
 
 @Component
 public class AuthenticationFilter extends OncePerRequestFilter {
 
   private final TokenService tokenService;
-  private final List<String> PUBLIC_URLS = List.of("/login", "/users", "/api-docs", "/swagger-ui");
+  private static final Map<String, HttpMethod> PUBLIC_URLS = new HashMap<>();
+
+  static {
+    PUBLIC_URLS.put("/users", HttpMethod.POST);
+    PUBLIC_URLS.put("/login", HttpMethod.POST);
+    PUBLIC_URLS.put("/api-docs", HttpMethod.GET);
+    PUBLIC_URLS.put("/swagger-ui.html", HttpMethod.GET);
+  }
 
   public AuthenticationFilter(TokenService tokenService) {
     this.tokenService = tokenService;
   }
 
   @Override
-  protected void doFilterInternal(
-      HttpServletRequest request,
-      HttpServletResponse response,
-      FilterChain filterChain) throws
-      ServletException, IOException {
+  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain
+  ) throws ServletException, IOException {
     String authorization = request.getHeader("Authorization");
     if (isPublicUrl(request) || authenticate(authorization)) {
       filterChain.doFilter(request, response);
     } else {
-      response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-          "Token de autorização expirado ou incorreto!");
+      response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token de autorização expirado ou incorreto!");
     }
   }
 
   private boolean isPublicUrl(HttpServletRequest request) {
-    return PUBLIC_URLS.stream()
-        .anyMatch(url -> request.getRequestURL().toString().contains(url));
+    String currentUrl = request.getRequestURL().toString();
+    HttpMethod currentMethod = HttpMethod.valueOf(request.getMethod());
+    return PUBLIC_URLS.entrySet().stream()
+        .anyMatch(entry -> {
+          HttpMethod method = entry.getValue();
+          String url = entry.getKey();
+          return currentMethod.equals(method) && currentUrl.endsWith(url);
+        });
   }
+
 
   private boolean authenticate(String authorization) {
     if (authorization == null || authorization.isEmpty() || authorization.isBlank()) {

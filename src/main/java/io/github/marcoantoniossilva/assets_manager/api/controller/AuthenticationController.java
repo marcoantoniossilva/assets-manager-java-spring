@@ -24,6 +24,11 @@ public class AuthenticationController {
     return authenticationService.auth(userLoginInput);
   }
 
+  @PostMapping("alterPassword")
+  private Token alterPassword(@RequestBody UserLoginInput userLoginInput) {
+    return authenticationService.auth(userLoginInput);
+  }
+
   @GetMapping("logout")
   private ResponseEntity<Void> logout(@RequestHeader(name = "Authorization") String token) {
     tokenService.deleteByStringToken(token);
