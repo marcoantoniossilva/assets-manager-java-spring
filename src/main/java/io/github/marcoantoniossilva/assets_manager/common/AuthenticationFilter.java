@@ -19,7 +19,7 @@ import java.util.Optional;
 public class AuthenticationFilter extends OncePerRequestFilter {
 
   private final TokenService tokenService;
-  private final List<String> PUBLIC_URLS = List.of("/login","/users");
+  private final List<String> PUBLIC_URLS = List.of("/login", "/users", "/api-docs", "/swagger-ui");
 
   public AuthenticationFilter(TokenService tokenService) {
     this.tokenService = tokenService;
