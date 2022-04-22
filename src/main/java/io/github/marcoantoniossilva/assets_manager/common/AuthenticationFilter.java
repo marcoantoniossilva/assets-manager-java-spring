@@ -27,7 +27,9 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     PUBLIC_URLS.put("/users", HttpMethod.POST);
     PUBLIC_URLS.put("/login", HttpMethod.POST);
     PUBLIC_URLS.put("/api-docs", HttpMethod.GET);
-    PUBLIC_URLS.put("/swagger-ui.html", HttpMethod.GET);
+    PUBLIC_URLS.put("/new-password", HttpMethod.POST);
+    PUBLIC_URLS.put("/swagger-ui/index.html", HttpMethod.GET);
+    PUBLIC_URLS.put("/recover-password", HttpMethod.POST);
   }
 
   public AuthenticationFilter(TokenService tokenService) {
