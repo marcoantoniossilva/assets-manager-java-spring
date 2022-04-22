@@ -28,7 +28,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     PUBLIC_URLS.put("/login", HttpMethod.POST);
     PUBLIC_URLS.put("/api-docs", HttpMethod.GET);
     PUBLIC_URLS.put("/new-password", HttpMethod.POST);
-    PUBLIC_URLS.put("/swagger-ui/index.html", HttpMethod.GET);
     PUBLIC_URLS.put("/recover-password", HttpMethod.POST);
   }
 
@@ -54,7 +53,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         .anyMatch(entry -> {
           HttpMethod method = entry.getValue();
           String url = entry.getKey();
-          return currentMethod.equals(method) && currentUrl.endsWith(url);
+          return currentMethod.equals(method) && currentUrl.endsWith(url) || currentUrl.contains("swagger") && currentMethod.equals(method);
         });
   }
 
