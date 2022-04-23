@@ -2,6 +2,7 @@ package io.github.marcoantoniossilva.assets_manager.common;
 
 import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.service.TokenService;
+import io.github.marcoantoniossilva.assets_manager.domain.service.UserService;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class AuthenticationFilter extends OncePerRequestFilter {
 
   private final TokenService tokenService;
+  private final UserService userService;
   private static final Map<String, HttpMethod> PUBLIC_URLS = new HashMap<>();
 
   static {
@@ -31,8 +33,9 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     PUBLIC_URLS.put("/recover-password", HttpMethod.POST);
   }
 
-  public AuthenticationFilter(TokenService tokenService) {
+  public AuthenticationFilter(TokenService tokenService, UserService userService) {
     this.tokenService = tokenService;
+    this.userService = userService;
   }
 
   @Override
@@ -40,7 +43,11 @@ public class AuthenticationFilter extends OncePerRequestFilter {
   ) throws ServletException, IOException {
     String authorization = request.getHeader("Authorization");
     if (isPublicUrl(request) || authenticate(authorization)) {
+
+      userService.findByStringToken(authorization).ifPresent(LoggedUser::setUser);
+
       filterChain.doFilter(request, response);
+      LoggedUser.clear();
     } else {
       response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token de autorização expirado ou incorreto!");
     }

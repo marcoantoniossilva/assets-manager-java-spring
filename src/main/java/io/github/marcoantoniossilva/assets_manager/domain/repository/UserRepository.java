@@ -15,8 +15,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
   Optional<User> findByTokens(Token token);
 
+  boolean existsByEmail(String email);
+
   @Modifying
   @Query("update User u set u.password = :new_password where u.id = :id")
   void updatePasswordById(@Param(value = "id") Integer userId, @Param(value = "new_password") String newPassword);
 
+  Optional<User> findByEmail(String email);
 }
