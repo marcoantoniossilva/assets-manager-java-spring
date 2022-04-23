@@ -18,10 +18,12 @@ public class UserService {
 
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
+  private final TokenService tokenService;
 
-  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, TokenService tokenService) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
+    this.tokenService = tokenService;
   }
 
   public List<User> list() {
@@ -60,8 +62,26 @@ public class UserService {
     return userRepository.findByTokens(token);
   }
 
+  public Optional<User> findByStringToken(String stringToken) {
+    Optional<Token> token = tokenService.findByToken(stringToken);
+
+    if (token.isPresent()) {
+      return userRepository.findByTokens(token.get());
+    }
+    return Optional.empty();
+  }
+
+  public User getUserByEmail(String email) {
+    return userRepository.findByEmail(email)
+        .orElseThrow(() -> new BusinessException("Usuário não encontrado!"));
+  }
+
   public boolean existsById(Integer userId) {
     return userRepository.existsById(userId);
+  }
+
+  public boolean existsByEmail(String email) {
+    return userRepository.existsByEmail(email);
   }
 
   @Transactional
@@ -76,6 +96,11 @@ public class UserService {
     if (!validateLoginPassword(oldPassword, user.getPassword())) {
       throw new BusinessException("A senha antiga não confere!");
     }
+    userRepository.updatePasswordById(userId, passwordEncoder.encode(newPassword));
+  }
+
+  @Transactional
+  public void setNewPassword(Integer userId, String newPassword) {
     userRepository.updatePasswordById(userId, passwordEncoder.encode(newPassword));
   }
 
