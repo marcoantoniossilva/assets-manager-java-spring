@@ -3,9 +3,7 @@ package io.github.marcoantoniossilva.assets_manager.api.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class UserModel{
-
-  private Integer userId;
+public class UserModel extends BaseEntityModel{
 
   private String name;
 
@@ -16,14 +14,6 @@ public class UserModel{
   private LocalDateTime lastAccess;
 
   private LocalDate registerIn;
-
-  public Integer getUserId() {
-    return userId;
-  }
-
-  public void setUserId(Integer userId) {
-    this.userId = userId;
-  }
 
   public String getName() {
     return name;
