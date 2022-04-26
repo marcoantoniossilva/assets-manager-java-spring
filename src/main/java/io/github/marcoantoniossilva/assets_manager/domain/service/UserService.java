@@ -59,7 +59,7 @@ public class UserService {
     return userRepository.save(user);
   }
 
-  public User findByLogin(String login) {
+  public User getByLogin(String login) {
     Optional<User> user = userRepository.findByLogin(login);
     return user.orElseThrow(() -> new BusinessException("Usuário não encontrado com este login."));
   }

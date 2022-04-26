@@ -1,8 +1,9 @@
 package io.github.marcoantoniossilva.assets_manager.domain.service;
 
 import io.github.marcoantoniossilva.assets_manager.domain.exception.BusinessException;
-import io.github.marcoantoniossilva.assets_manager.domain.model.*;
-import io.github.marcoantoniossilva.assets_manager.domain.repository.*;
+import io.github.marcoantoniossilva.assets_manager.domain.model.Equipment;
+import io.github.marcoantoniossilva.assets_manager.domain.model.User;
+import io.github.marcoantoniossilva.assets_manager.domain.repository.EquipmentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,23 +14,20 @@ import java.util.Optional;
 public class EquipmentService {
 
   private final EquipmentRepository equipmentRepository;
-  private final CompanyService companyService;
-  private final UserService userService;
-  private final TypeService typeService;
-  private final SectorService sectorService;
 
 
-  public EquipmentService(EquipmentRepository equipmentRepository1, CompanyService companyService, UserService userService, TypeService typeService, SectorService sectorService) {
+  public EquipmentService(EquipmentRepository equipmentRepository) {
 
-    this.equipmentRepository = equipmentRepository1;
-    this.companyService = companyService;
-    this.userService = userService;
-    this.typeService = typeService;
-    this.sectorService = sectorService;
+    this.equipmentRepository = equipmentRepository;
   }
 
   public List<Equipment> list() {
     return equipmentRepository.findAll();
+  }
+
+  public Equipment getById(Integer equipmentId) {
+    Optional<Equipment> equipment = equipmentRepository.findById(equipmentId);
+    return equipment.orElseThrow(() -> new BusinessException("Equipamento não encontrado com este id."));
   }
 
   public Optional<Equipment> findById(Integer equipmentId) {
@@ -38,27 +36,6 @@ public class EquipmentService {
 
   @Transactional
   public Equipment save(Equipment equipment) {
-    Company company = companyService
-        .findById(equipment.getCompany().getId())
-        .orElseThrow(() -> new BusinessException("Empresa não encontrada!"));
-
-    User user = userService
-        .findById(equipment.getUser().getId())
-        .orElseThrow(() -> new BusinessException("Usuário não encontrado!"));
-
-    Type type = typeService
-        .findById(equipment.getType().getId())
-        .orElseThrow(() -> new BusinessException("Tipo de equipamento não encontrado!"));
-
-    Sector sector = sectorService
-        .findById(equipment.getSector().getId())
-        .orElseThrow(() -> new BusinessException("Setor não encontrado!"));
-
-    equipment.setUser(user);
-    equipment.setCompany(company);
-    equipment.setType(type);
-    equipment.setSector(sector);
-
     return equipmentRepository.save(equipment);
   }
 

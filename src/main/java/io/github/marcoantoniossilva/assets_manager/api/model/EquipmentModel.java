@@ -5,6 +5,7 @@ import io.github.marcoantoniossilva.assets_manager.domain.model.Sector;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Type;
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.time.LocalDate;
 
 public class EquipmentModel extends BaseEntityModel {
@@ -15,7 +16,7 @@ public class EquipmentModel extends BaseEntityModel {
 
   private LocalDate acquisitionDate;
 
-  private String nfePath;
+  private URI nfeUri;
 
   private Status status;
 
@@ -28,19 +29,6 @@ public class EquipmentModel extends BaseEntityModel {
   private CompanyResumeModel company;
 
   public EquipmentModel() {
-  }
-
-  public EquipmentModel(Integer id, String description, BigDecimal acquisitionValue, LocalDate acquisitionDate, String nfePath, Status status, UserResumeModel userResumeModel, Type type, Sector sector, CompanyResumeModel company) {
-    super(id);
-    this.description = description;
-    this.acquisitionValue = acquisitionValue;
-    this.acquisitionDate = acquisitionDate;
-    this.nfePath = nfePath;
-    this.status = status;
-    this.user = userResumeModel;
-    this.type = type;
-    this.sector = sector;
-    this.company = company;
   }
 
   public String getDescription() {
@@ -67,12 +55,12 @@ public class EquipmentModel extends BaseEntityModel {
     this.acquisitionDate = acquisitionDate;
   }
 
-  public String getNfePath() {
-    return nfePath;
+  public URI getNfeUri() {
+    return nfeUri;
   }
 
-  public void setNfePath(String nfePath) {
-    this.nfePath = nfePath;
+  public void setNfeUri(URI nfeUri) {
+    this.nfeUri = nfeUri;
   }
 
   public Status getStatus() {

@@ -1,6 +1,8 @@
 package io.github.marcoantoniossilva.assets_manager.domain.service;
 
+import io.github.marcoantoniossilva.assets_manager.domain.exception.BusinessException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Sector;
+import io.github.marcoantoniossilva.assets_manager.domain.model.Type;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.SectorRepository;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,11 @@ public class SectorService {
 
   public Optional<Sector> findById(Integer sectorId) {
     return sectorRepository.findById(sectorId);
+  }
+
+  public Sector getById(Integer sectorId) {
+    Optional<Sector> sector = sectorRepository.findById(sectorId);
+    return sector.orElseThrow(() -> new BusinessException("Setor não encontrado com este id."));
   }
 
   @Transactional

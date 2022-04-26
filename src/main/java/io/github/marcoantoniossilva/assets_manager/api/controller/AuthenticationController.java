@@ -78,6 +78,7 @@ public class AuthenticationController {
     if (recuperationToken.isPresent()) {
       User user = recuperationToken.get().getUser();
       userService.setNewPassword(user.getId(), newPassword);
+      recuperationTokenService.deleteAllByUserId(user.getId());
       return ResponseEntity.noContent().build();
     } else {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

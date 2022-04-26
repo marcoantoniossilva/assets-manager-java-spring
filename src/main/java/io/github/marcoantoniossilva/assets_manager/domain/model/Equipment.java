@@ -5,6 +5,7 @@ import io.github.marcoantoniossilva.assets_manager.domain.enumeration.Status;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "equipments")
@@ -18,10 +19,8 @@ public class Equipment extends BaseEntity{
   @Column(name = "acquisition_date")
   private LocalDate acquisitionDate;
 
-  @Column(name = "nfe_path")
-  private String nfePath;
-
   @Enumerated(EnumType.STRING)
+  @Type(type = "io.github.marcoantoniossilva.assets_manager.common.EnumTypePostgreSql")
   private Status status;
 
   @ManyToOne
@@ -31,24 +30,15 @@ public class Equipment extends BaseEntity{
   private User user;
 
   @ManyToOne
-  private Type type;
+  private io.github.marcoantoniossilva.assets_manager.domain.model.Type type;
 
   @ManyToOne
   private Sector sector;
 
-  public Equipment() {
-  }
+  @Embedded
+  private Nfe nfe;
 
-  public Equipment(String description, BigDecimal acquisitionValue, LocalDate acquisitionDate, String nfePath, Status status, Company company, User user, Type type, Sector sector) {
-    this.description = description;
-    this.acquisitionValue = acquisitionValue;
-    this.acquisitionDate = acquisitionDate;
-    this.nfePath = nfePath;
-    this.status = status;
-    this.company = company;
-    this.user = user;
-    this.type = type;
-    this.sector = sector;
+  public Equipment() {
   }
 
   public String getDescription() {
@@ -75,12 +65,12 @@ public class Equipment extends BaseEntity{
     this.acquisitionDate = acquisitionDate;
   }
 
-  public String getNfePath() {
-    return nfePath;
+  public Nfe getNfe() {
+    return nfe;
   }
 
-  public void setNfePath(String nfePath) {
-    this.nfePath = nfePath;
+  public void setNfe(Nfe nfe) {
+    this.nfe = nfe;
   }
 
   public Status getStatus() {
@@ -107,11 +97,11 @@ public class Equipment extends BaseEntity{
     this.user = user;
   }
 
-  public Type getType() {
+  public io.github.marcoantoniossilva.assets_manager.domain.model.Type getType() {
     return type;
   }
 
-  public void setType(Type type) {
+  public void setType(io.github.marcoantoniossilva.assets_manager.domain.model.Type type) {
     this.type = type;
   }
 
@@ -126,16 +116,15 @@ public class Equipment extends BaseEntity{
   @Override
   public String toString() {
     return "Equipment{" +
-        "id=" + super.getId() +
-        ", description='" + description + '\'' +
+        "description='" + description + '\'' +
         ", acquisitionValue=" + acquisitionValue +
         ", acquisitionDate=" + acquisitionDate +
-        ", nfePath='" + nfePath + '\'' +
         ", status=" + status +
         ", company=" + company +
         ", user=" + user +
         ", type=" + type +
         ", sector=" + sector +
+        ", nfe=" + nfe +
         '}';
   }
 }

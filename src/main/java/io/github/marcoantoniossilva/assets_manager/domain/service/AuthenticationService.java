@@ -30,7 +30,7 @@ public class AuthenticationService {
 
   @Transactional
   public Token auth(UserLoginInput userLoginInput) {
-    User user = userService.findByLogin(userLoginInput.getLogin());
+    User user = userService.getByLogin(userLoginInput.getLogin());
     String passwordInput = userLoginInput.getPassword();
     String userPassword = user.getPassword();
 

@@ -2,19 +2,19 @@ package io.github.marcoantoniossilva.assets_manager.api.model.input;
 
 import io.github.marcoantoniossilva.assets_manager.api.model.BaseEntityModel;
 import io.github.marcoantoniossilva.assets_manager.domain.enumeration.Status;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class EquipmentInput extends BaseEntityModel {
 
-  private UserIdInput user;
+  private Integer type;
 
-  private TypeIdInput type;
+  private Integer sector;
 
-  private SectorIdInput sector;
-
-  private CompanyIdInput company;
+  private Integer company;
 
   private String description;
 
@@ -22,55 +22,34 @@ public class EquipmentInput extends BaseEntityModel {
 
   private LocalDate acquisitionDate;
 
-  private String nfePath;
+  private MultipartFile nfe;
 
-  private Status status;
+  private String status;
 
   public EquipmentInput() {
   }
 
-  public EquipmentInput(Integer id, UserIdInput user, TypeIdInput type, SectorIdInput sector, CompanyIdInput company, String description, BigDecimal acquisitionValue, LocalDate acquisitionDate, String nfePath, Status status) {
-    super(id);
-    this.user = user;
-    this.type = type;
-    this.sector = sector;
-    this.company = company;
-    this.description = description;
-    this.acquisitionValue = acquisitionValue;
-    this.acquisitionDate = acquisitionDate;
-    this.nfePath = nfePath;
-    this.status = status;
-  }
-
-  public UserIdInput getUser() {
-    return user;
-  }
-
-  public void setUser(UserIdInput user) {
-    this.user = user;
-  }
-
-  public TypeIdInput getType() {
+  public Integer getType() {
     return type;
   }
 
-  public void setType(TypeIdInput type) {
+  public void setType(Integer type) {
     this.type = type;
   }
 
-  public SectorIdInput getSector() {
+  public Integer getSector() {
     return sector;
   }
 
-  public void setSector(SectorIdInput sector) {
+  public void setSector(Integer sector) {
     this.sector = sector;
   }
 
-  public CompanyIdInput getCompany() {
+  public Integer getCompany() {
     return company;
   }
 
-  public void setCompany(CompanyIdInput company) {
+  public void setCompany(Integer company) {
     this.company = company;
   }
 
@@ -98,19 +77,34 @@ public class EquipmentInput extends BaseEntityModel {
     this.acquisitionDate = acquisitionDate;
   }
 
-  public String getNfePath() {
-    return nfePath;
+  public Optional<MultipartFile> getNfe() {
+    return Optional.ofNullable(nfe);
   }
 
-  public void setNfePath(String nfePath) {
-    this.nfePath = nfePath;
+  public void setNfe(MultipartFile nfe) {
+    this.nfe = nfe;
   }
 
-  public Status getStatus() {
+  public String getStatus() {
     return status;
   }
 
-  public void setStatus(Status status) {
+  public void setStatus(String status) {
     this.status = status;
+  }
+
+
+  @Override
+  public String toString() {
+    return "EquipmentInput{" +
+        "type=" + type +
+        ", sector=" + sector +
+        ", company=" + company +
+        ", description='" + description + '\'' +
+        ", acquisitionValue=" + acquisitionValue +
+        ", acquisitionDate=" + acquisitionDate +
+        ", nfe=" + nfe +
+        ", status='" + status + '\'' +
+        '}';
   }
 }

@@ -5,7 +5,9 @@ import io.github.marcoantoniossilva.assets_manager.api.model.input.EquipmentInpu
 import io.github.marcoantoniossilva.assets_manager.domain.model.Equipment;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +21,14 @@ public class EquipmentAssembler {
   }
 
   public EquipmentModel toModel(Equipment equipment) {
-    return modelMapper.map(equipment, EquipmentModel.class);
+    EquipmentModel equipmentModel = modelMapper.map(equipment, EquipmentModel.class);
+
+    if (equipment.getNfe() != null) {
+      URI imageUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+          .path("equipments/{id}/nfe").buildAndExpand(equipment.getId()).toUri();
+      equipmentModel.setNfeUri(imageUri);
+    }
+    return equipmentModel;
   }
 
   public List<EquipmentModel> toCollectionModel(List<Equipment> equipments) {

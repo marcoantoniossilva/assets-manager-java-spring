@@ -2,6 +2,7 @@ package io.github.marcoantoniossilva.assets_manager.domain.service;
 
 import io.github.marcoantoniossilva.assets_manager.domain.exception.BusinessException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Company;
+import io.github.marcoantoniossilva.assets_manager.domain.model.Sector;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +40,11 @@ public class CompanyService {
       throw new BusinessException("Já existe uma empresa com este CNPJ!");
     }
     return companyRepository.save(company);
+  }
+
+  public Company getById(Integer companyId) {
+    Optional<Company> company = companyRepository.findById(companyId);
+    return company.orElseThrow(() -> new BusinessException("Empresa não encontrada com este id."));
   }
 
   public boolean existsById(Integer companyId) {
