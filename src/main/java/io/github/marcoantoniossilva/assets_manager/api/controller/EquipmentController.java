@@ -5,6 +5,7 @@ import io.github.marcoantoniossilva.assets_manager.api.assembler.NfeAssembler;
 import io.github.marcoantoniossilva.assets_manager.api.model.EquipmentModel;
 import io.github.marcoantoniossilva.assets_manager.api.model.input.EquipmentInput;
 import io.github.marcoantoniossilva.assets_manager.common.LoggedUser;
+import io.github.marcoantoniossilva.assets_manager.common.UpdateUtils;
 import io.github.marcoantoniossilva.assets_manager.domain.enumeration.Status;
 import io.github.marcoantoniossilva.assets_manager.domain.exception.EntityNotFoundException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.*;
@@ -122,7 +123,11 @@ public class EquipmentController {
       equipment.setNfe(nfe);
     });
 
-    Equipment savedEquipment = equipmentService.save(equipment);
+
+    Equipment existentEquipment = equipmentService.getById(equipmentId);
+
+    UpdateUtils.copyNonNullProperties(equipment, existentEquipment);
+    Equipment savedEquipment = equipmentService.save(existentEquipment);
     return ResponseEntity.ok(equipmentAssembler.toModel(savedEquipment));
   }
 

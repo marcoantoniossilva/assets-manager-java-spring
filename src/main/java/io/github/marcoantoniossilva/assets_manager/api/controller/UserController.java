@@ -4,6 +4,7 @@ import io.github.marcoantoniossilva.assets_manager.api.assembler.UserAssembler;
 import io.github.marcoantoniossilva.assets_manager.api.model.UserModel;
 import io.github.marcoantoniossilva.assets_manager.api.model.input.UserInput;
 import io.github.marcoantoniossilva.assets_manager.common.LoggedUser;
+import io.github.marcoantoniossilva.assets_manager.common.UpdateUtils;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -61,7 +62,11 @@ public class UserController {
     }
     userInput.setId(userId);
     User user = userAssembler.toEntity(userInput);
-    User savedUser = userService.save(user);
+
+    User existentUser = userService.getById(userId);
+
+    UpdateUtils.copyNonNullProperties(user, existentUser);
+    User savedUser = userService.save(existentUser);
     return ResponseEntity.ok(userAssembler.toModel(savedUser));
   }
 

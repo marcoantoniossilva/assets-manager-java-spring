@@ -1,6 +1,8 @@
 package io.github.marcoantoniossilva.assets_manager.api.controller;
 
+import io.github.marcoantoniossilva.assets_manager.common.UpdateUtils;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Sector;
+import io.github.marcoantoniossilva.assets_manager.domain.model.Type;
 import io.github.marcoantoniossilva.assets_manager.domain.service.SectorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +44,9 @@ public class SectorController {
       return ResponseEntity.notFound().build();
     }
     sector.setId(sectorId);
-    Sector savedSector = sectorService.save(sector);
+    Sector existentSector = sectorService.getById(sectorId);
+    UpdateUtils.copyNonNullProperties(sector, existentSector);
+    Sector savedSector = sectorService.save(existentSector);
     return ResponseEntity.ok(savedSector);
   }
 

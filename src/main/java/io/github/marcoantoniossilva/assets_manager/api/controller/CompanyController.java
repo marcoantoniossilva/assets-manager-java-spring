@@ -1,7 +1,9 @@
 package io.github.marcoantoniossilva.assets_manager.api.controller;
 
 
+import io.github.marcoantoniossilva.assets_manager.common.UpdateUtils;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Company;
+import io.github.marcoantoniossilva.assets_manager.domain.model.Sector;
 import io.github.marcoantoniossilva.assets_manager.domain.service.CompanyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +45,9 @@ public class CompanyController {
       return ResponseEntity.notFound().build();
     }
     company.setId(companyId);
-    Company savedCompany = companyService.save(company);
+    Company existentCompany = companyService.getById(companyId);
+    UpdateUtils.copyNonNullProperties(company, existentCompany);
+    Company savedCompany = companyService.save(existentCompany);
     return ResponseEntity.ok(savedCompany);
   }
 

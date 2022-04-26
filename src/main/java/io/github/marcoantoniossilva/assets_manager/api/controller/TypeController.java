@@ -1,6 +1,8 @@
 package io.github.marcoantoniossilva.assets_manager.api.controller;
 
+import io.github.marcoantoniossilva.assets_manager.common.UpdateUtils;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Type;
+import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.service.TypeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +44,9 @@ public class TypeController {
       return ResponseEntity.notFound().build();
     }
     type.setId(typeId);
-    Type savedType = typeService.save(type);
+    Type existentType = typeService.getById(typeId);
+    UpdateUtils.copyNonNullProperties(type, existentType);
+    Type savedType = typeService.save(existentType);
     return ResponseEntity.ok(savedType);
   }
 

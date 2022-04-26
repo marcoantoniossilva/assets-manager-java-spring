@@ -64,6 +64,11 @@ public class UserService {
     return user.orElseThrow(() -> new BusinessException("Usuário não encontrado com este login."));
   }
 
+  public User getById(Integer userId) {
+    Optional<User> user = userRepository.findById(userId);
+    return user.orElseThrow(() -> new BusinessException("Usuário não encontrado com este ID."));
+  }
+
   public Optional<User> findByToken(Token token) {
     return userRepository.findByTokens(token);
   }
