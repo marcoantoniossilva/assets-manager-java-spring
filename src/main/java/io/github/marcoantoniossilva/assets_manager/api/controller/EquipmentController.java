@@ -6,6 +6,7 @@ import io.github.marcoantoniossilva.assets_manager.api.model.EquipmentModel;
 import io.github.marcoantoniossilva.assets_manager.api.model.input.EquipmentInput;
 import io.github.marcoantoniossilva.assets_manager.common.LoggedUser;
 import io.github.marcoantoniossilva.assets_manager.domain.enumeration.Status;
+import io.github.marcoantoniossilva.assets_manager.domain.exception.EntityNotFoundException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.*;
 import io.github.marcoantoniossilva.assets_manager.domain.service.*;
 import org.springframework.http.HttpStatus;
@@ -50,14 +51,17 @@ public class EquipmentController {
   }
 
   @GetMapping("{equipmentId}/nfe")
-  public ResponseEntity<byte[]> searchNfe(@PathVariable Integer equipmentId){
+  public ResponseEntity<byte[]> searchNfe(@PathVariable Integer equipmentId) {
     Equipment equipment = equipmentService.getById(equipmentId);
     Nfe nfe = equipment.getNfe();
 
-    return ResponseEntity
-        .ok()
-        .contentType(MediaType.valueOf(nfe.getType()))
-        .body(nfe.getContent());
+    if (nfe != null) {
+      return ResponseEntity
+          .ok()
+          .contentType(MediaType.valueOf(nfe.getType()))
+          .body(nfe.getContent());
+    }
+    throw new EntityNotFoundException("Nota fiscal não encontrada para este equipamento.");
   }
 
   @PostMapping
