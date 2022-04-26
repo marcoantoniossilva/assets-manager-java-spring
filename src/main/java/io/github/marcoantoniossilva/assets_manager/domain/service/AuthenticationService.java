@@ -1,7 +1,7 @@
 package io.github.marcoantoniossilva.assets_manager.domain.service;
 
 import io.github.marcoantoniossilva.assets_manager.api.model.input.UserLoginInput;
-import io.github.marcoantoniossilva.assets_manager.common.TokenConfigurationsProperties;
+import io.github.marcoantoniossilva.assets_manager.common.ApiPropertiesConfig;
 import io.github.marcoantoniossilva.assets_manager.domain.exception.IncorrectLoginException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
@@ -18,12 +18,14 @@ public class AuthenticationService {
 
   private final UserService userService;
   private final TokenService tokenService;
-  private final TokenConfigurationsProperties tokenConfigurationsProperties;
+  private final RecuperationTokenService recuperationTokenService;
+  private final ApiPropertiesConfig apiPropertiesConfig;
 
-  public AuthenticationService(UserService userService, TokenRepository tokenRepository, TokenService tokenService, TokenConfigurationsProperties tokenConfigurationsProperties) {
+  public AuthenticationService(UserService userService, TokenRepository tokenRepository, TokenService tokenService, RecuperationTokenService recuperationTokenService, ApiPropertiesConfig apiPropertiesConfig) {
     this.userService = userService;
     this.tokenService = tokenService;
-    this.tokenConfigurationsProperties = tokenConfigurationsProperties;
+    this.recuperationTokenService = recuperationTokenService;
+    this.apiPropertiesConfig = apiPropertiesConfig;
   }
 
   @Transactional
@@ -34,6 +36,7 @@ public class AuthenticationService {
 
     if (userService.validateLoginPassword(passwordInput, userPassword)) {
       tokenService.deleteAllExpiredTokensByUserId(user.getId());
+      recuperationTokenService.deleteAllByUserId(user.getId());
       verifyAndDeleteOldToken(user.getId());
       user.setLastAccess(LocalDateTime.now());
       userService.save(user);
@@ -44,7 +47,7 @@ public class AuthenticationService {
 
   private void verifyAndDeleteOldToken(Integer userId) {
     List<Token> allTokensByUserId = tokenService.findAllByUserIdOrderByExpirationTime(userId);
-    Integer maxTokensByUser = tokenConfigurationsProperties.getMaxTokensByUser();
+    Integer maxTokensByUser = apiPropertiesConfig.getMaxTokensByUser();
     if (allTokensByUserId.size() >= maxTokensByUser) {
       tokenService.delete(allTokensByUserId.get(0));
     }

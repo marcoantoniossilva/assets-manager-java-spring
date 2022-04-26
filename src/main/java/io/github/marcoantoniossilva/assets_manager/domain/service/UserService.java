@@ -37,11 +37,17 @@ public class UserService {
   @Transactional
   public User save(User user) {
     Optional<User> userWithSameLogin = userRepository.findByLogin(user.getLogin());
+    Optional<User> userWithSameEmail = userRepository.findByEmail(user.getEmail());
     boolean differentsUsersSameLogins = userWithSameLogin.stream()
+        .anyMatch(existentUser -> !Objects.equals(existentUser.getId(), user.getId()));
+    boolean differentsUsersSameEmails = userWithSameEmail.stream()
         .anyMatch(existentUser -> !Objects.equals(existentUser.getId(), user.getId()));
 
     if (differentsUsersSameLogins) { // Se estiver criando um usuário
       throw new BusinessException("Já existe um usuário cadastrado com este login.");
+    }
+    if (differentsUsersSameEmails) { // Se estiver criando um usuário
+      throw new BusinessException("Já existe um usuário cadastrado com este e-mail.");
     }
 
     if (user.getId() == null) { // Criação de usuário

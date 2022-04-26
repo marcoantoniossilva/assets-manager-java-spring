@@ -6,13 +6,16 @@ import org.springframework.context.annotation.Configuration;
 import java.time.Duration;
 
 @Configuration
-public class TokenConfigurationsProperties {
+public class ApiPropertiesConfig {
 
   @Value("${api.token.max-tokens-by-user}")
   public Integer maxTokensByUser;
 
   @Value("${api.token.expiration-time}")
   public Duration expirationTime;
+
+  @Value("${api.front-end.url}")
+  public String frontEndUrl;
 
   public Integer getMaxTokensByUser() {
     return maxTokensByUser;
@@ -22,4 +25,7 @@ public class TokenConfigurationsProperties {
     return expirationTime;
   }
 
+  public String getFrontEndUrl() {
+    return frontEndUrl;
+  }
 }

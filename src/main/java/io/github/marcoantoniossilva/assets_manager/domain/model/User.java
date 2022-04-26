@@ -20,6 +20,9 @@ public class User extends BaseEntity{
   @OneToMany(mappedBy = "user", cascade=CascadeType.ALL)
   private List<Token> tokens;
 
+  @OneToMany(mappedBy = "user", cascade=CascadeType.ALL)
+  private List<RecuperationToken> recuperationTokens;
+
   @Column(name = "last_access")
   private LocalDateTime lastAccess;
 
@@ -29,12 +32,13 @@ public class User extends BaseEntity{
   public User() {
   }
 
-  public User(String name, String email, String login, String password, List<Token> tokens, LocalDateTime lastAccess, LocalDate registerIn) {
+  public User(String name, String email, String login, String password, List<Token> tokens, List<RecuperationToken> recuperationTokens, LocalDateTime lastAccess, LocalDate registerIn) {
     this.name = name;
     this.email = email;
     this.login = login;
     this.password = password;
     this.tokens = tokens;
+    this.recuperationTokens = recuperationTokens;
     this.lastAccess = lastAccess;
     this.registerIn = registerIn;
   }
@@ -93,6 +97,14 @@ public class User extends BaseEntity{
 
   public void setTokens(List<Token> tokens) {
     this.tokens = tokens;
+  }
+
+  public List<RecuperationToken> getRecuperationTokens() {
+    return recuperationTokens;
+  }
+
+  public void setRecuperationTokens(List<RecuperationToken> recuperationTokens) {
+    this.recuperationTokens = recuperationTokens;
   }
 
   @Override

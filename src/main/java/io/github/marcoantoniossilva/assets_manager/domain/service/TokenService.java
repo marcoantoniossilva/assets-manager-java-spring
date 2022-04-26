@@ -1,6 +1,6 @@
 package io.github.marcoantoniossilva.assets_manager.domain.service;
 
-import io.github.marcoantoniossilva.assets_manager.common.TokenConfigurationsProperties;
+import io.github.marcoantoniossilva.assets_manager.common.ApiPropertiesConfig;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.TokenRepository;
@@ -16,11 +16,11 @@ import java.util.Optional;
 public class TokenService {
 
   private final TokenRepository tokenRepository;
-  private final TokenConfigurationsProperties tokenConfigurationsProperties;
+  private final ApiPropertiesConfig apiPropertiesConfig;
 
-  public TokenService(TokenRepository tokenRepository, TokenConfigurationsProperties tokenConfigurationsProperties) {
+  public TokenService(TokenRepository tokenRepository, ApiPropertiesConfig apiPropertiesConfig) {
     this.tokenRepository = tokenRepository;
-    this.tokenConfigurationsProperties = tokenConfigurationsProperties;
+    this.apiPropertiesConfig = apiPropertiesConfig;
   }
 
   public Optional<Token> findById(Integer tokenId) {
@@ -34,7 +34,7 @@ public class TokenService {
 
   @Transactional
   public Token create(String uuid, User user) {
-    Duration duration = tokenConfigurationsProperties.getExpirationTime();
+    Duration duration = apiPropertiesConfig.getExpirationTime();
     return tokenRepository.save(new Token(uuid, user, duration));
   }
 

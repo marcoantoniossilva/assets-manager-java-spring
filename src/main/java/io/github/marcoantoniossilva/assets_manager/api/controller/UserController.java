@@ -4,14 +4,20 @@ import io.github.marcoantoniossilva.assets_manager.api.assembler.UserAssembler;
 import io.github.marcoantoniossilva.assets_manager.api.model.UserModel;
 import io.github.marcoantoniossilva.assets_manager.api.model.input.UserAlterPasswordInput;
 import io.github.marcoantoniossilva.assets_manager.api.model.input.UserInput;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.UserNewPasswordInput;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.UserRecoverPasswordInput;
 import io.github.marcoantoniossilva.assets_manager.common.LoggedUser;
+import io.github.marcoantoniossilva.assets_manager.domain.model.RecuperationToken;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
+import io.github.marcoantoniossilva.assets_manager.domain.service.RecuperationTokenService;
 import io.github.marcoantoniossilva.assets_manager.domain.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
@@ -19,11 +25,13 @@ public class UserController {
 
   private final UserService userService;
   private final UserAssembler userAssembler;
+  private final RecuperationTokenService recuperationTokenService;
 
 
-  public UserController(UserService userService, UserAssembler userAssembler) {
+  public UserController(UserService userService, UserAssembler userAssembler, RecuperationTokenService recuperationTokenService) {
     this.userService = userService;
     this.userAssembler = userAssembler;
+    this.recuperationTokenService = recuperationTokenService;
   }
 
   @GetMapping
@@ -86,6 +94,32 @@ public class UserController {
 
     userService.alterPassword(userId, newPassword, oldPassword);
     return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("recover-password")
+  private ResponseEntity<Void> recoverPassword(@RequestBody UserRecoverPasswordInput userRecoverPasswordInput) {
+    String email = userRecoverPasswordInput.getEmail();
+    User user = userService.getUserByEmail(email);
+
+    recuperationTokenService.deleteAllByUserId(user.getId());
+    recuperationTokenService.create(UUID.randomUUID().toString(), user);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping("new-password")
+  private ResponseEntity<Void> newPassword(@RequestBody UserNewPasswordInput userNewPasswordInput) {
+    String newPassword = userNewPasswordInput.getNewPassword();
+    String token = userNewPasswordInput.getToken();
+
+    Optional<RecuperationToken> recuperationToken = recuperationTokenService.findByToken(token);
+
+    if (recuperationToken.isPresent()) {
+      User user = recuperationToken.get().getUser();
+      userService.setNewPassword(user.getId(), newPassword);
+      return ResponseEntity.noContent().build();
+    } else {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
   }
 
 }

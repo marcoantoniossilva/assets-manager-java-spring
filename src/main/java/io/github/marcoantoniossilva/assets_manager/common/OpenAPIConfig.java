@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenAPIDefinition(
     info = @Info(title = "Assets-Manager"))
-public class OpenAPIConfiguration {
+public class OpenAPIConfig {
 
   @Bean
   public OpenAPI customOpenAPI() {

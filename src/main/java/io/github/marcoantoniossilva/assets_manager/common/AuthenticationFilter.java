@@ -1,9 +1,16 @@
 package io.github.marcoantoniossilva.assets_manager.common;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.marcoantoniossilva.assets_manager.domain.exception.UnauthorizedException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
+import io.github.marcoantoniossilva.assets_manager.domain.service.EmailService;
 import io.github.marcoantoniossilva.assets_manager.domain.service.TokenService;
 import io.github.marcoantoniossilva.assets_manager.domain.service.UserService;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -12,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +32,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
   private final TokenService tokenService;
   private final UserService userService;
   private static final Map<String, HttpMethod> PUBLIC_URLS = new HashMap<>();
+  private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
 
   static {
     PUBLIC_URLS.put("/users", HttpMethod.POST);
@@ -43,9 +52,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
   ) throws ServletException, IOException {
     String authorization = request.getHeader("Authorization");
     if (isPublicUrl(request) || authenticate(authorization)) {
-
-      userService.findByStringToken(authorization).ifPresent(LoggedUser::setUser);
-
       filterChain.doFilter(request, response);
       LoggedUser.clear();
     } else {
@@ -70,6 +76,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
       return false;
     }
     Optional<Token> token = tokenService.findByToken(authorization);
+    userService.findByStringToken(authorization).ifPresent(LoggedUser::setUser);
     return token.filter(savedToken -> savedToken.getExpirationTime().isAfter(LocalDateTime.now())).isPresent();
   }
 }
