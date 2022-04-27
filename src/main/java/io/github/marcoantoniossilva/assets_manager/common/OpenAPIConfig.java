@@ -18,7 +18,7 @@ public class OpenAPIConfig {
 
   @Bean
   public OpenAPI customOpenAPI() {
-    final String securitySchemeName = "bearerAuth";
+    final String securitySchemeName = SecurityScheme.Type.APIKEY.name();
 
     return new OpenAPI()
         .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
