@@ -6,7 +6,7 @@ import io.github.marcoantoniossilva.assets_manager.api.model.EquipmentModel;
 import io.github.marcoantoniossilva.assets_manager.api.model.input.EquipmentInput;
 import io.github.marcoantoniossilva.assets_manager.common.LoggedUser;
 import io.github.marcoantoniossilva.assets_manager.common.UpdateUtils;
-import io.github.marcoantoniossilva.assets_manager.domain.enumeration.Status;
+import io.github.marcoantoniossilva.assets_manager.domain.model.enumeration.Status;
 import io.github.marcoantoniossilva.assets_manager.domain.exception.EntityNotFoundException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.*;
 import io.github.marcoantoniossilva.assets_manager.domain.service.*;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/equipments")
 public class EquipmentController {
 
-  private final TypeService typeService;
+  private final EquipmentTypeService equipmentTypeService;
   private final NfeAssembler nfeAssembler;
   private final SectorService sectorService;
   private final CompanyService companyService;
@@ -29,11 +29,11 @@ public class EquipmentController {
   private final EquipmentAssembler equipmentAssembler;
 
   public EquipmentController(EquipmentAssembler equipmentAssembler, EquipmentService equipmentService,
-                             TypeService typeService, NfeAssembler nfeAssembler,
+                             EquipmentTypeService equipmentTypeService, NfeAssembler nfeAssembler,
                              SectorService sectorService, CompanyService companyService) {
     this.equipmentAssembler = equipmentAssembler;
     this.equipmentService = equipmentService;
-    this.typeService = typeService;
+    this.equipmentTypeService = equipmentTypeService;
     this.nfeAssembler = nfeAssembler;
     this.sectorService = sectorService;
     this.companyService = companyService;
@@ -70,18 +70,18 @@ public class EquipmentController {
   private EquipmentModel add(@ModelAttribute EquipmentInput equipmentInput) {
     Integer companyId = equipmentInput.getCompany();
     Integer sectorId = equipmentInput.getSector();
-    Integer typeId = equipmentInput.getType();
+    Integer equipmentTypeId = equipmentInput.getEquipmentType();
 
     User user = LoggedUser.getUser();
     Company company = companyService.getById(companyId);
     Sector sector = sectorService.getById(sectorId);
-    Type type = typeService.getById(typeId);
+    EquipmentType equipmentType = equipmentTypeService.getById(equipmentTypeId);
     Status status = Enum.valueOf(Status.class, equipmentInput.getStatus());
 
     Equipment equipment = equipmentAssembler.toEntity(equipmentInput);
     equipment.setCompany(company);
     equipment.setUser(user);
-    equipment.setType(type);
+    equipment.setEquipmentType(equipmentType);
     equipment.setSector(sector);
     equipment.setStatus(status);
 
@@ -103,18 +103,18 @@ public class EquipmentController {
 
     Integer companyId = equipmentInput.getCompany();
     Integer sectorId = equipmentInput.getSector();
-    Integer typeId = equipmentInput.getType();
+    Integer equipmentTypeId = equipmentInput.getEquipmentType();
 
     User user = LoggedUser.getUser();
     Company company = companyService.getById(companyId);
     Sector sector = sectorService.getById(sectorId);
-    Type type = typeService.getById(typeId);
+    EquipmentType equipmentType = equipmentTypeService.getById(equipmentTypeId);
     Status status = Enum.valueOf(Status.class, equipmentInput.getStatus());
 
     Equipment equipment = equipmentAssembler.toEntity(equipmentInput);
     equipment.setCompany(company);
     equipment.setUser(user);
-    equipment.setType(type);
+    equipment.setEquipmentType(equipmentType);
     equipment.setSector(sector);
     equipment.setStatus(status);
 

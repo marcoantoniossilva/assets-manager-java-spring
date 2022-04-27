@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "types")
-public class Type extends BaseEntity{
+@Table(name = "equipment_types")
+public class EquipmentType extends BaseEntity{
 
   private String description;
 
@@ -14,10 +14,10 @@ public class Type extends BaseEntity{
   @Column(name = "depreciation_term")
   private Integer depreciationTerm;
 
-  public Type() {
+  public EquipmentType() {
   }
 
-  public Type(String description, BigDecimal depreciation, Integer depreciationTerm) {
+  public EquipmentType(String description, BigDecimal depreciation, Integer depreciationTerm) {
     this.description = description;
     this.depreciation = depreciation;
     this.depreciationTerm = depreciationTerm;
@@ -47,13 +47,4 @@ public class Type extends BaseEntity{
     this.depreciationTerm = depreciationTerm;
   }
 
-  @Override
-  public String toString() {
-    return "Type{" +
-        "id=" + super.getId() +
-        ", description='" + description + '\'' +
-        ", depreciation=" + depreciation +
-        ", depreciationTerm=" + depreciationTerm +
-        '}';
-  }
 }

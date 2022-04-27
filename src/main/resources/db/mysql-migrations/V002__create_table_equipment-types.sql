@@ -1,4 +1,4 @@
-CREATE TABLE types (
+CREATE TABLE equipment_types (
   id smallint(5) unsigned NOT NULL AUTO_INCREMENT,
   description varchar(120) COLLATE utf8_unicode_ci DEFAULT NULL,
   depreciation tinyint(3) unsigned DEFAULT NULL,

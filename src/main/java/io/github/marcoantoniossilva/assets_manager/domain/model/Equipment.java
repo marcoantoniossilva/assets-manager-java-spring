@@ -1,6 +1,6 @@
 package io.github.marcoantoniossilva.assets_manager.domain.model;
 
-import io.github.marcoantoniossilva.assets_manager.domain.enumeration.Status;
+import io.github.marcoantoniossilva.assets_manager.domain.model.enumeration.Status;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -20,7 +20,7 @@ public class Equipment extends BaseEntity{
   private LocalDate acquisitionDate;
 
   @Enumerated(EnumType.STRING)
-  @Type(type = "io.github.marcoantoniossilva.assets_manager.common.EnumTypePostgreSql")
+  @Type(type = "io.github.marcoantoniossilva.assets_manager.common.EnumEquipmentTypePostgreSql")
   private Status status;
 
   @ManyToOne
@@ -30,7 +30,7 @@ public class Equipment extends BaseEntity{
   private User user;
 
   @ManyToOne
-  private io.github.marcoantoniossilva.assets_manager.domain.model.Type type;
+  private EquipmentType equipmentType;
 
   @ManyToOne
   private Sector sector;
@@ -97,12 +97,12 @@ public class Equipment extends BaseEntity{
     this.user = user;
   }
 
-  public io.github.marcoantoniossilva.assets_manager.domain.model.Type getType() {
-    return type;
+  public EquipmentType getEquipmentType() {
+    return equipmentType;
   }
 
-  public void setType(io.github.marcoantoniossilva.assets_manager.domain.model.Type type) {
-    this.type = type;
+  public void setEquipmentType(EquipmentType equipmentType) {
+    this.equipmentType = equipmentType;
   }
 
   public Sector getSector() {
@@ -113,18 +113,4 @@ public class Equipment extends BaseEntity{
     this.sector = sector;
   }
 
-  @Override
-  public String toString() {
-    return "Equipment{" +
-        "description='" + description + '\'' +
-        ", acquisitionValue=" + acquisitionValue +
-        ", acquisitionDate=" + acquisitionDate +
-        ", status=" + status +
-        ", company=" + company +
-        ", user=" + user +
-        ", type=" + type +
-        ", sector=" + sector +
-        ", nfe=" + nfe +
-        '}';
-  }
 }

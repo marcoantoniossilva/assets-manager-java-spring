@@ -26,7 +26,6 @@ public class OpenAPIConfig {
             new SecurityScheme()
               .name(securitySchemeName)
               .type(SecurityScheme.Type.HTTP)
-              .scheme("bearer")
           )
       );
   }

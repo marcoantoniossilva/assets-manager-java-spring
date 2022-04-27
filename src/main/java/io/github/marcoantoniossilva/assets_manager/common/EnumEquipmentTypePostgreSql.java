@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 
-public class EnumTypePostgreSql extends EnumType {
+public class EnumEquipmentTypePostgreSql extends EnumType {
 
     @Override
     public void nullSafeSet(PreparedStatement st, Object value, int index,

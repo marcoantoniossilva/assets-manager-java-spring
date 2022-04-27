@@ -1,7 +1,6 @@
 package io.github.marcoantoniossilva.assets_manager.api.model.input;
 
 import io.github.marcoantoniossilva.assets_manager.api.model.BaseEntityModel;
-import io.github.marcoantoniossilva.assets_manager.domain.enumeration.Status;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
@@ -10,7 +9,7 @@ import java.util.Optional;
 
 public class EquipmentInput extends BaseEntityModel {
 
-  private Integer type;
+  private Integer equipmentType;
 
   private Integer sector;
 
@@ -29,12 +28,12 @@ public class EquipmentInput extends BaseEntityModel {
   public EquipmentInput() {
   }
 
-  public Integer getType() {
-    return type;
+  public Integer getEquipmentType() {
+    return equipmentType;
   }
 
-  public void setType(Integer type) {
-    this.type = type;
+  public void setEquipmentType(Integer equipmentType) {
+    this.equipmentType = equipmentType;
   }
 
   public Integer getSector() {
@@ -93,18 +92,4 @@ public class EquipmentInput extends BaseEntityModel {
     this.status = status;
   }
 
-
-  @Override
-  public String toString() {
-    return "EquipmentInput{" +
-        "type=" + type +
-        ", sector=" + sector +
-        ", company=" + company +
-        ", description='" + description + '\'' +
-        ", acquisitionValue=" + acquisitionValue +
-        ", acquisitionDate=" + acquisitionDate +
-        ", nfe=" + nfe +
-        ", status='" + status + '\'' +
-        '}';
-  }
 }

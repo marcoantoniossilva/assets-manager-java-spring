@@ -1,8 +1,8 @@
 package io.github.marcoantoniossilva.assets_manager.api.model;
 
-import io.github.marcoantoniossilva.assets_manager.domain.enumeration.Status;
+import io.github.marcoantoniossilva.assets_manager.domain.model.enumeration.Status;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Sector;
-import io.github.marcoantoniossilva.assets_manager.domain.model.Type;
+import io.github.marcoantoniossilva.assets_manager.domain.model.EquipmentType;
 
 import java.math.BigDecimal;
 import java.net.URI;
@@ -22,7 +22,7 @@ public class EquipmentModel extends BaseEntityModel {
 
   private UserResumeModel user;
 
-  private Type type;
+  private EquipmentType equipmentType;
 
   private Sector sector;
 
@@ -79,12 +79,12 @@ public class EquipmentModel extends BaseEntityModel {
     this.user = user;
   }
 
-  public Type getType() {
-    return type;
+  public EquipmentType getType() {
+    return equipmentType;
   }
 
-  public void setType(Type type) {
-    this.type = type;
+  public void setType(EquipmentType equipmentType) {
+    this.equipmentType = equipmentType;
   }
 
   public Sector getSector() {

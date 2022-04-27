@@ -2,8 +2,6 @@ package io.github.marcoantoniossilva.assets_manager.domain.service;
 
 import io.github.marcoantoniossilva.assets_manager.domain.exception.BusinessException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Sector;
-import io.github.marcoantoniossilva.assets_manager.domain.model.Type;
-import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.SectorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
