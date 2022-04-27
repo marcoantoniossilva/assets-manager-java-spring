@@ -4,6 +4,7 @@ import io.github.marcoantoniossilva.assets_manager.api.model.EquipmentModel;
 import io.github.marcoantoniossilva.assets_manager.api.model.input.EquipmentInput;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Equipment;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -39,5 +40,9 @@ public class EquipmentAssembler {
 
   public Equipment toEntity(EquipmentInput equipmentInput) {
     return modelMapper.map(equipmentInput, Equipment.class);
+  }
+
+  public Page<EquipmentModel> pageEntityToPageModel(Page<Equipment> result) {
+    return result.map(this::toModel);
   }
 }

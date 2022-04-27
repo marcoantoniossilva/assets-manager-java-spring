@@ -3,6 +3,9 @@ package io.github.marcoantoniossilva.assets_manager.domain.service;
 import io.github.marcoantoniossilva.assets_manager.domain.exception.EntityNotFoundException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Equipment;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.EquipmentRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +23,12 @@ public class EquipmentService {
     this.equipmentRepository = equipmentRepository;
   }
 
-  public List<Equipment> list() {
-    return equipmentRepository.findAll();
+  public Page<Equipment> findAll(Pageable pageable) {
+    return equipmentRepository.findAll(pageable);
+  }
+
+  public Page<Equipment> search(String searchTerm, PageRequest pageRequest) {
+    return equipmentRepository.findByDescriptionIsContainingIgnoreCase(searchTerm, pageRequest);
   }
 
   public Equipment getById(Integer equipmentId) {

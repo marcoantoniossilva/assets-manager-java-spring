@@ -3,6 +3,8 @@ package io.github.marcoantoniossilva.assets_manager.api.controller;
 import io.github.marcoantoniossilva.assets_manager.api.assembler.EquipmentAssembler;
 import io.github.marcoantoniossilva.assets_manager.api.assembler.NfeAssembler;
 import io.github.marcoantoniossilva.assets_manager.api.model.EquipmentModel;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.ListEquipmentsInput;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.SearchEquipmentInput;
 import io.github.marcoantoniossilva.assets_manager.api.model.input.EquipmentInput;
 import io.github.marcoantoniossilva.assets_manager.common.LoggedUser;
 import io.github.marcoantoniossilva.assets_manager.common.UpdateUtils;
@@ -10,12 +12,12 @@ import io.github.marcoantoniossilva.assets_manager.domain.model.enumeration.Stat
 import io.github.marcoantoniossilva.assets_manager.domain.exception.EntityNotFoundException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.*;
 import io.github.marcoantoniossilva.assets_manager.domain.service.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/equipments")
@@ -40,12 +42,29 @@ public class EquipmentController {
   }
 
   @GetMapping
-  private List<EquipmentModel> list() {
-    return equipmentAssembler.toCollectionModel(equipmentService.list());
+  private Page<EquipmentModel> list(@RequestBody ListEquipmentsInput listEquipmentsInput) {
+    int size = listEquipmentsInput.getSize();
+    int page = listEquipmentsInput.getPage();
+
+    PageRequest pageRequest = PageRequest.of(page, size);
+    Page<Equipment> result = equipmentService.findAll(pageRequest);
+    return equipmentAssembler.pageEntityToPageModel(result);
+  }
+
+  @GetMapping("search")
+  public Page<EquipmentModel> search(@RequestBody SearchEquipmentInput searchEquipmentInput) {
+    String searchTerm = searchEquipmentInput.getSearchTerm();
+    int page = searchEquipmentInput.getPage();
+    int size = searchEquipmentInput.getSize();
+
+    PageRequest pageRequest = PageRequest.of(page, size);
+    Page<Equipment> result = equipmentService.search(searchTerm, pageRequest);
+
+    return equipmentAssembler.pageEntityToPageModel(result);
   }
 
   @GetMapping("{equipmentId}")
-  public ResponseEntity<EquipmentModel> search(@PathVariable Integer equipmentId) {
+  public ResponseEntity<EquipmentModel> getById(@PathVariable Integer equipmentId) {
     return equipmentService.findById(equipmentId)
         .map(equipment -> ResponseEntity.ok(equipmentAssembler.toModel(equipment)))
         .orElse(ResponseEntity.notFound().build());
