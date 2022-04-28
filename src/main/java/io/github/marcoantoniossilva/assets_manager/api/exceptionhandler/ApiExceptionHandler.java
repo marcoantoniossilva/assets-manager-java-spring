@@ -1,7 +1,8 @@
 package io.github.marcoantoniossilva.assets_manager.api.exceptionhandler;
 
 import io.github.marcoantoniossilva.assets_manager.domain.exception.BusinessException;
-import io.github.marcoantoniossilva.assets_manager.domain.exception.EntityNotFoundException;
+import io.github.marcoantoniossilva.assets_manager.domain.exception.ExistentResourceException;
+import io.github.marcoantoniossilva.assets_manager.domain.exception.ResourceNotFoundException;
 import io.github.marcoantoniossilva.assets_manager.domain.exception.IncorrectLoginException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -47,9 +48,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(ex, problem, headers, status, request);
   }
 
-  @ExceptionHandler(BusinessException.class) /*Se uma BusinessException for lançada em qualquer lugar,
-	este método que será reponsável por tratá-la.*/
-  public ResponseEntity<Object> handleBusiness(BusinessException ex, WebRequest request) {
+  @ExceptionHandler(BusinessException.class)
+  public ResponseEntity<Object> handleBusinessException(BusinessException ex, WebRequest request) {
 
     HttpStatus status = HttpStatus.BAD_REQUEST;
 
@@ -61,9 +61,21 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
   }
 
-  @ExceptionHandler(EntityNotFoundException.class) /*Se uma EntityNotFoundEncontradaException for lançada em qualquer lugar,
-	este método que será reponsável por tratá-la.*/
-  public ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex, WebRequest request) {
+  @ExceptionHandler(ExistentResourceException.class)
+  public ResponseEntity<Object> handleExistentResourceException(ExistentResourceException ex, WebRequest request) {
+
+    HttpStatus status = HttpStatus.BAD_REQUEST;
+
+    Problem problem = new Problem();
+    problem.setStatus(status.value());
+    problem.setDateTime(LocalDateTime.now());
+    problem.setTitle(ex.getMessage());
+
+    return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+  }
+
+  @ExceptionHandler(ResourceNotFoundException.class)
+  public ResponseEntity<Object> handleEntityNotFoundException(ResourceNotFoundException ex, WebRequest request) {
 
     HttpStatus status = HttpStatus.NOT_FOUND;
 
@@ -75,8 +87,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
   }
 
-  @ExceptionHandler(IncorrectLoginException.class) /*Se uma IncorrectLoginException for lançada em qualquer lugar,
-	este método que será reponsável por tratá-la.*/
+  @ExceptionHandler(IncorrectLoginException.class)
   public ResponseEntity<Object> handleIncorrectLoginException(IncorrectLoginException ex, WebRequest request) {
 
     HttpStatus status = HttpStatus.UNAUTHORIZED;

@@ -9,7 +9,7 @@ import io.github.marcoantoniossilva.assets_manager.api.model.input.EquipmentInpu
 import io.github.marcoantoniossilva.assets_manager.common.LoggedUser;
 import io.github.marcoantoniossilva.assets_manager.common.UpdateUtils;
 import io.github.marcoantoniossilva.assets_manager.domain.model.enumeration.Status;
-import io.github.marcoantoniossilva.assets_manager.domain.exception.EntityNotFoundException;
+import io.github.marcoantoniossilva.assets_manager.domain.exception.ResourceNotFoundException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.*;
 import io.github.marcoantoniossilva.assets_manager.domain.service.*;
 import org.springframework.data.domain.Page;
@@ -81,7 +81,7 @@ public class EquipmentController {
           .contentType(MediaType.valueOf(nfe.getType()))
           .body(nfe.getContent());
     }
-    throw new EntityNotFoundException("Nota fiscal não encontrada para este equipamento.");
+    throw new ResourceNotFoundException("Nota fiscal não encontrada para este equipamento.");
   }
 
   @PostMapping

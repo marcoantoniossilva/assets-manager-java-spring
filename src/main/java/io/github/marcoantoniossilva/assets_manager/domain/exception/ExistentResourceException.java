@@ -1,11 +1,11 @@
 package io.github.marcoantoniossilva.assets_manager.domain.exception;
 
-
-public class EntityNotFoundException extends BusinessException {
+public class ExistentResourceException extends RuntimeException{
 
   private static final long serialVersionUID = 1L;
 
-  public EntityNotFoundException(String message) {
+  public ExistentResourceException(String message) {
     super(message);
   }
+
 }

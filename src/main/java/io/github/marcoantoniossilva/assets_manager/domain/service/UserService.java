@@ -1,6 +1,8 @@
 package io.github.marcoantoniossilva.assets_manager.domain.service;
 
 import io.github.marcoantoniossilva.assets_manager.domain.exception.BusinessException;
+import io.github.marcoantoniossilva.assets_manager.domain.exception.ExistentResourceException;
+import io.github.marcoantoniossilva.assets_manager.domain.exception.ResourceNotFoundException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.UserRepository;
@@ -44,10 +46,10 @@ public class UserService {
         .anyMatch(existentUser -> !Objects.equals(existentUser.getId(), user.getId()));
 
     if (differentsUsersSameLogins) { // Se estiver criando um usuário
-      throw new BusinessException("Já existe um usuário cadastrado com este login.");
+      throw new ExistentResourceException("Já existe um usuário cadastrado com este login.");
     }
     if (differentsUsersSameEmails) { // Se estiver criando um usuário
-      throw new BusinessException("Já existe um usuário cadastrado com este e-mail.");
+      throw new ExistentResourceException("Já existe um usuário cadastrado com este e-mail.");
     }
 
     if (user.getId() == null) { // Criação de usuário
@@ -61,12 +63,12 @@ public class UserService {
 
   public User getByLogin(String login) {
     Optional<User> user = userRepository.findByLogin(login);
-    return user.orElseThrow(() -> new BusinessException("Usuário não encontrado com este login."));
+    return user.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com este login."));
   }
 
   public User getById(Integer userId) {
     Optional<User> user = userRepository.findById(userId);
-    return user.orElseThrow(() -> new BusinessException("Usuário não encontrado com este ID."));
+    return user.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com este ID."));
   }
 
   public Optional<User> findByToken(Token token) {
@@ -84,7 +86,7 @@ public class UserService {
 
   public User getUserByEmail(String email) {
     return userRepository.findByEmail(email)
-        .orElseThrow(() -> new BusinessException("Usuário não encontrado!"));
+        .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com este email!"));
   }
 
   public boolean existsById(Integer userId) {

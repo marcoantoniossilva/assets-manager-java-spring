@@ -1,6 +1,6 @@
 package io.github.marcoantoniossilva.assets_manager.domain.service;
 
-import io.github.marcoantoniossilva.assets_manager.domain.exception.EntityNotFoundException;
+import io.github.marcoantoniossilva.assets_manager.domain.exception.ResourceNotFoundException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Equipment;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.EquipmentRepository;
 import org.springframework.data.domain.Page;
@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,7 +32,7 @@ public class EquipmentService {
 
   public Equipment getById(Integer equipmentId) {
     Optional<Equipment> equipment = equipmentRepository.findById(equipmentId);
-    return equipment.orElseThrow(() -> new EntityNotFoundException("Equipamento não encontrado com este id."));
+    return equipment.orElseThrow(() -> new ResourceNotFoundException("Equipamento não encontrado com este id."));
   }
 
   public Optional<Equipment> findById(Integer equipmentId) {

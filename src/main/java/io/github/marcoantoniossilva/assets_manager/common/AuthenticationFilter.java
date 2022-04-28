@@ -1,7 +1,5 @@
 package io.github.marcoantoniossilva.assets_manager.common;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.marcoantoniossilva.assets_manager.domain.exception.UnauthorizedException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.service.EmailService;
 import io.github.marcoantoniossilva.assets_manager.domain.service.TokenService;
@@ -9,8 +7,6 @@ import io.github.marcoantoniossilva.assets_manager.domain.service.UserService;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -19,7 +15,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;

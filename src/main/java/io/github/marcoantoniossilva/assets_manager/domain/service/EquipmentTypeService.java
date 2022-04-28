@@ -1,6 +1,6 @@
 package io.github.marcoantoniossilva.assets_manager.domain.service;
 
-import io.github.marcoantoniossilva.assets_manager.domain.exception.BusinessException;
+import io.github.marcoantoniossilva.assets_manager.domain.exception.ResourceNotFoundException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.EquipmentType;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.EquipmentTypeRepository;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class EquipmentTypeService {
 
   public EquipmentType getById(Integer typeId) {
     Optional<EquipmentType> type = equipmentTypeRepository.findById(typeId);
-    return type.orElseThrow(() -> new BusinessException("Tipo não encontrado com este id."));
+    return type.orElseThrow(() -> new ResourceNotFoundException("Tipo não encontrado com este id."));
   }
 
   @Transactional
