@@ -4,7 +4,6 @@ import io.github.marcoantoniossilva.assets_manager.domain.exception.ResourceNotF
 import io.github.marcoantoniossilva.assets_manager.domain.model.Equipment;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.EquipmentRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +25,8 @@ public class EquipmentService {
     return equipmentRepository.findAll(pageable);
   }
 
-  public Page<Equipment> search(String searchTerm, PageRequest pageRequest) {
-    return equipmentRepository.findByDescriptionIsContainingIgnoreCase(searchTerm, pageRequest);
+  public Page<Equipment> search(String searchTerm, Pageable pageable) {
+    return equipmentRepository.findByDescriptionIsContainingIgnoreCase(searchTerm, pageable);
   }
 
   public Equipment getById(Integer equipmentId) {

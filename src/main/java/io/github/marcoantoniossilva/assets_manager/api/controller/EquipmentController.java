@@ -3,17 +3,19 @@ package io.github.marcoantoniossilva.assets_manager.api.controller;
 import io.github.marcoantoniossilva.assets_manager.api.assembler.EquipmentAssembler;
 import io.github.marcoantoniossilva.assets_manager.api.assembler.NfeAssembler;
 import io.github.marcoantoniossilva.assets_manager.api.model.EquipmentModel;
-import io.github.marcoantoniossilva.assets_manager.api.model.input.ListEquipmentsInput;
-import io.github.marcoantoniossilva.assets_manager.api.model.input.SearchEquipmentInput;
 import io.github.marcoantoniossilva.assets_manager.api.model.input.EquipmentInput;
 import io.github.marcoantoniossilva.assets_manager.common.LoggedUser;
 import io.github.marcoantoniossilva.assets_manager.common.UpdateUtils;
-import io.github.marcoantoniossilva.assets_manager.domain.model.enumeration.Status;
 import io.github.marcoantoniossilva.assets_manager.domain.exception.ResourceNotFoundException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.*;
-import io.github.marcoantoniossilva.assets_manager.domain.service.*;
+import io.github.marcoantoniossilva.assets_manager.domain.model.enumeration.Status;
+import io.github.marcoantoniossilva.assets_manager.domain.service.CompanyService;
+import io.github.marcoantoniossilva.assets_manager.domain.service.EquipmentService;
+import io.github.marcoantoniossilva.assets_manager.domain.service.EquipmentTypeService;
+import io.github.marcoantoniossilva.assets_manager.domain.service.SectorService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,24 +44,14 @@ public class EquipmentController {
   }
 
   @GetMapping
-  private Page<EquipmentModel> list(@RequestBody ListEquipmentsInput listEquipmentsInput) {
-    int size = listEquipmentsInput.getSize();
-    int page = listEquipmentsInput.getPage();
-
-    PageRequest pageRequest = PageRequest.of(page, size);
-    Page<Equipment> result = equipmentService.findAll(pageRequest);
+  private Page<EquipmentModel> list(@PageableDefault Pageable pageable) {
+    Page<Equipment> result = equipmentService.findAll(pageable);
     return equipmentAssembler.pageEntityToPageModel(result);
   }
 
   @GetMapping("search")
-  public Page<EquipmentModel> search(@RequestBody SearchEquipmentInput searchEquipmentInput) {
-    String searchTerm = searchEquipmentInput.getSearchTerm();
-    int page = searchEquipmentInput.getPage();
-    int size = searchEquipmentInput.getSize();
-
-    PageRequest pageRequest = PageRequest.of(page, size);
-    Page<Equipment> result = equipmentService.search(searchTerm, pageRequest);
-
+  public Page<EquipmentModel> search(@RequestParam String searchTerm, @PageableDefault Pageable pageable) {
+    Page<Equipment> result = equipmentService.search(searchTerm, pageable);
     return equipmentAssembler.pageEntityToPageModel(result);
   }
 
