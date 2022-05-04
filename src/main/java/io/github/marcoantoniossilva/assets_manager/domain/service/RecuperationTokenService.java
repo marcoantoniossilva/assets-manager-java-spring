@@ -71,4 +71,8 @@ public class RecuperationTokenService extends BaseCrudService<RecuperationToken,
   protected RecuperationTokenRepository getRepository() {
     return this.recuperationTokenRepository;
   }
+
+  protected String getEntityName(){
+    return "RecuperationToken";
+  }
 }

@@ -16,4 +16,8 @@ public class EquipmentTypeService extends BaseCrudService<EquipmentType, Integer
   protected EquipmentTypeRepository getRepository() {
     return this.equipmentTypeRepository;
   }
+
+  protected String getEntityName(){
+    return "EquipmentType";
+  }
 }

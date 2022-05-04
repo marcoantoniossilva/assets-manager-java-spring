@@ -98,4 +98,8 @@ public class UserService extends BaseCrudService<User, Integer>{
   protected UserRepository getRepository() {
     return this.userRepository;
   }
+
+  protected String getEntityName(){
+    return "User";
+  }
 }

@@ -56,4 +56,8 @@ public class TokenService extends BaseCrudService<Token, Integer>{
   protected TokenRepository getRepository() {
     return this.tokenRepository;
   }
+
+  protected String getEntityName(){
+    return "Token";
+  }
 }

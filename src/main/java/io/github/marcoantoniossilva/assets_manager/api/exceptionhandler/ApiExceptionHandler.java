@@ -1,9 +1,6 @@
 package io.github.marcoantoniossilva.assets_manager.api.exceptionhandler;
 
-import io.github.marcoantoniossilva.assets_manager.domain.exception.BusinessException;
-import io.github.marcoantoniossilva.assets_manager.domain.exception.ExistentResourceException;
-import io.github.marcoantoniossilva.assets_manager.domain.exception.ResourceNotFoundException;
-import io.github.marcoantoniossilva.assets_manager.domain.exception.IncorrectLoginException;
+import io.github.marcoantoniossilva.assets_manager.domain.exception.*;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
@@ -91,6 +88,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleIncorrectLoginException(IncorrectLoginException ex, WebRequest request) {
 
     HttpStatus status = HttpStatus.UNAUTHORIZED;
+
+    Problem problem = new Problem();
+    problem.setStatus(status.value());
+    problem.setDateTime(LocalDateTime.now());
+    problem.setTitle(ex.getMessage());
+
+    return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+  }
+
+  @ExceptionHandler(IdNullException.class)
+  public ResponseEntity<Object> handleIdNullException(IdNullException ex, WebRequest request) {
+
+    HttpStatus status = HttpStatus.BAD_REQUEST;
 
     Problem problem = new Problem();
     problem.setStatus(status.value());
