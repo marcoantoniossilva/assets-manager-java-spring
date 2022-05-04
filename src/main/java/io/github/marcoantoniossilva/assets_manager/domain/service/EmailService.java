@@ -17,11 +17,11 @@ public class EmailService {
     this.mailSender = mailSender;
   }
 
-  public void send(String email, String text) {
+  public void send(String email, String text, String subject) {
     SimpleMailMessage message = new SimpleMailMessage();
     message.setText(text);
     message.setTo(email);
-    message.setSubject("Recuperação de senha - Assets Manager");
+    message.setSubject(subject);
     message.setFrom("assets-manager@noreply.com");
 
     try {

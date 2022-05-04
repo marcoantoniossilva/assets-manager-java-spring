@@ -16,7 +16,7 @@ import java.util.Optional;
 
 
 @Service
-public class UserService {
+public class UserService extends BaseCrudService<User, Integer>{
 
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
@@ -26,14 +26,6 @@ public class UserService {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
     this.tokenService = tokenService;
-  }
-
-  public List<User> list() {
-    return userRepository.findAll();
-  }
-
-  public Optional<User> findById(Integer userId) {
-    return userRepository.findById(userId);
   }
 
   @Transactional
@@ -66,11 +58,6 @@ public class UserService {
     return user.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com este login."));
   }
 
-  public User getById(Integer userId) {
-    Optional<User> user = userRepository.findById(userId);
-    return user.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com este ID."));
-  }
-
   public Optional<User> findByToken(Token token) {
     return userRepository.findByTokens(token);
   }
@@ -87,19 +74,6 @@ public class UserService {
   public User getUserByEmail(String email) {
     return userRepository.findByEmail(email)
         .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com este email!"));
-  }
-
-  public boolean existsById(Integer userId) {
-    return userRepository.existsById(userId);
-  }
-
-  public boolean existsByEmail(String email) {
-    return userRepository.existsByEmail(email);
-  }
-
-  @Transactional
-  public void deleteById(Integer userId) {
-    userRepository.deleteById(userId);
   }
 
   @Transactional
@@ -119,5 +93,9 @@ public class UserService {
 
   public boolean validateLoginPassword(String passwordInput, String userPassword) {
     return passwordEncoder.matches(passwordInput, userPassword);
+  }
+
+  protected UserRepository getRepository() {
+    return this.userRepository;
   }
 }

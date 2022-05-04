@@ -64,7 +64,7 @@ public class EquipmentController {
 
   @GetMapping("{equipmentId}/nfe")
   public ResponseEntity<byte[]> searchNfe(@PathVariable Integer equipmentId) {
-    Equipment equipment = equipmentService.getById(equipmentId);
+    Equipment equipment = equipmentService.findOrFailById(equipmentId);
     Nfe nfe = equipment.getNfe();
 
     if (nfe != null) {
@@ -84,9 +84,9 @@ public class EquipmentController {
     Integer equipmentTypeId = equipmentInput.getEquipmentType();
 
     User user = LoggedUser.getUser();
-    Company company = companyService.getById(companyId);
-    Sector sector = sectorService.getById(sectorId);
-    EquipmentType equipmentType = equipmentTypeService.getById(equipmentTypeId);
+    Company company = companyService.findOrFailById(companyId);
+    Sector sector = sectorService.findOrFailById(sectorId);
+    EquipmentType equipmentType = equipmentTypeService.findOrFailById(equipmentTypeId);
     Status status = Enum.valueOf(Status.class, equipmentInput.getStatus());
 
     Equipment equipment = equipmentAssembler.toEntity(equipmentInput);
@@ -117,9 +117,9 @@ public class EquipmentController {
     Integer equipmentTypeId = equipmentInput.getEquipmentType();
 
     User user = LoggedUser.getUser();
-    Company company = companyService.getById(companyId);
-    Sector sector = sectorService.getById(sectorId);
-    EquipmentType equipmentType = equipmentTypeService.getById(equipmentTypeId);
+    Company company = companyService.findOrFailById(companyId);
+    Sector sector = sectorService.findOrFailById(sectorId);
+    EquipmentType equipmentType = equipmentTypeService.findOrFailById(equipmentTypeId);
     Status status = Enum.valueOf(Status.class, equipmentInput.getStatus());
 
     Equipment equipment = equipmentAssembler.toEntity(equipmentInput);
@@ -135,7 +135,7 @@ public class EquipmentController {
     });
 
 
-    Equipment existentEquipment = equipmentService.getById(equipmentId);
+    Equipment existentEquipment = equipmentService.findOrFailById(equipmentId);
 
     UpdateUtils.copyNonNullProperties(equipment, existentEquipment);
     Equipment savedEquipment = equipmentService.save(existentEquipment);

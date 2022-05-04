@@ -32,64 +32,32 @@ public class EquipmentInput extends BaseEntityModel {
     return equipmentType;
   }
 
-  public void setEquipmentType(Integer equipmentType) {
-    this.equipmentType = equipmentType;
-  }
-
   public Integer getSector() {
     return sector;
-  }
-
-  public void setSector(Integer sector) {
-    this.sector = sector;
   }
 
   public Integer getCompany() {
     return company;
   }
 
-  public void setCompany(Integer company) {
-    this.company = company;
-  }
-
   public String getDescription() {
     return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
   }
 
   public BigDecimal getAcquisitionValue() {
     return acquisitionValue;
   }
 
-  public void setAcquisitionValue(BigDecimal acquisitionValue) {
-    this.acquisitionValue = acquisitionValue;
-  }
-
   public LocalDate getAcquisitionDate() {
     return acquisitionDate;
-  }
-
-  public void setAcquisitionDate(LocalDate acquisitionDate) {
-    this.acquisitionDate = acquisitionDate;
   }
 
   public Optional<MultipartFile> getNfe() {
     return Optional.ofNullable(nfe);
   }
 
-  public void setNfe(MultipartFile nfe) {
-    this.nfe = nfe;
-  }
-
   public String getStatus() {
     return status;
-  }
-
-  public void setStatus(String status) {
-    this.status = status;
   }
 
 }

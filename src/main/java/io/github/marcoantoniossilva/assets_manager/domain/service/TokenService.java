@@ -4,6 +4,7 @@ import io.github.marcoantoniossilva.assets_manager.common.ApiPropertiesConfig;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.TokenRepository;
+import io.github.marcoantoniossilva.assets_manager.domain.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TokenService {
+public class TokenService extends BaseCrudService<Token, Integer>{
 
   private final TokenRepository tokenRepository;
   private final ApiPropertiesConfig apiPropertiesConfig;
@@ -21,15 +22,6 @@ public class TokenService {
   public TokenService(TokenRepository tokenRepository, ApiPropertiesConfig apiPropertiesConfig) {
     this.tokenRepository = tokenRepository;
     this.apiPropertiesConfig = apiPropertiesConfig;
-  }
-
-  public Optional<Token> findById(Integer tokenId) {
-    return tokenRepository.findById(tokenId);
-  }
-
-  @Transactional
-  public Token save(Token token) {
-    return tokenRepository.save(token);
   }
 
   @Transactional
@@ -61,4 +53,7 @@ public class TokenService {
     tokenRepository.deleteByToken(stringToken);
   }
 
+  protected TokenRepository getRepository() {
+    return this.tokenRepository;
+  }
 }

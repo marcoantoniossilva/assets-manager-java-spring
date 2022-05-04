@@ -21,7 +21,7 @@ public class EquipmentTypeController {
 
   @GetMapping
   public List<EquipmentType> list() {
-    return equipmentTypeService.list();
+    return equipmentTypeService.findAll();
   }
 
   @GetMapping("{equipmentTypeId}")
@@ -43,7 +43,7 @@ public class EquipmentTypeController {
       return ResponseEntity.notFound().build();
     }
     equipmentType.setId(equipmentTypeId);
-    EquipmentType existentEquipmentType = equipmentTypeService.getById(equipmentTypeId);
+    EquipmentType existentEquipmentType = equipmentTypeService.findOrFailById(equipmentTypeId);
     UpdateUtils.copyNonNullProperties(equipmentType, existentEquipmentType);
     EquipmentType savedEquipmentType = equipmentTypeService.save(existentEquipmentType);
     return ResponseEntity.ok(savedEquipmentType);

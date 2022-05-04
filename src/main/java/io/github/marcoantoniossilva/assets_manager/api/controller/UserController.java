@@ -27,7 +27,7 @@ public class UserController {
 
   @GetMapping
   public List<UserModel> list() {
-    List<User> users = userService.list();
+    List<User> users = userService.findAll();
     return userAssembler.toCollectionModel(users);
   }
 
@@ -63,7 +63,7 @@ public class UserController {
     userInput.setId(userId);
     User user = userAssembler.toEntity(userInput);
 
-    User existentUser = userService.getById(userId);
+    User existentUser = userService.findOrFailById(userId);
 
     UpdateUtils.copyNonNullProperties(user, existentUser);
     User savedUser = userService.save(existentUser);

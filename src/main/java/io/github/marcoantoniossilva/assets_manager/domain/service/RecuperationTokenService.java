@@ -2,9 +2,11 @@ package io.github.marcoantoniossilva.assets_manager.domain.service;
 
 import io.github.marcoantoniossilva.assets_manager.common.ApiPropertiesConfig;
 import io.github.marcoantoniossilva.assets_manager.domain.model.RecuperationToken;
+import io.github.marcoantoniossilva.assets_manager.domain.model.Sector;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.RecuperationTokenRepository;
+import io.github.marcoantoniossilva.assets_manager.domain.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponents;
@@ -16,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RecuperationTokenService {
+public class RecuperationTokenService extends BaseCrudService<RecuperationToken, Integer> {
 
   private final RecuperationTokenRepository recuperationTokenRepository;
   private final ApiPropertiesConfig apiPropertiesConfig;
@@ -26,11 +28,6 @@ public class RecuperationTokenService {
     this.recuperationTokenRepository = recuperationTokenRepository;
     this.apiPropertiesConfig = apiPropertiesConfig;
     this.emailService = emailService;
-  }
-
-  @Transactional
-  private void save(RecuperationToken token) {
-    recuperationTokenRepository.save(token);
   }
 
   @Transactional
@@ -48,7 +45,9 @@ public class RecuperationTokenService {
         duration.toMinutes(),
         uriComponents);
 
-    emailService.send(user.getEmail(), message);
+    String subject = "Recuperação de senha - Assets Manager";
+
+    emailService.send(user.getEmail(), message, subject);
   }
 
   public List<Token> findAllByUserId(Integer userId) {
@@ -69,4 +68,7 @@ public class RecuperationTokenService {
     return recuperationTokenRepository.findByToken(token);
   }
 
+  protected RecuperationTokenRepository getRepository() {
+    return this.recuperationTokenRepository;
+  }
 }

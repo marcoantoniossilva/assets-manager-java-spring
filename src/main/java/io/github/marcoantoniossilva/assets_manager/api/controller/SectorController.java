@@ -21,7 +21,7 @@ public class SectorController {
 
   @GetMapping
   public List<Sector> list() {
-    return sectorService.list();
+    return sectorService.findAll();
   }
 
   @GetMapping("{sectorId}")
@@ -43,7 +43,7 @@ public class SectorController {
       return ResponseEntity.notFound().build();
     }
     sector.setId(sectorId);
-    Sector existentSector = sectorService.getById(sectorId);
+    Sector existentSector = sectorService.findOrFailById(sectorId);
     UpdateUtils.copyNonNullProperties(sector, existentSector);
     Sector savedSector = sectorService.save(existentSector);
     return ResponseEntity.ok(savedSector);

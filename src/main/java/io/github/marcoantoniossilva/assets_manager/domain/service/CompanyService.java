@@ -3,7 +3,9 @@ package io.github.marcoantoniossilva.assets_manager.domain.service;
 import io.github.marcoantoniossilva.assets_manager.domain.exception.ExistentResourceException;
 import io.github.marcoantoniossilva.assets_manager.domain.exception.ResourceNotFoundException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Company;
+import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.CompanyRepository;
+import io.github.marcoantoniossilva.assets_manager.domain.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,20 +14,12 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class CompanyService {
+public class CompanyService extends BaseCrudService<Company, Integer> {
 
   private final CompanyRepository companyRepository;
 
   public CompanyService(CompanyRepository companyRepository) {
     this.companyRepository = companyRepository;
-  }
-
-  public List<Company> list() {
-    return companyRepository.findAll();
-  }
-
-  public Optional<Company> findById(Integer companyId) {
-    return companyRepository.findById(companyId);
   }
 
   @Transactional
@@ -42,18 +36,7 @@ public class CompanyService {
     return companyRepository.save(company);
   }
 
-  public Company getById(Integer companyId) {
-    Optional<Company> company = companyRepository.findById(companyId);
-    return company.orElseThrow(() -> new ResourceNotFoundException("Empresa não encontrada com este id."));
+  protected CompanyRepository getRepository() {
+    return this.companyRepository;
   }
-
-  public boolean existsById(Integer companyId) {
-    return companyRepository.existsById(companyId);
-  }
-
-  @Transactional
-  public void deleteById(Integer companyId) {
-    companyRepository.deleteById(companyId);
-  }
-
 }

@@ -23,7 +23,7 @@ public class CompanyController {
 
   @GetMapping
   public List<Company> list() {
-    return companyService.list();
+    return companyService.findAll();
   }
 
   @GetMapping("{companyId}")
@@ -45,7 +45,7 @@ public class CompanyController {
       return ResponseEntity.notFound().build();
     }
     company.setId(companyId);
-    Company existentCompany = companyService.getById(companyId);
+    Company existentCompany = companyService.findOrFailById(companyId);
     UpdateUtils.copyNonNullProperties(company, existentCompany);
     Company savedCompany = companyService.save(existentCompany);
     return ResponseEntity.ok(savedCompany);

@@ -47,13 +47,4 @@ public class Company extends BaseEntity{
     this.cnpj = cnpj;
   }
 
-  @Override
-  public String toString() {
-    return "Company{" +
-        "id=" + super.getId() +
-        ", corporateName='" + corporateName + '\'' +
-        ", fantasyName='" + fantasyName + '\'' +
-        ", cnpj='" + cnpj + '\'' +
-        '}';
-  }
 }
