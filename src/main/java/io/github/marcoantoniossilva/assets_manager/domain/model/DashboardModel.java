@@ -8,15 +8,15 @@ public class DashboardModel {
 
   private Double depreciatedAmount;
 
-  private Integer equipmentsCount;
+  private Long equipmentsCount;
 
-  private Integer companiesCount;
+  private Long companiesCount;
 
   public DashboardModel() {
   }
 
   public DashboardModel(BigDecimal amountInvested, Double depreciatedAmount,
-                        Integer equipmentsCount, Integer companiesCount) {
+                        Long equipmentsCount, Long companiesCount) {
     this.amountInvested = amountInvested;
     this.depreciatedAmount = depreciatedAmount;
     this.equipmentsCount = equipmentsCount;
@@ -39,19 +39,19 @@ public class DashboardModel {
     this.depreciatedAmount = depreciatedAmount;
   }
 
-  public Integer getEquipmentsCount() {
+  public Long getEquipmentsCount() {
     return equipmentsCount;
   }
 
-  public void setEquipmentsCount(Integer equipmentsCount) {
+  public void setEquipmentsCount(Long equipmentsCount) {
     this.equipmentsCount = equipmentsCount;
   }
 
-  public Integer getCompaniesCount() {
+  public Long getCompaniesCount() {
     return companiesCount;
   }
 
-  public void setCompaniesCount(Integer companiesCount) {
+  public void setCompaniesCount(Long companiesCount) {
     this.companiesCount = companiesCount;
   }
 }

@@ -5,7 +5,6 @@ import io.github.marcoantoniossilva.assets_manager.domain.model.Equipment;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -30,12 +29,12 @@ public class DashboardService {
     );
   }
 
-  private Integer equipmentsCount() {
-    return equipmentService.findAll().size();
+  private Long equipmentsCount() {
+    return equipmentService.count();
   }
 
-  private Integer companiesCount() {
-    return companyService.findAll().size();
+  private Long companiesCount() {
+    return companyService.count();
   }
 
   private BigDecimal amountInvested() {
@@ -46,7 +45,7 @@ public class DashboardService {
 
   private Double depreciatedAmount() {
     return equipmentService.findAll().stream()
-        .map(equipment -> calculate_depreciated_amount(
+        .map(equipment -> calculateDepreciatedAmount(
             equipment.getAcquisitionValue(),
             equipment.getAcquisitionDate(),
             equipment.getEquipmentType().getDepreciation(),
@@ -57,20 +56,20 @@ public class DashboardService {
         .doubleValue();
   }
 
-  private BigDecimal calculate_depreciated_amount(BigDecimal acquisitionValue, LocalDate acquisitionDate,
-                                                  BigDecimal depreciation, Integer depreciationTerm) {
+  private BigDecimal calculateDepreciatedAmount(BigDecimal acquisitionValue, LocalDate acquisitionDate,
+                                                BigDecimal depreciation, Integer depreciationTerm) {
 
     LocalDate now = LocalDate.now();
     long years = ChronoUnit.YEARS.between(acquisitionDate, now);
-    BigDecimal current_value = acquisitionValue;
+    BigDecimal currentValue = acquisitionValue;
 
     while (years > 0 && depreciationTerm > 0) {
-      current_value = current_value.multiply(
+      currentValue = currentValue.multiply(
           ((BigDecimal.valueOf(100).subtract(depreciation)).divide(BigDecimal.valueOf(100), 2, RoundingMode.CEILING)));
       years--;
       depreciationTerm--;
     }
-    return current_value;
+    return currentValue;
   }
 
 }

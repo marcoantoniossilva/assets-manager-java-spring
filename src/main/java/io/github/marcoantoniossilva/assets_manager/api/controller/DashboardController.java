@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/dashboard")
-public class DashboarController {
+public class DashboardController {
 
   private final DashboardService dashboardService;
 
-  public DashboarController(DashboardService dashboardService) {
+  public DashboardController(DashboardService dashboardService) {
     this.dashboardService = dashboardService;
   }
 

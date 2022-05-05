@@ -20,6 +20,10 @@ public abstract class BaseCrudService<ENTITY, ID> {
     return this.getRepository().findAll();
   }
 
+  public Long count(){
+    return this.getRepository().count();
+  }
+
   public Page<ENTITY> findAll(Pageable pageable) {
     return this.getRepository().findAll(pageable);
   }
