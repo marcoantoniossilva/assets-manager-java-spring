@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,13 +15,11 @@ public abstract class BaseCrudService<ENTITY, ID> {
 
   protected abstract JpaRepository<ENTITY, ID> getRepository();
 
-  protected abstract String getEntityName();
-
   public List<ENTITY> findAll() {
     return this.getRepository().findAll();
   }
 
-  public Long count(){
+  public Long count() {
     return this.getRepository().count();
   }
 
@@ -39,10 +38,10 @@ public abstract class BaseCrudService<ENTITY, ID> {
 
   public ENTITY findOrFailById(ID id) {
     if (id == null) {
-      throw new IdNullException(String.format("O Id de %s não pode ser nulo!", this.getEntityName()));
+      throw new IdNullException(String.format("O Id de %s não pode ser nulo!", this.getGenericClassName()));
     }
     Optional<ENTITY> entity = this.getRepository().findById(id);
-    return entity.orElseThrow(() -> new ResourceNotFoundException(String.format("%s não encontrado com o ID: %s.", this.getEntityName(), id)));
+    return entity.orElseThrow(() -> new ResourceNotFoundException(String.format("%s não encontrado(a) com o ID: %s.", this.getGenericClassName(), id)));
   }
 
   public boolean existsById(ID id) {
@@ -52,5 +51,11 @@ public abstract class BaseCrudService<ENTITY, ID> {
   @Transactional
   public void deleteById(ID id) {
     this.getRepository().deleteById(id);
+  }
+
+  private String getGenericClassName() {
+    ParameterizedType genericSuperClass = (ParameterizedType) this.getClass().getGenericSuperclass();
+    Class<?> genericClass = (Class<?>) genericSuperClass.getActualTypeArguments()[0];
+    return genericClass.getSimpleName();
   }
 }

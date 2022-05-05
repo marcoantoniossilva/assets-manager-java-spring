@@ -40,7 +40,4 @@ public class CompanyService extends BaseCrudService<Company, Integer> {
     return this.companyRepository;
   }
 
-  protected String getEntityName(){
-    return "Company";
-  }
 }

@@ -17,7 +17,4 @@ public class SectorService extends BaseCrudService<Sector, Integer>{
     return this.sectorRepository;
   }
 
-  protected String getEntityName(){
-    return "Sector";
-  }
 }

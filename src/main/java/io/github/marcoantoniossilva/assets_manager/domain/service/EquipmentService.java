@@ -23,7 +23,4 @@ public class EquipmentService extends BaseCrudService<Equipment, Integer> {
     return this.equipmentRepository;
   }
 
-  protected String getEntityName(){
-    return "Equipment";
-  }
 }
