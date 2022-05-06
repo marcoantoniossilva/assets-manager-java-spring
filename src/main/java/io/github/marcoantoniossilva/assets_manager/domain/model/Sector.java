@@ -23,4 +23,10 @@ public class Sector extends BaseEntity{
     this.description = description;
   }
 
+  @Override
+  public String toString() {
+    return "Sector{" +
+        "description='" + description + '\'' +
+        '}';
+  }
 }

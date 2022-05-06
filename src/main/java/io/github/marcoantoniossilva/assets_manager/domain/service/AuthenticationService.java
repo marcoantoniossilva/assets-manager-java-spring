@@ -6,6 +6,8 @@ import io.github.marcoantoniossilva.assets_manager.domain.exception.IncorrectLog
 import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.repository.TokenRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +20,12 @@ public class AuthenticationService {
 
   private final UserService userService;
   private final TokenService tokenService;
-  private final RecuperationTokenService recuperationTokenService;
   private final ApiPropertiesConfig apiPropertiesConfig;
+  private final RecuperationTokenService recuperationTokenService;
 
-  public AuthenticationService(UserService userService, TokenRepository tokenRepository, TokenService tokenService, RecuperationTokenService recuperationTokenService, ApiPropertiesConfig apiPropertiesConfig) {
+  public AuthenticationService(UserService userService, TokenService tokenService,
+                               RecuperationTokenService recuperationTokenService,
+                               ApiPropertiesConfig apiPropertiesConfig) {
     this.userService = userService;
     this.tokenService = tokenService;
     this.recuperationTokenService = recuperationTokenService;
@@ -35,8 +39,10 @@ public class AuthenticationService {
     String userPassword = user.getPassword();
 
     if (userService.validateLoginPassword(passwordInput, userPassword)) {
-      tokenService.deleteAllExpiredTokensByUserId(user.getId());
+      tokenService.deleteAllExpiredTokens();
+      recuperationTokenService.deleteAllExpiredTokens();
       recuperationTokenService.deleteAllByUserId(user.getId());
+
       verifyAndDeleteOldToken(user.getId());
       user.setLastAccess(LocalDateTime.now());
       userService.save(user);

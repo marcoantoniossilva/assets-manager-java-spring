@@ -56,4 +56,13 @@ public class RecuperationToken extends BaseEntity {
     this.expirationTime = LocalDateTime.now().plus(this.duration);
   }
 
+  @Override
+  public String toString() {
+    return "RecuperationToken{" +
+        "token='" + token + '\'' +
+        ", user=" + user +
+        ", duration=" + duration +
+        ", expirationTime=" + expirationTime +
+        '}';
+  }
 }

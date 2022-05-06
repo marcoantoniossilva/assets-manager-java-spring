@@ -49,4 +49,12 @@ public class Token extends BaseEntity {
     this.expirationTime = expirationTime;
   }
 
+  @Override
+  public String toString() {
+    return "Token{" +
+        "token='" + token + '\'' +
+        ", user=" + user +
+        ", expirationTime=" + expirationTime +
+        '}';
+  }
 }

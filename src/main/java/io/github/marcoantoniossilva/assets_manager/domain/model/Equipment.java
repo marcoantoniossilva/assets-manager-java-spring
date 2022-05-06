@@ -113,4 +113,19 @@ public class Equipment extends BaseEntity{
     this.sector = sector;
   }
 
+
+  @Override
+  public String toString() {
+    return "Equipment{" +
+        "description='" + description + '\'' +
+        ", acquisitionValue=" + acquisitionValue +
+        ", acquisitionDate=" + acquisitionDate +
+        ", status=" + status +
+        ", company=" + company +
+        ", user=" + user +
+        ", equipmentType=" + equipmentType +
+        ", sector=" + sector +
+        ", nfe=" + nfe +
+        '}';
+  }
 }

@@ -10,13 +10,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 
 @Service
-public class UserService extends BaseCrudService<User, Integer>{
+public class UserService extends BaseCrudService<User, Integer> {
 
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
@@ -46,8 +45,10 @@ public class UserService extends BaseCrudService<User, Integer>{
 
     if (user.getId() == null) { // Criação de usuário
       user.setPassword(passwordEncoder.encode(user.getPassword()));
+      LOGGER.trace("Cadastrando um novo usuário: {}", user);
     } else { // Edição de usuário
       user.setPassword(userRepository.getById(user.getId()).getPassword());
+      LOGGER.trace("Editando um usuário: {}", user);
     }
 
     return userRepository.save(user);
@@ -83,11 +84,13 @@ public class UserService extends BaseCrudService<User, Integer>{
     if (!validateLoginPassword(oldPassword, user.getPassword())) {
       throw new BusinessException("A senha antiga não confere!");
     }
+    LOGGER.trace("Alterando a senha do usuário {} com id: {}", user, user.getId());
     userRepository.updatePasswordById(userId, passwordEncoder.encode(newPassword));
   }
 
   @Transactional
   public void setNewPassword(Integer userId, String newPassword) {
+    LOGGER.trace("Definindo uma nova senha do usuário com id: {}", userId);
     userRepository.updatePasswordById(userId, passwordEncoder.encode(newPassword));
   }
 

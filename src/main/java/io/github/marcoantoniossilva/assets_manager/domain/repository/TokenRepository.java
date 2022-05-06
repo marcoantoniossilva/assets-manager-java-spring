@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface TokenRepository extends JpaRepository<Token, Integer> {
 
-  void deleteAllByUserIdAndExpirationTimeBefore(Integer userId, LocalDateTime localDateTime);
+  void deleteAllByExpirationTimeBefore(LocalDateTime localDateTime);
 
   void deleteByToken(String stringToken);
 

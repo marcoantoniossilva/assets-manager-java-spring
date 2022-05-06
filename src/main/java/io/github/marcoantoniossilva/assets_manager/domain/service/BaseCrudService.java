@@ -2,6 +2,8 @@ package io.github.marcoantoniossilva.assets_manager.domain.service;
 
 import io.github.marcoantoniossilva.assets_manager.domain.exception.IdNullException;
 import io.github.marcoantoniossilva.assets_manager.domain.exception.ResourceNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +16,7 @@ import java.util.Optional;
 public abstract class BaseCrudService<ENTITY, ID> {
 
   protected abstract JpaRepository<ENTITY, ID> getRepository();
+  protected final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
   public List<ENTITY> findAll() {
     return this.getRepository().findAll();
@@ -29,6 +32,7 @@ public abstract class BaseCrudService<ENTITY, ID> {
 
   @Transactional
   public ENTITY save(ENTITY entity) {
+    LOGGER.trace("Salvando {} com valores {}", this.getGenericClassName(), entity);
     return this.getRepository().save(entity);
   }
 
@@ -50,6 +54,7 @@ public abstract class BaseCrudService<ENTITY, ID> {
 
   @Transactional
   public void deleteById(ID id) {
+    LOGGER.trace("Deletando {} com id: {}", this.getGenericClassName(), id);
     this.getRepository().deleteById(id);
   }
 

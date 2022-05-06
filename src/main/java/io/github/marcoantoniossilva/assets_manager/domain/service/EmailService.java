@@ -27,7 +27,7 @@ public class EmailService {
     try {
       mailSender.send(message);
     } catch (Exception e) {
-      LOGGER.error(String.format("Ocorreu um erro ao enviar o email!%n%s%n%s", e.getMessage(), e.getMessage()));
+      LOGGER.error("Ocorreu um erro ao enviar o email!\n{}\n", e.getMessage());
     }
 
   }

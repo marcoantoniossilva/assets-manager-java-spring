@@ -106,4 +106,17 @@ public class User extends BaseEntity{
   public void setRecuperationTokens(List<RecuperationToken> recuperationTokens) {
     this.recuperationTokens = recuperationTokens;
   }
+
+  @Override
+  public String toString() {
+    return "User{" +
+        "name='" + name + '\'' +
+        ", email='" + email + '\'' +
+        ", login='" + login + '\'' +
+        ", tokens=" + tokens +
+        ", recuperationTokens=" + recuperationTokens +
+        ", lastAccess=" + lastAccess +
+        ", registerIn=" + registerIn +
+        '}';
+  }
 }

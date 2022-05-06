@@ -33,6 +33,8 @@ public class CompanyService extends BaseCrudService<Company, Integer> {
     if (differentCompaniesSameCnpj) { // Se estiver criando uma empresa
       throw new ExistentResourceException("Já existe uma empresa com este CNPJ!");
     }
+
+    LOGGER.trace("Salvando Company: {}", company);
     return companyRepository.save(company);
   }
 

@@ -1,6 +1,7 @@
 package io.github.marcoantoniossilva.assets_manager.domain.model;
 
 import javax.persistence.*;
+import java.util.Arrays;
 
 @Embeddable
 public class Nfe{
@@ -39,4 +40,12 @@ public class Nfe{
     this.type = type;
   }
 
+  @Override
+  public String toString() {
+    return "Nfe{" +
+        "fileName='" + fileName + '\'' +
+        ", content=" + Arrays.toString(content) +
+        ", type='" + type + '\'' +
+        '}';
+  }
 }

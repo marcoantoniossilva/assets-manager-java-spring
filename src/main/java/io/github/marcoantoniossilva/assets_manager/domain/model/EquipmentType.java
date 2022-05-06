@@ -47,4 +47,13 @@ public class EquipmentType extends BaseEntity{
     this.depreciationTerm = depreciationTerm;
   }
 
+
+  @Override
+  public String toString() {
+    return "EquipmentType{" +
+        "description='" + description + '\'' +
+        ", depreciation=" + depreciation +
+        ", depreciationTerm=" + depreciationTerm +
+        '}';
+  }
 }

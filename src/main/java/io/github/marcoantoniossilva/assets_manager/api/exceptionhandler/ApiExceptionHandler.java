@@ -1,6 +1,8 @@
 package io.github.marcoantoniossilva.assets_manager.api.exceptionhandler;
 
 import io.github.marcoantoniossilva.assets_manager.domain.exception.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +23,7 @@ import java.util.List;
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
+  private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
   private MessageSource messageSource;
 
   @Override
@@ -42,6 +45,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     problem.setTitle("Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.");
     problem.setFields(fields);
 
+    LOGGER.error("Um ou mais campos inválidos. ",ex);
     return handleExceptionInternal(ex, problem, headers, status, request);
   }
 
@@ -55,6 +59,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     problem.setDateTime(LocalDateTime.now());
     problem.setTitle(ex.getMessage());
 
+    LOGGER.error("BusinessException disparado. ",ex);
     return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
   }
 
@@ -68,6 +73,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     problem.setDateTime(LocalDateTime.now());
     problem.setTitle(ex.getMessage());
 
+    LOGGER.error("Recurso já existente. ",ex);
     return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
   }
 
@@ -81,6 +87,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     problem.setDateTime(LocalDateTime.now());
     problem.setTitle(ex.getMessage());
 
+    LOGGER.error("Recurso não encontrado. ",ex);
     return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
   }
 
@@ -94,6 +101,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     problem.setDateTime(LocalDateTime.now());
     problem.setTitle(ex.getMessage());
 
+    LOGGER.error("Login incorreto. ",ex);
     return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
   }
 
@@ -107,6 +115,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     problem.setDateTime(LocalDateTime.now());
     problem.setTitle(ex.getMessage());
 
+    LOGGER.error("Id Nulo. ",ex);
     return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
   }
 

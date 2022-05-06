@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TokenService extends BaseCrudService<Token, Integer>{
+public class TokenService extends BaseCrudService<Token, Integer> {
 
   private final TokenRepository tokenRepository;
   private final ApiPropertiesConfig apiPropertiesConfig;
@@ -27,12 +27,14 @@ public class TokenService extends BaseCrudService<Token, Integer>{
   @Transactional
   public Token create(String uuid, User user) {
     Duration duration = apiPropertiesConfig.getExpirationTime();
+    LOGGER.trace("Criando um novo token para o usuário: {}", user);
     return tokenRepository.save(new Token(uuid, user, duration));
   }
 
   @Transactional
-  public void deleteAllExpiredTokensByUserId(Integer userId) {
-    tokenRepository.deleteAllByUserIdAndExpirationTimeBefore(userId, LocalDateTime.now());
+  public void deleteAllExpiredTokens() {
+    LOGGER.trace("Deletando todos os tokens expirados.");
+    tokenRepository.deleteAllByExpirationTimeBefore(LocalDateTime.now());
   }
 
   public List<Token> findAllByUserIdOrderByExpirationTime(Integer userId) {
@@ -41,6 +43,7 @@ public class TokenService extends BaseCrudService<Token, Integer>{
 
   @Transactional
   public void delete(Token token) {
+    LOGGER.trace("Deletando token: {}", token);
     tokenRepository.delete(token);
   }
 
@@ -50,6 +53,7 @@ public class TokenService extends BaseCrudService<Token, Integer>{
 
   @Transactional
   public void deleteByStringToken(String stringToken) {
+    LOGGER.trace("Deletando token: {}", stringToken);
     tokenRepository.deleteByToken(stringToken);
   }
 

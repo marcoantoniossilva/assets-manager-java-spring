@@ -27,7 +27,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
   private final TokenService tokenService;
   private final UserService userService;
   private static final Map<String, HttpMethod> PUBLIC_URLS = new HashMap<>();
-  private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
+  private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
   static {
     PUBLIC_URLS.put("/users", HttpMethod.POST);
@@ -50,6 +50,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
       filterChain.doFilter(request, response);
       LoggedUser.clear();
     } else {
+      LOGGER.error("Token de autorização expirado ou incorreto!");
       response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token de autorização expirado ou incorreto!");
     }
   }

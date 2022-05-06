@@ -106,10 +106,9 @@ public class EquipmentController {
   }
 
   @PutMapping("{equipmentId}")
-  public ResponseEntity<EquipmentModel> update(@RequestBody EquipmentInput equipmentInput, @PathVariable Integer equipmentId) {
-    if (!equipmentService.existsById(equipmentId)) {
-      return ResponseEntity.notFound().build();
-    }
+  public ResponseEntity<EquipmentModel> update(@ModelAttribute EquipmentInput equipmentInput, @PathVariable Integer equipmentId) {
+    Equipment existentEquipment = equipmentService.findOrFailById(equipmentId);
+
     equipmentInput.setId(equipmentId);
 
     Integer companyId = equipmentInput.getCompany();
@@ -133,9 +132,6 @@ public class EquipmentController {
       Nfe nfe = nfeAssembler.multipartFileToEntity(multipartFile);
       equipment.setNfe(nfe);
     });
-
-
-    Equipment existentEquipment = equipmentService.findOrFailById(equipmentId);
 
     UpdateUtils.copyNonNullProperties(equipment, existentEquipment);
     Equipment savedEquipment = equipmentService.save(existentEquipment);

@@ -33,6 +33,7 @@ public class RecuperationTokenService extends BaseCrudService<RecuperationToken,
   @Transactional
   public void create(String uuid, User user) {
     Duration duration = apiPropertiesConfig.getExpirationTime();
+    LOGGER.trace("Criando token de recuperação de senha para o: {}", user);
     RecuperationToken recuperationToken = recuperationTokenRepository.save(new RecuperationToken(uuid, user, duration));
 
     UriComponents uriComponents = UriComponentsBuilder
@@ -50,17 +51,15 @@ public class RecuperationTokenService extends BaseCrudService<RecuperationToken,
     emailService.send(user.getEmail(), message, subject);
   }
 
-  public List<Token> findAllByUserId(Integer userId) {
-    return recuperationTokenRepository.findAllByUserId(userId);
-  }
-
   @Transactional
   public void deleteAllExpiredTokens() {
+    LOGGER.trace("Deletando todos os tokens de recuperação expirados.");
     recuperationTokenRepository.deleteAllByExpirationTimeBefore(LocalDateTime.now());
   }
 
   @Transactional
   public void deleteAllByUserId(Integer userId) {
+    LOGGER.trace("Deletando todos os tokens de recuperação do User de id: {}",userId);
     recuperationTokenRepository.deleteAllByUserId(userId);
   }
 
