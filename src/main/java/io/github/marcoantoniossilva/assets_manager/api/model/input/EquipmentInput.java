@@ -1,6 +1,7 @@
 package io.github.marcoantoniossilva.assets_manager.api.model.input;
 
 import io.github.marcoantoniossilva.assets_manager.api.model.BaseEntityModel;
+import io.github.marcoantoniossilva.assets_manager.domain.model.enumeration.Status;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
@@ -23,7 +24,7 @@ public class EquipmentInput extends BaseEntityModel {
 
   private MultipartFile nfe;
 
-  private String status;
+  private Status status;
 
   public EquipmentInput() {
   }
@@ -84,11 +85,11 @@ public class EquipmentInput extends BaseEntityModel {
     this.nfe = nfe;
   }
 
-  public String getStatus() {
+  public Status getStatus() {
     return status;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(Status status) {
     this.status = status;
   }
 

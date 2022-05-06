@@ -86,7 +86,7 @@ public class EquipmentController {
     Company company = companyService.findOrFailById(companyId);
     Sector sector = sectorService.findOrFailById(sectorId);
     EquipmentType equipmentType = equipmentTypeService.findOrFailById(equipmentTypeId);
-    Status status = Enum.valueOf(Status.class, equipmentInput.getStatus());
+    Status status = equipmentInput.getStatus();
 
     Equipment equipment = equipmentAssembler.toEntity(equipmentInput);
     equipment.setCompany(company);
@@ -120,7 +120,7 @@ public class EquipmentController {
     Company company = companyService.findOrFailById(companyId);
     Sector sector = sectorService.findOrFailById(sectorId);
     EquipmentType equipmentType = equipmentTypeService.findOrFailById(equipmentTypeId);
-    Status status = Enum.valueOf(Status.class, equipmentInput.getStatus());
+    Status status = equipmentInput.getStatus();
 
     Equipment equipment = equipmentAssembler.toEntity(equipmentInput);
     equipment.setCompany(company);
