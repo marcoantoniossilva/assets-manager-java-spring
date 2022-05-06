@@ -5,7 +5,6 @@ import io.github.marcoantoniossilva.assets_manager.api.assembler.NfeAssembler;
 import io.github.marcoantoniossilva.assets_manager.api.model.EquipmentModel;
 import io.github.marcoantoniossilva.assets_manager.api.model.input.EquipmentInput;
 import io.github.marcoantoniossilva.assets_manager.common.LoggedUser;
-import io.github.marcoantoniossilva.assets_manager.common.UpdateUtils;
 import io.github.marcoantoniossilva.assets_manager.domain.exception.ResourceNotFoundException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.*;
 import io.github.marcoantoniossilva.assets_manager.domain.model.enumeration.Status;
@@ -107,7 +106,9 @@ public class EquipmentController {
 
   @PutMapping("{equipmentId}")
   public ResponseEntity<EquipmentModel> update(@ModelAttribute EquipmentInput equipmentInput, @PathVariable Integer equipmentId) {
-    Equipment existentEquipment = equipmentService.findOrFailById(equipmentId);
+    if (!equipmentTypeService.existsById(equipmentId)) {
+      return ResponseEntity.notFound().build();
+    }
 
     equipmentInput.setId(equipmentId);
 
@@ -133,8 +134,7 @@ public class EquipmentController {
       equipment.setNfe(nfe);
     });
 
-    UpdateUtils.copyNonNullProperties(equipment, existentEquipment);
-    Equipment savedEquipment = equipmentService.save(existentEquipment);
+    Equipment savedEquipment = equipmentService.save(equipment);
     return ResponseEntity.ok(equipmentAssembler.toModel(savedEquipment));
   }
 

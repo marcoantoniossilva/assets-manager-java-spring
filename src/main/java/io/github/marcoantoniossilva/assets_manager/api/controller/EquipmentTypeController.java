@@ -1,6 +1,5 @@
 package io.github.marcoantoniossilva.assets_manager.api.controller;
 
-import io.github.marcoantoniossilva.assets_manager.common.UpdateUtils;
 import io.github.marcoantoniossilva.assets_manager.domain.model.EquipmentType;
 import io.github.marcoantoniossilva.assets_manager.domain.service.EquipmentTypeService;
 import org.springframework.http.HttpStatus;
@@ -43,9 +42,7 @@ public class EquipmentTypeController {
       return ResponseEntity.notFound().build();
     }
     equipmentType.setId(equipmentTypeId);
-    EquipmentType existentEquipmentType = equipmentTypeService.findOrFailById(equipmentTypeId);
-    UpdateUtils.copyNonNullProperties(equipmentType, existentEquipmentType);
-    EquipmentType savedEquipmentType = equipmentTypeService.save(existentEquipmentType);
+    EquipmentType savedEquipmentType = equipmentTypeService.save(equipmentType);
     return ResponseEntity.ok(savedEquipmentType);
   }
 

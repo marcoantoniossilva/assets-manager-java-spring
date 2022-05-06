@@ -2,6 +2,8 @@ package io.github.marcoantoniossilva.assets_manager.api.model.input;
 
 import io.github.marcoantoniossilva.assets_manager.api.model.BaseEntityModel;
 
+import java.time.LocalDate;
+
 public class UserInput extends BaseEntityModel {
 
   private String name;
@@ -10,14 +12,14 @@ public class UserInput extends BaseEntityModel {
 
   private String login;
 
-  private String password;
+  private LocalDate registerIn;
 
-  public UserInput(Integer id, String name, String email, String login, String password) {
+  public UserInput(Integer id, String name, String email, String login, LocalDate registerIn) {
     super(id);
     this.name = name;
     this.email = email;
     this.login = login;
-    this.password = password;
+    this.registerIn = registerIn;
   }
 
   public String getName() {
@@ -32,8 +34,8 @@ public class UserInput extends BaseEntityModel {
     return login;
   }
 
-  public String getPassword() {
-    return password;
+  public LocalDate getRegisterIn() {
+    return registerIn;
   }
 
 }

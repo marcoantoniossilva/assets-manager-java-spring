@@ -4,7 +4,6 @@ import io.github.marcoantoniossilva.assets_manager.api.assembler.UserAssembler;
 import io.github.marcoantoniossilva.assets_manager.api.model.UserModel;
 import io.github.marcoantoniossilva.assets_manager.api.model.input.UserInput;
 import io.github.marcoantoniossilva.assets_manager.common.LoggedUser;
-import io.github.marcoantoniossilva.assets_manager.common.UpdateUtils;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -60,13 +59,11 @@ public class UserController {
     if (!userService.existsById(userId)) {
       return ResponseEntity.notFound().build();
     }
+
     userInput.setId(userId);
     User user = userAssembler.toEntity(userInput);
 
-    User existentUser = userService.findOrFailById(userId);
-
-    UpdateUtils.copyNonNullProperties(user, existentUser);
-    User savedUser = userService.save(existentUser);
+    User savedUser = userService.save(user);
     return ResponseEntity.ok(userAssembler.toModel(savedUser));
   }
 

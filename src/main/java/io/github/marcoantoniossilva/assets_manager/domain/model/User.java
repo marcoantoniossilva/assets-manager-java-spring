@@ -107,6 +107,11 @@ public class User extends BaseEntity{
     this.recuperationTokens = recuperationTokens;
   }
 
+  @PrePersist
+  public void prePersist(){
+    this.registerIn = LocalDate.now();
+  }
+
   @Override
   public String toString() {
     return "User{" +
