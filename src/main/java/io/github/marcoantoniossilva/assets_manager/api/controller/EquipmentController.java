@@ -106,7 +106,7 @@ public class EquipmentController {
 
   @PutMapping("{equipmentId}")
   public ResponseEntity<EquipmentModel> update(@ModelAttribute EquipmentInput equipmentInput, @PathVariable Integer equipmentId) {
-    if (!equipmentTypeService.existsById(equipmentId)) {
+    if (!equipmentService.existsById(equipmentId)) {
       return ResponseEntity.notFound().build();
     }
 
