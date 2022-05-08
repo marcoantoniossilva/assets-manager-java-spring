@@ -12,9 +12,12 @@ import io.github.marcoantoniossilva.assets_manager.domain.service.CompanyService
 import io.github.marcoantoniossilva.assets_manager.domain.service.EquipmentService;
 import io.github.marcoantoniossilva.assets_manager.domain.service.EquipmentTypeService;
 import io.github.marcoantoniossilva.assets_manager.domain.service.SectorService;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -62,15 +65,16 @@ public class EquipmentController {
   }
 
   @GetMapping("{equipmentId}/nfe")
-  public ResponseEntity<byte[]> searchNfe(@PathVariable Integer equipmentId) {
+  public ResponseEntity<Resource> searchNfe(@PathVariable Integer equipmentId) {
     Equipment equipment = equipmentService.findOrFailById(equipmentId);
     Nfe nfe = equipment.getNfe();
 
     if (nfe != null) {
       return ResponseEntity
           .ok()
-          .contentType(MediaType.valueOf(nfe.getType()))
-          .body(nfe.getContent());
+          .header(HttpHeaders.CONTENT_TYPE, nfe.getType())
+          .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", nfe.getFileName()))
+          .body(new ByteArrayResource(nfe.getContent()));
     }
     throw new ResourceNotFoundException("Nota fiscal não encontrada para este equipamento.");
   }
@@ -106,7 +110,7 @@ public class EquipmentController {
 
   @PutMapping("{equipmentId}")
   public ResponseEntity<EquipmentModel> update(@ModelAttribute EquipmentInput equipmentInput, @PathVariable Integer equipmentId) {
-    if (!equipmentService.existsById(equipmentId)) {
+    if (!equipmentTypeService.existsById(equipmentId)) {
       return ResponseEntity.notFound().build();
     }
 
