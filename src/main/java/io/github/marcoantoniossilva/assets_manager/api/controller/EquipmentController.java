@@ -19,9 +19,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/equipments")
@@ -81,7 +82,7 @@ public class EquipmentController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  private EquipmentModel add(@ModelAttribute EquipmentInput equipmentInput) {
+  private EquipmentModel add(@Valid @ModelAttribute EquipmentInput equipmentInput) {
     Integer companyId = equipmentInput.getCompany();
     Integer sectorId = equipmentInput.getSector();
     Integer equipmentTypeId = equipmentInput.getEquipmentType();
@@ -109,8 +110,8 @@ public class EquipmentController {
   }
 
   @PutMapping("{equipmentId}")
-  public ResponseEntity<EquipmentModel> update(@ModelAttribute EquipmentInput equipmentInput, @PathVariable Integer equipmentId) {
-    if (!equipmentTypeService.existsById(equipmentId)) {
+  public ResponseEntity<EquipmentModel> update(@Valid @ModelAttribute EquipmentInput equipmentInput, @PathVariable Integer equipmentId) {
+    if (!equipmentService.existsById(equipmentId)) {
       return ResponseEntity.notFound().build();
     }
 

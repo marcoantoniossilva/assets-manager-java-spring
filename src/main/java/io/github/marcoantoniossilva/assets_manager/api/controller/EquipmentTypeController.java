@@ -1,11 +1,14 @@
 package io.github.marcoantoniossilva.assets_manager.api.controller;
 
+import io.github.marcoantoniossilva.assets_manager.api.assembler.EquipmentTypeAssembler;
+import io.github.marcoantoniossilva.assets_manager.api.model.EquipmentTypeModel;
 import io.github.marcoantoniossilva.assets_manager.domain.model.EquipmentType;
 import io.github.marcoantoniossilva.assets_manager.domain.service.EquipmentTypeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -13,37 +16,44 @@ import java.util.List;
 public class EquipmentTypeController {
 
   private final EquipmentTypeService equipmentTypeService;
+  private final EquipmentTypeAssembler equipmentTypeAssembler;
 
-  public EquipmentTypeController(EquipmentTypeService equipmentTypeService) {
+  public EquipmentTypeController(EquipmentTypeService equipmentTypeService, EquipmentTypeAssembler equipmentTypeAssembler) {
     this.equipmentTypeService = equipmentTypeService;
+    this.equipmentTypeAssembler = equipmentTypeAssembler;
   }
 
   @GetMapping
-  public List<EquipmentType> list() {
-    return equipmentTypeService.findAll();
+  public List<EquipmentTypeModel> list() {
+    return equipmentTypeAssembler.toCollectionModel(equipmentTypeService.findAll());
   }
 
   @GetMapping("{equipmentTypeId}")
-  public ResponseEntity<EquipmentType> search(@PathVariable Integer equipmentTypeId) {
+  public ResponseEntity<EquipmentTypeModel> search(@PathVariable Integer equipmentTypeId) {
     return equipmentTypeService.findById(equipmentTypeId)
-        .map(ResponseEntity::ok)
+        .map(equipmentType -> ResponseEntity.ok(equipmentTypeAssembler.toModel(equipmentType)))
         .orElse(ResponseEntity.notFound().build());
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public EquipmentType add(@RequestBody EquipmentType equipmentType) {
-    return equipmentTypeService.save(equipmentType);
+  public EquipmentTypeModel add(@Valid @RequestBody EquipmentTypeModel equipmentTypeModel) {
+    EquipmentType equipmentType = equipmentTypeAssembler.toEntity(equipmentTypeModel);
+    EquipmentType savedEquipmentType = equipmentTypeService.save(equipmentType);
+    return equipmentTypeAssembler.toModel(savedEquipmentType);
   }
 
   @PutMapping("{equipmentTypeId}")
-  public ResponseEntity<EquipmentType> update(@PathVariable Integer equipmentTypeId, @RequestBody EquipmentType equipmentType) {
+  public ResponseEntity<EquipmentTypeModel> update(@PathVariable Integer equipmentTypeId,
+                                                   @Valid @RequestBody EquipmentTypeModel equipmentTypeModel) {
     if (!equipmentTypeService.existsById(equipmentTypeId)) {
       return ResponseEntity.notFound().build();
     }
-    equipmentType.setId(equipmentTypeId);
+    equipmentTypeModel.setId(equipmentTypeId);
+    EquipmentType equipmentType = equipmentTypeAssembler.toEntity(equipmentTypeModel);
     EquipmentType savedEquipmentType = equipmentTypeService.save(equipmentType);
-    return ResponseEntity.ok(savedEquipmentType);
+
+    return ResponseEntity.ok(equipmentTypeAssembler.toModel(savedEquipmentType));
   }
 
   @DeleteMapping("{equipmentTypeId}")

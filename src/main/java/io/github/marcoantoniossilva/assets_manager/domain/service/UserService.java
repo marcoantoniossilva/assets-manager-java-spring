@@ -47,8 +47,10 @@ public class UserService extends BaseCrudService<User, Integer> {
       user.setPassword(passwordEncoder.encode(user.getPassword()));
       LOGGER.trace("Cadastrando um novo usuário: {}", user);
     } else { // Edição de usuário
-      user.setLastAccess(userRepository.getById(user.getId()).getLastAccess());
-      user.setPassword(userRepository.getById(user.getId()).getPassword());
+      User savedUser = userRepository.getById(user.getId());
+      user.setLastAccess(savedUser.getLastAccess());
+      user.setRegisterIn(savedUser.getRegisterIn());
+      user.setPassword(savedUser.getPassword());
       LOGGER.trace("Editando um usuário: {}", user);
     }
 

@@ -23,8 +23,12 @@ import java.util.List;
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
-  private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-  private MessageSource messageSource;
+  private final Logger LOGGER = LoggerFactory.getLogger(ApiExceptionHandler.class);
+  private final MessageSource messageSource;
+
+  public ApiExceptionHandler(MessageSource messageSource) {
+    this.messageSource = messageSource;
+  }
 
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
@@ -42,12 +46,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     Problem problem = new Problem();
     problem.setStatus(status.value());
     problem.setDateTime(LocalDateTime.now());
-    problem.setTitle("Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.");
+    problem.setTitle("Um ou mais campos inválido(s). Faça o preenchimento correto e tente novamente.");
     problem.setFields(fields);
 
-    LOGGER.error("Um ou mais campos inválidos. ",ex);
+    LOGGER.error("Um ou mais campos inválido(s). ");
+
     return handleExceptionInternal(ex, problem, headers, status, request);
   }
+
 
   @ExceptionHandler(BusinessException.class)
   public ResponseEntity<Object> handleBusinessException(BusinessException ex, WebRequest request) {
@@ -59,7 +65,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     problem.setDateTime(LocalDateTime.now());
     problem.setTitle(ex.getMessage());
 
-    LOGGER.error("BusinessException disparado. ",ex);
+    LOGGER.error("BusinessException disparado. ");
     return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
   }
 
@@ -73,7 +79,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     problem.setDateTime(LocalDateTime.now());
     problem.setTitle(ex.getMessage());
 
-    LOGGER.error("Recurso já existente. ",ex);
+    LOGGER.error("Recurso já existente. ");
     return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
   }
 
@@ -87,7 +93,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     problem.setDateTime(LocalDateTime.now());
     problem.setTitle(ex.getMessage());
 
-    LOGGER.error("Recurso não encontrado. ",ex);
+    LOGGER.error("Recurso não encontrado. ");
     return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
   }
 
@@ -101,7 +107,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     problem.setDateTime(LocalDateTime.now());
     problem.setTitle(ex.getMessage());
 
-    LOGGER.error("Login incorreto. ",ex);
+    LOGGER.error("Login incorreto. ");
     return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
   }
 
@@ -115,7 +121,21 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     problem.setDateTime(LocalDateTime.now());
     problem.setTitle(ex.getMessage());
 
-    LOGGER.error("Id Nulo. ",ex);
+    LOGGER.error("Id Nulo. ");
+    return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+  }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<Object> Exception(Exception ex, WebRequest request) {
+
+    HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+    Problem problem = new Problem();
+    problem.setStatus(status.value());
+    problem.setDateTime(LocalDateTime.now());
+    problem.setTitle(ex.getMessage());
+
+    LOGGER.error("Erro interno do servidor. ", ex);
     return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
   }
 

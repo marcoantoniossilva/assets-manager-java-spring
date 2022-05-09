@@ -1,9 +1,16 @@
 package io.github.marcoantoniossilva.assets_manager.api.model.input;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 public class UserNewPasswordInput {
 
+  @NotBlank
+  @Size(min = 36,max = 36)
   private String token;
 
+  @NotBlank
+  @Size(min = 5, max = 120)
   private String newPassword;
 
   public UserNewPasswordInput(String newPassword, String token) {

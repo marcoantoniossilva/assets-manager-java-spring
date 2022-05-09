@@ -1,41 +1,24 @@
 package io.github.marcoantoniossilva.assets_manager.api.model.input;
 
-import io.github.marcoantoniossilva.assets_manager.api.model.BaseEntityModel;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-import java.time.LocalDate;
+public class UserInput extends UserEditInput {
 
-public class UserInput extends BaseEntityModel {
-
-  private String name;
-
-  private String email;
-
-  private String login;
-
-  private LocalDate registerIn;
-
-  public UserInput(Integer id, String name, String email, String login, LocalDate registerIn) {
-    super(id);
-    this.name = name;
-    this.email = email;
-    this.login = login;
-    this.registerIn = registerIn;
+  public UserInput(Integer id, String name, String email, String login, String password) {
+    super(id, name, email, login);
+    this.password = password;
   }
 
-  public String getName() {
-    return name;
+  @NotBlank
+  @Size(min = 5, max = 120)
+  private String password;
+
+  public String getPassword() {
+    return password;
   }
 
-  public String getEmail() {
-    return email;
+  public void setPassword(String password) {
+    this.password = password;
   }
-
-  public String getLogin() {
-    return login;
-  }
-
-  public LocalDate getRegisterIn() {
-    return registerIn;
-  }
-
 }

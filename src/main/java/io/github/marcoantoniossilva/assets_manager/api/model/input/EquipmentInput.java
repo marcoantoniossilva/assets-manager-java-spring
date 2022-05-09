@@ -4,26 +4,39 @@ import io.github.marcoantoniossilva.assets_manager.api.model.BaseEntityModel;
 import io.github.marcoantoniossilva.assets_manager.domain.model.enumeration.Status;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
 public class EquipmentInput extends BaseEntityModel {
 
+  @NotNull
+  @DecimalMin(value = "1")
   private Integer equipmentType;
 
+  @NotNull
+  @DecimalMin(value = "1")
   private Integer sector;
 
+  @NotNull
+  @DecimalMin(value = "1")
   private Integer company;
 
+  @NotBlank
   private String description;
 
+  @NotNull
+  @PositiveOrZero
   private BigDecimal acquisitionValue;
 
+  @NotNull
+  @PastOrPresent
   private LocalDate acquisitionDate;
 
   private MultipartFile nfe;
 
+  @NotNull
   private Status status;
 
   public EquipmentInput() {

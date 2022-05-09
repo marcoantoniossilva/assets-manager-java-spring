@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,7 +37,7 @@ public class AuthenticationController {
   }
 
   @PostMapping("login")
-  private Token auth(@RequestBody UserLoginInput userLoginInput) {
+  private Token auth(@Valid @RequestBody UserLoginInput userLoginInput) {
     return authenticationService.auth(userLoginInput);
   }
 
@@ -47,7 +48,7 @@ public class AuthenticationController {
   }
 
   @PostMapping("change-password/{userId}")
-  private ResponseEntity<Void> changePassword(@RequestBody UserAlterPasswordInput userAlterPasswordInput, @PathVariable Integer userId) {
+  private ResponseEntity<Void> changePassword(@Valid @RequestBody UserAlterPasswordInput userAlterPasswordInput, @PathVariable Integer userId) {
     if (!userService.existsById(userId)) {
       return ResponseEntity.notFound().build();
     }
@@ -59,7 +60,7 @@ public class AuthenticationController {
   }
 
   @PostMapping("recover-password")
-  private ResponseEntity<Void> recoverPassword(@RequestBody UserRecoverPasswordInput userRecoverPasswordInput) {
+  private ResponseEntity<Void> recoverPassword(@Valid @RequestBody UserRecoverPasswordInput userRecoverPasswordInput) {
     String email = userRecoverPasswordInput.getEmail();
     User user = userService.getUserByEmail(email);
 
@@ -69,7 +70,7 @@ public class AuthenticationController {
   }
 
   @PostMapping("new-password")
-  private ResponseEntity<Void> newPassword(@RequestBody UserNewPasswordInput userNewPasswordInput) {
+  private ResponseEntity<Void> newPassword(@Valid @RequestBody UserNewPasswordInput userNewPasswordInput) {
     String newPassword = userNewPasswordInput.getNewPassword();
     String token = userNewPasswordInput.getToken();
 
