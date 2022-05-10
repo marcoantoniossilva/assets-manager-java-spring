@@ -26,7 +26,7 @@ public class WebConfig extends OncePerRequestFilter {
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE, PATCH");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization");
-        response.setHeader("Access-Control-Expose-Headers", "Location");
+        response.setHeader("Access-Control-Expose-Headers", "Location, Content-Type, Content-Disposition");
 
         if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
             response.setStatus(HttpStatus.OK.value());
