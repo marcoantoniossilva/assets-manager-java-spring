@@ -12,15 +12,15 @@ import java.util.Optional;
 public class EquipmentInput extends BaseEntityModel {
 
   @NotNull
-  @DecimalMin(value = "1")
+  @Positive
   private Integer equipmentType;
 
   @NotNull
-  @DecimalMin(value = "1")
+  @Positive
   private Integer sector;
 
   @NotNull
-  @DecimalMin(value = "1")
+  @Positive
   private Integer company;
 
   @NotBlank
