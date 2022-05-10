@@ -4,17 +4,17 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class UserRecoverPasswordInput {
+public class UserRecoverPasswordInputDTO {
 
   @NotBlank
   @Email
   @Size(max = 120)
   private String email;
 
-  public UserRecoverPasswordInput() {
+  public UserRecoverPasswordInputDTO() {
   }
 
-  public UserRecoverPasswordInput(String email) {
+  public UserRecoverPasswordInputDTO(String email) {
     this.email = email;
   }
 

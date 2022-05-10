@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalDate;
 
-public class EquipmentModel extends BaseEntityModel {
+public class EquipmentDTO extends BaseEntityDTO {
 
   private String description;
 
@@ -20,15 +20,15 @@ public class EquipmentModel extends BaseEntityModel {
 
   private Status status;
 
-  private UserResumeModel user;
+  private UserResumeDTO user;
 
   private EquipmentType equipmentType;
 
   private Sector sector;
 
-  private CompanyResumeModel company;
+  private CompanyResumeDTO company;
 
-  public EquipmentModel() {
+  public EquipmentDTO() {
   }
 
   public String getDescription() {
@@ -71,11 +71,11 @@ public class EquipmentModel extends BaseEntityModel {
     this.status = status;
   }
 
-  public UserResumeModel getUser() {
+  public UserResumeDTO getUser() {
     return user;
   }
 
-  public void setUser(UserResumeModel user) {
+  public void setUser(UserResumeDTO user) {
     this.user = user;
   }
 
@@ -95,11 +95,11 @@ public class EquipmentModel extends BaseEntityModel {
     this.sector = sector;
   }
 
-  public CompanyResumeModel getCompany() {
+  public CompanyResumeDTO getCompany() {
     return company;
   }
 
-  public void setCompany(CompanyResumeModel company) {
+  public void setCompany(CompanyResumeDTO company) {
     this.company = company;
   }
 }

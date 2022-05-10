@@ -3,7 +3,7 @@ package io.github.marcoantoniossilva.assets_manager.api.model.input;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class UserAlterPasswordInput {
+public class UserAlterPasswordInputDTO {
 
   @NotBlank
   @Size(min = 5, max = 120)
@@ -13,7 +13,7 @@ public class UserAlterPasswordInput {
   @Size(min = 5, max = 120)
   private String newPassword;
 
-  public UserAlterPasswordInput(String oldPassword, String newPassword) {
+  public UserAlterPasswordInputDTO(String oldPassword, String newPassword) {
     this.oldPassword = oldPassword;
     this.newPassword = newPassword;
   }

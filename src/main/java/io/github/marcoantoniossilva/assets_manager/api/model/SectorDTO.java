@@ -3,7 +3,7 @@ package io.github.marcoantoniossilva.assets_manager.api.model;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class SectorModel extends BaseEntityModel{
+public class SectorDTO extends BaseEntityDTO {
 
   @NotBlank
   @Size(min = 5, max = 120)

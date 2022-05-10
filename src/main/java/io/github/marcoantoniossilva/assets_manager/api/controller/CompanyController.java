@@ -2,7 +2,7 @@ package io.github.marcoantoniossilva.assets_manager.api.controller;
 
 
 import io.github.marcoantoniossilva.assets_manager.api.assembler.CompanyAssembler;
-import io.github.marcoantoniossilva.assets_manager.api.model.CompanyModel;
+import io.github.marcoantoniossilva.assets_manager.api.model.CompanyDTO;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Company;
 import io.github.marcoantoniossilva.assets_manager.domain.service.CompanyService;
 import org.springframework.http.HttpStatus;
@@ -25,37 +25,37 @@ public class CompanyController {
   }
 
   @GetMapping
-  public List<CompanyModel> list() {
-    return companyAssembler.toCollectionModel(companyService.findAll());
+  public List<CompanyDTO> list() {
+    return companyAssembler.entityCollectionToDTOCollection(companyService.findAll());
   }
 
   @GetMapping("{companyId}")
-  public ResponseEntity<CompanyModel> search(@PathVariable Integer companyId) {
+  public ResponseEntity<CompanyDTO> search(@PathVariable Integer companyId) {
     return companyService.findById(companyId)
         .map(company ->
-            ResponseEntity.ok(companyAssembler.toModel(company))
+            ResponseEntity.ok(companyAssembler.entityToDTO(company))
         )
         .orElse(ResponseEntity.notFound().build());
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public CompanyModel add(@Valid @RequestBody CompanyModel companyModel) {
-    Company company = companyAssembler.toEntity(companyModel);
+  public CompanyDTO add(@Valid @RequestBody CompanyDTO companyDTO) {
+    Company company = companyAssembler.DTOToEntity(companyDTO);
     Company savedCompany = companyService.save(company);
-    return companyAssembler.toModel(savedCompany);
+    return companyAssembler.entityToDTO(savedCompany);
   }
 
   @PutMapping("{companyId}")
-  public ResponseEntity<CompanyModel> update(@PathVariable Integer companyId,@Valid @RequestBody CompanyModel companyModel) {
+  public ResponseEntity<CompanyDTO> update(@PathVariable Integer companyId, @Valid @RequestBody CompanyDTO companyDTO) {
     if (!companyService.existsById(companyId)) {
       return ResponseEntity.notFound().build();
     }
-    companyModel.setId(companyId);
+    companyDTO.setId(companyId);
 
-    Company company = companyAssembler.toEntity(companyModel);
+    Company company = companyAssembler.DTOToEntity(companyDTO);
     Company savedCompany = companyService.save(company);
-    return ResponseEntity.ok(companyAssembler.toModel(savedCompany));
+    return ResponseEntity.ok(companyAssembler.entityToDTO(savedCompany));
   }
 
   @DeleteMapping("{companyId}")

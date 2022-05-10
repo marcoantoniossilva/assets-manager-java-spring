@@ -1,7 +1,7 @@
 package io.github.marcoantoniossilva.assets_manager.api.controller;
 
 import io.github.marcoantoniossilva.assets_manager.api.assembler.SectorAssembler;
-import io.github.marcoantoniossilva.assets_manager.api.model.SectorModel;
+import io.github.marcoantoniossilva.assets_manager.api.model.SectorDTO;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Sector;
 import io.github.marcoantoniossilva.assets_manager.domain.service.SectorService;
 import org.springframework.http.HttpStatus;
@@ -24,36 +24,36 @@ public class SectorController {
   }
 
   @GetMapping
-  public List<SectorModel> list() {
-    return sectorAssembler.toCollectionModel(sectorService.findAll());
+  public List<SectorDTO> list() {
+    return sectorAssembler.entityCollectionToDTOCollection(sectorService.findAll());
   }
 
   @GetMapping("{sectorId}")
-  public ResponseEntity<SectorModel> search(@PathVariable Integer sectorId) {
+  public ResponseEntity<SectorDTO> search(@PathVariable Integer sectorId) {
     return sectorService.findById(sectorId)
-        .map(sector -> ResponseEntity.ok(sectorAssembler.toModel(sector)))
+        .map(sector -> ResponseEntity.ok(sectorAssembler.entityToDTO(sector)))
         .orElse(ResponseEntity.notFound().build());
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public SectorModel add(@Valid @RequestBody SectorModel sectorModel) {
-    Sector sector = sectorAssembler.toEntity(sectorModel);
+  public SectorDTO add(@Valid @RequestBody SectorDTO sectorDTO) {
+    Sector sector = sectorAssembler.DTOToEntity(sectorDTO);
     Sector savedSector = sectorService.save(sector);
-    return sectorAssembler.toModel(savedSector);
+    return sectorAssembler.entityToDTO(savedSector);
   }
 
   @PutMapping("/{sectorId}")
-  public ResponseEntity<SectorModel> update(@PathVariable Integer sectorId,
-                                            @Valid @RequestBody SectorModel sectorModel) {
+  public ResponseEntity<SectorDTO> update(@PathVariable Integer sectorId,
+                                          @Valid @RequestBody SectorDTO sectorDTO) {
     if (!sectorService.existsById(sectorId)) {
       return ResponseEntity.notFound().build();
     }
-    sectorModel.setId(sectorId);
-    Sector sector = sectorAssembler.toEntity(sectorModel);
+    sectorDTO.setId(sectorId);
+    Sector sector = sectorAssembler.DTOToEntity(sectorDTO);
     Sector savedSector = sectorService.save(sector);
 
-    return ResponseEntity.ok(sectorAssembler.toModel(savedSector));
+    return ResponseEntity.ok(sectorAssembler.entityToDTO(savedSector));
   }
 
   @DeleteMapping("/{sectorId}")

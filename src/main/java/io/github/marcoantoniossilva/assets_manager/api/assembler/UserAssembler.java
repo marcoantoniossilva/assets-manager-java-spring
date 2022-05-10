@@ -1,8 +1,8 @@
 package io.github.marcoantoniossilva.assets_manager.api.assembler;
 
-import io.github.marcoantoniossilva.assets_manager.api.model.UserModel;
-import io.github.marcoantoniossilva.assets_manager.api.model.input.UserEditInput;
-import io.github.marcoantoniossilva.assets_manager.api.model.input.UserInput;
+import io.github.marcoantoniossilva.assets_manager.api.model.UserDTO;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.UserEditInputDTO;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.UserInputDTODTO;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -19,22 +19,22 @@ import java.util.stream.Collectors;
     this.modelMapper = modelMapper;
   }
 
-  public UserModel toModel(User user) {
-    return modelMapper.map(user, UserModel.class);
+  public UserDTO entityToDTO(User user) {
+    return modelMapper.map(user, UserDTO.class);
   }
 
-  public List<UserModel> toCollectionModel(List<User> users) {
+  public List<UserDTO> entityCollectionToDTOCollection(List<User> users) {
     return users.stream()
-        .map(this::toModel)
+        .map(this::entityToDTO)
         .collect(Collectors.toList());
   }
 
-  public User toEntity(UserInput userInput) {
-    return modelMapper.map(userInput, User.class);
+  public User DTOToEntity(UserInputDTODTO userInputDTO) {
+    return modelMapper.map(userInputDTO, User.class);
   }
 
-  public User toEntity(UserEditInput userEditInput) {
-    return modelMapper.map(userEditInput, User.class);
+  public User DTOToEntity(UserEditInputDTO userEditInputDTO) {
+    return modelMapper.map(userEditInputDTO, User.class);
   }
 
 }

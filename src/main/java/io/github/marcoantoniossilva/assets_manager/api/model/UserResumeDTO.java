@@ -1,6 +1,6 @@
 package io.github.marcoantoniossilva.assets_manager.api.model;
 
-public class UserResumeModel extends BaseEntityModel {
+public class UserResumeDTO extends BaseEntityDTO {
 
   private String name;
 

@@ -1,6 +1,6 @@
 package io.github.marcoantoniossilva.assets_manager.api.assembler;
 
-import io.github.marcoantoniossilva.assets_manager.api.model.SectorModel;
+import io.github.marcoantoniossilva.assets_manager.api.model.SectorDTO;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Sector;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -17,18 +17,18 @@ import java.util.stream.Collectors;
     this.modelMapper = modelMapper;
   }
 
-  public SectorModel toModel(Sector sector) {
-    return modelMapper.map(sector, SectorModel.class);
+  public SectorDTO entityToDTO(Sector sector) {
+    return modelMapper.map(sector, SectorDTO.class);
   }
 
-  public List<SectorModel> toCollectionModel(List<Sector> sectors) {
+  public List<SectorDTO> entityCollectionToDTOCollection(List<Sector> sectors) {
     return sectors.stream()
-        .map(this::toModel)
+        .map(this::entityToDTO)
         .collect(Collectors.toList());
   }
 
-  public Sector toEntity(SectorModel sectorModel) {
-    return modelMapper.map(sectorModel, Sector.class);
+  public Sector DTOToEntity(SectorDTO sectorDTO) {
+    return modelMapper.map(sectorDTO, Sector.class);
   }
 
 }

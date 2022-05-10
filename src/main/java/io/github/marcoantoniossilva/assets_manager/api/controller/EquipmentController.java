@@ -2,8 +2,8 @@ package io.github.marcoantoniossilva.assets_manager.api.controller;
 
 import io.github.marcoantoniossilva.assets_manager.api.assembler.EquipmentAssembler;
 import io.github.marcoantoniossilva.assets_manager.api.assembler.NfeAssembler;
-import io.github.marcoantoniossilva.assets_manager.api.model.EquipmentModel;
-import io.github.marcoantoniossilva.assets_manager.api.model.input.EquipmentInput;
+import io.github.marcoantoniossilva.assets_manager.api.model.EquipmentDTO;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.EquipmentInputDTO;
 import io.github.marcoantoniossilva.assets_manager.common.LoggedUser;
 import io.github.marcoantoniossilva.assets_manager.domain.exception.ResourceNotFoundException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.*;
@@ -47,21 +47,21 @@ public class EquipmentController {
   }
 
   @GetMapping
-  private Page<EquipmentModel> list(@PageableDefault Pageable pageable) {
+  private Page<EquipmentDTO> list(@PageableDefault Pageable pageable) {
     Page<Equipment> result = equipmentService.findAll(pageable);
     return equipmentAssembler.pageEntityToPageModel(result);
   }
 
   @GetMapping("search")
-  public Page<EquipmentModel> search(@RequestParam String searchTerm, @PageableDefault Pageable pageable) {
+  public Page<EquipmentDTO> search(@RequestParam String searchTerm, @PageableDefault Pageable pageable) {
     Page<Equipment> result = equipmentService.search(searchTerm, pageable);
     return equipmentAssembler.pageEntityToPageModel(result);
   }
 
   @GetMapping("{equipmentId}")
-  public ResponseEntity<EquipmentModel> getById(@PathVariable Integer equipmentId) {
+  public ResponseEntity<EquipmentDTO> getById(@PathVariable Integer equipmentId) {
     return equipmentService.findById(equipmentId)
-        .map(equipment -> ResponseEntity.ok(equipmentAssembler.toModel(equipment)))
+        .map(equipment -> ResponseEntity.ok(equipmentAssembler.entityToDTO(equipment)))
         .orElse(ResponseEntity.notFound().build());
   }
 
@@ -82,65 +82,65 @@ public class EquipmentController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  private EquipmentModel add(@Valid @ModelAttribute EquipmentInput equipmentInput) {
-    Integer companyId = equipmentInput.getCompany();
-    Integer sectorId = equipmentInput.getSector();
-    Integer equipmentTypeId = equipmentInput.getEquipmentType();
+  private EquipmentDTO add(@Valid @ModelAttribute EquipmentInputDTO equipmentInputDTO) {
+    Integer companyId = equipmentInputDTO.getCompany();
+    Integer sectorId = equipmentInputDTO.getSector();
+    Integer equipmentTypeId = equipmentInputDTO.getEquipmentType();
 
     User user = LoggedUser.getUser();
     Company company = companyService.findOrFailById(companyId);
     Sector sector = sectorService.findOrFailById(sectorId);
     EquipmentType equipmentType = equipmentTypeService.findOrFailById(equipmentTypeId);
-    Status status = equipmentInput.getStatus();
+    Status status = equipmentInputDTO.getStatus();
 
-    Equipment equipment = equipmentAssembler.toEntity(equipmentInput);
+    Equipment equipment = equipmentAssembler.DTOToEntity(equipmentInputDTO);
     equipment.setCompany(company);
     equipment.setUser(user);
     equipment.setEquipmentType(equipmentType);
     equipment.setSector(sector);
     equipment.setStatus(status);
 
-    equipmentInput.getNfe().ifPresent(multipartFile -> {
+    equipmentInputDTO.getNfe().ifPresent(multipartFile -> {
       Nfe nfe = nfeAssembler.multipartFileToEntity(multipartFile);
       equipment.setNfe(nfe);
     });
 
     Equipment savedEquipment = equipmentService.save(equipment);
-    return equipmentAssembler.toModel(savedEquipment);
+    return equipmentAssembler.entityToDTO(savedEquipment);
   }
 
   @PutMapping("{equipmentId}")
-  public ResponseEntity<EquipmentModel> update(@Valid @ModelAttribute EquipmentInput equipmentInput, @PathVariable Integer equipmentId) {
+  public ResponseEntity<EquipmentDTO> update(@Valid @ModelAttribute EquipmentInputDTO equipmentInputDTO, @PathVariable Integer equipmentId) {
     if (!equipmentService.existsById(equipmentId)) {
       return ResponseEntity.notFound().build();
     }
 
-    equipmentInput.setId(equipmentId);
+    equipmentInputDTO.setId(equipmentId);
 
-    Integer companyId = equipmentInput.getCompany();
-    Integer sectorId = equipmentInput.getSector();
-    Integer equipmentTypeId = equipmentInput.getEquipmentType();
+    Integer companyId = equipmentInputDTO.getCompany();
+    Integer sectorId = equipmentInputDTO.getSector();
+    Integer equipmentTypeId = equipmentInputDTO.getEquipmentType();
 
     User user = LoggedUser.getUser();
     Company company = companyService.findOrFailById(companyId);
     Sector sector = sectorService.findOrFailById(sectorId);
     EquipmentType equipmentType = equipmentTypeService.findOrFailById(equipmentTypeId);
-    Status status = equipmentInput.getStatus();
+    Status status = equipmentInputDTO.getStatus();
 
-    Equipment equipment = equipmentAssembler.toEntity(equipmentInput);
+    Equipment equipment = equipmentAssembler.DTOToEntity(equipmentInputDTO);
     equipment.setCompany(company);
     equipment.setUser(user);
     equipment.setEquipmentType(equipmentType);
     equipment.setSector(sector);
     equipment.setStatus(status);
 
-    equipmentInput.getNfe().ifPresent(multipartFile -> {
+    equipmentInputDTO.getNfe().ifPresent(multipartFile -> {
       Nfe nfe = nfeAssembler.multipartFileToEntity(multipartFile);
       equipment.setNfe(nfe);
     });
 
     Equipment savedEquipment = equipmentService.save(equipment);
-    return ResponseEntity.ok(equipmentAssembler.toModel(savedEquipment));
+    return ResponseEntity.ok(equipmentAssembler.entityToDTO(savedEquipment));
   }
 
   @DeleteMapping("{equipmentId}")

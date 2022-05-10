@@ -1,9 +1,9 @@
 package io.github.marcoantoniossilva.assets_manager.api.controller;
 
-import io.github.marcoantoniossilva.assets_manager.api.model.input.UserAlterPasswordInput;
-import io.github.marcoantoniossilva.assets_manager.api.model.input.UserLoginInput;
-import io.github.marcoantoniossilva.assets_manager.api.model.input.UserNewPasswordInput;
-import io.github.marcoantoniossilva.assets_manager.api.model.input.UserRecoverPasswordInput;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.UserAlterPasswordInputDTO;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.UserLoginInputDTO;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.UserNewPasswordInputDTO;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.UserRecoverPasswordInputDTO;
 import io.github.marcoantoniossilva.assets_manager.domain.model.RecuperationToken;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
@@ -37,8 +37,8 @@ public class AuthenticationController {
   }
 
   @PostMapping("login")
-  private Token auth(@Valid @RequestBody UserLoginInput userLoginInput) {
-    return authenticationService.auth(userLoginInput);
+  private Token auth(@Valid @RequestBody UserLoginInputDTO userLoginInputDTO) {
+    return authenticationService.auth(userLoginInputDTO);
   }
 
   @GetMapping("logout")
@@ -48,20 +48,20 @@ public class AuthenticationController {
   }
 
   @PostMapping("change-password/{userId}")
-  private ResponseEntity<Void> changePassword(@Valid @RequestBody UserAlterPasswordInput userAlterPasswordInput, @PathVariable Integer userId) {
+  private ResponseEntity<Void> changePassword(@Valid @RequestBody UserAlterPasswordInputDTO userAlterPasswordInputDTO, @PathVariable Integer userId) {
     if (!userService.existsById(userId)) {
       return ResponseEntity.notFound().build();
     }
-    String newPassword = userAlterPasswordInput.getNewPassword();
-    String oldPassword = userAlterPasswordInput.getOldPassword();
+    String newPassword = userAlterPasswordInputDTO.getNewPassword();
+    String oldPassword = userAlterPasswordInputDTO.getOldPassword();
 
     userService.alterPassword(userId, newPassword, oldPassword);
     return ResponseEntity.ok().build();
   }
 
   @PostMapping("recover-password")
-  private ResponseEntity<Void> recoverPassword(@Valid @RequestBody UserRecoverPasswordInput userRecoverPasswordInput) {
-    String email = userRecoverPasswordInput.getEmail();
+  private ResponseEntity<Void> recoverPassword(@Valid @RequestBody UserRecoverPasswordInputDTO userRecoverPasswordInputDTO) {
+    String email = userRecoverPasswordInputDTO.getEmail();
     User user = userService.getUserByEmail(email);
 
     recuperationTokenService.deleteAllByUserId(user.getId());
@@ -70,9 +70,9 @@ public class AuthenticationController {
   }
 
   @PostMapping("new-password")
-  private ResponseEntity<Void> newPassword(@Valid @RequestBody UserNewPasswordInput userNewPasswordInput) {
-    String newPassword = userNewPasswordInput.getNewPassword();
-    String token = userNewPasswordInput.getToken();
+  private ResponseEntity<Void> newPassword(@Valid @RequestBody UserNewPasswordInputDTO userNewPasswordInputDTO) {
+    String newPassword = userNewPasswordInputDTO.getNewPassword();
+    String token = userNewPasswordInputDTO.getToken();
 
     Optional<RecuperationToken> recuperationToken = recuperationTokenService.findByToken(token);
 

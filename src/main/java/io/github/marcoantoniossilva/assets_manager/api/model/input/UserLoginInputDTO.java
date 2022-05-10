@@ -3,7 +3,7 @@ package io.github.marcoantoniossilva.assets_manager.api.model.input;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class UserLoginInput {
+public class UserLoginInputDTO {
 
   @NotBlank
   @Size(min = 4, max = 30)
@@ -13,7 +13,7 @@ public class UserLoginInput {
   @Size(min = 5, max = 50)
   private String password;
 
-  public UserLoginInput(String login, String password) {
+  public UserLoginInputDTO(String login, String password) {
     this.login = login;
     this.password = password;
   }

@@ -1,6 +1,6 @@
 package io.github.marcoantoniossilva.assets_manager.api.model.input;
 
-import io.github.marcoantoniossilva.assets_manager.api.model.BaseEntityModel;
+import io.github.marcoantoniossilva.assets_manager.api.model.BaseEntityDTO;
 import io.github.marcoantoniossilva.assets_manager.domain.model.enumeration.Status;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
-public class EquipmentInput extends BaseEntityModel {
+public class EquipmentInputDTO extends BaseEntityDTO {
 
   @NotNull
   @Positive
@@ -39,7 +39,7 @@ public class EquipmentInput extends BaseEntityModel {
   @NotNull
   private Status status;
 
-  public EquipmentInput() {
+  public EquipmentInputDTO() {
   }
 
   public Integer getEquipmentType() {

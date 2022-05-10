@@ -1,13 +1,10 @@
 package io.github.marcoantoniossilva.assets_manager.domain.service;
 
-import io.github.marcoantoniossilva.assets_manager.api.model.input.UserLoginInput;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.UserLoginInputDTO;
 import io.github.marcoantoniossilva.assets_manager.common.ApiPropertiesConfig;
 import io.github.marcoantoniossilva.assets_manager.domain.exception.IncorrectLoginException;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Token;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
-import io.github.marcoantoniossilva.assets_manager.domain.repository.TokenRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,9 +30,9 @@ public class AuthenticationService {
   }
 
   @Transactional
-  public Token auth(UserLoginInput userLoginInput) {
-    User user = userService.getByLogin(userLoginInput.getLogin());
-    String passwordInput = userLoginInput.getPassword();
+  public Token auth(UserLoginInputDTO userLoginInputDTO) {
+    User user = userService.getByLogin(userLoginInputDTO.getLogin());
+    String passwordInput = userLoginInputDTO.getPassword();
     String userPassword = user.getPassword();
 
     if (userService.validateLoginPassword(passwordInput, userPassword)) {

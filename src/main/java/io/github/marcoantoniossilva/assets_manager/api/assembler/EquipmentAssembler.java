@@ -1,7 +1,7 @@
 package io.github.marcoantoniossilva.assets_manager.api.assembler;
 
-import io.github.marcoantoniossilva.assets_manager.api.model.EquipmentModel;
-import io.github.marcoantoniossilva.assets_manager.api.model.input.EquipmentInput;
+import io.github.marcoantoniossilva.assets_manager.api.model.EquipmentDTO;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.EquipmentInputDTO;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Equipment;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -21,28 +21,28 @@ public class EquipmentAssembler {
     this.modelMapper = modelMapper;
   }
 
-  public EquipmentModel toModel(Equipment equipment) {
-    EquipmentModel equipmentModel = modelMapper.map(equipment, EquipmentModel.class);
+  public EquipmentDTO entityToDTO(Equipment equipment) {
+    EquipmentDTO equipmentDTO = modelMapper.map(equipment, EquipmentDTO.class);
 
     if (equipment.getNfe() != null) {
       URI imageUri = ServletUriComponentsBuilder.fromCurrentContextPath()
           .path("equipments/{id}/nfe").buildAndExpand(equipment.getId()).toUri();
-      equipmentModel.setNfeUri(imageUri);
+      equipmentDTO.setNfeUri(imageUri);
     }
-    return equipmentModel;
+    return equipmentDTO;
   }
 
-  public List<EquipmentModel> toCollectionModel(List<Equipment> equipments) {
+  public List<EquipmentDTO> entityCollectionToDTOCollection(List<Equipment> equipments) {
     return equipments.stream()
-        .map(this::toModel)
+        .map(this::entityToDTO)
         .collect(Collectors.toList());
   }
 
-  public Equipment toEntity(EquipmentInput equipmentInput) {
-    return modelMapper.map(equipmentInput, Equipment.class);
+  public Equipment DTOToEntity(EquipmentInputDTO equipmentInputDTO) {
+    return modelMapper.map(equipmentInputDTO, Equipment.class);
   }
 
-  public Page<EquipmentModel> pageEntityToPageModel(Page<Equipment> result) {
-    return result.map(this::toModel);
+  public Page<EquipmentDTO> pageEntityToPageModel(Page<Equipment> result) {
+    return result.map(this::entityToDTO);
   }
 }

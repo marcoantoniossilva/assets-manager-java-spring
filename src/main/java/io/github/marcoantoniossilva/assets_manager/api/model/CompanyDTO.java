@@ -5,7 +5,7 @@ import io.github.marcoantoniossilva.assets_manager.domain.model.BaseEntity;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class CompanyModel extends BaseEntity {
+public class CompanyDTO extends BaseEntity {
 
   @NotBlank
   @Size(min = 5, max = 120)

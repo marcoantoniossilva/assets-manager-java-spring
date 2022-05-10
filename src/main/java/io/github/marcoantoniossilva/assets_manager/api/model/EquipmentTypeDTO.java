@@ -6,7 +6,7 @@ import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
-public class EquipmentTypeModel extends BaseEntityModel{
+public class EquipmentTypeDTO extends BaseEntityDTO {
 
   @NotBlank
   @Size(min = 5, max = 120)

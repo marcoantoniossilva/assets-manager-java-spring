@@ -3,9 +3,9 @@ package io.github.marcoantoniossilva.assets_manager.api.model.input;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class UserInput extends UserEditInput {
+public class UserInputDTODTO extends UserEditInputDTO {
 
-  public UserInput(Integer id, String name, String email, String login, String password) {
+  public UserInputDTODTO(Integer id, String name, String email, String login, String password) {
     super(id, name, email, login);
     this.password = password;
   }

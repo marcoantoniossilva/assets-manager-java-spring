@@ -1,11 +1,7 @@
 package io.github.marcoantoniossilva.assets_manager.api.assembler;
 
-import io.github.marcoantoniossilva.assets_manager.api.model.EquipmentTypeModel;
-import io.github.marcoantoniossilva.assets_manager.api.model.UserModel;
-import io.github.marcoantoniossilva.assets_manager.api.model.input.UserEditInput;
-import io.github.marcoantoniossilva.assets_manager.api.model.input.UserInput;
+import io.github.marcoantoniossilva.assets_manager.api.model.EquipmentTypeDTO;
 import io.github.marcoantoniossilva.assets_manager.domain.model.EquipmentType;
-import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -21,18 +17,18 @@ import java.util.stream.Collectors;
     this.modelMapper = modelMapper;
   }
 
-  public EquipmentTypeModel toModel(EquipmentType equipmentType) {
-    return modelMapper.map(equipmentType, EquipmentTypeModel.class);
+  public EquipmentTypeDTO entityToDTO(EquipmentType equipmentType) {
+    return modelMapper.map(equipmentType, EquipmentTypeDTO.class);
   }
 
-  public List<EquipmentTypeModel> toCollectionModel(List<EquipmentType> equipmentTypes) {
+  public List<EquipmentTypeDTO> entityCollectionToDTOCollection(List<EquipmentType> equipmentTypes) {
     return equipmentTypes.stream()
-        .map(this::toModel)
+        .map(this::entityToDTO)
         .collect(Collectors.toList());
   }
 
-  public EquipmentType toEntity(EquipmentTypeModel equipmentTypeModel) {
-    return modelMapper.map(equipmentTypeModel, EquipmentType.class);
+  public EquipmentType DTOToEntity(EquipmentTypeDTO equipmentTypeDTO) {
+    return modelMapper.map(equipmentTypeDTO, EquipmentType.class);
   }
 
 }

@@ -1,9 +1,9 @@
 package io.github.marcoantoniossilva.assets_manager.api.controller;
 
 import io.github.marcoantoniossilva.assets_manager.api.assembler.UserAssembler;
-import io.github.marcoantoniossilva.assets_manager.api.model.UserModel;
-import io.github.marcoantoniossilva.assets_manager.api.model.input.UserEditInput;
-import io.github.marcoantoniossilva.assets_manager.api.model.input.UserInput;
+import io.github.marcoantoniossilva.assets_manager.api.model.UserDTO;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.UserEditInputDTO;
+import io.github.marcoantoniossilva.assets_manager.api.model.input.UserInputDTODTO;
 import io.github.marcoantoniossilva.assets_manager.common.LoggedUser;
 import io.github.marcoantoniossilva.assets_manager.domain.model.User;
 import io.github.marcoantoniossilva.assets_manager.domain.service.UserService;
@@ -27,47 +27,47 @@ public class UserController {
   }
 
   @GetMapping
-  public List<UserModel> list() {
+  public List<UserDTO> list() {
     List<User> users = userService.findAll();
-    return userAssembler.toCollectionModel(users);
+    return userAssembler.entityCollectionToDTOCollection(users);
   }
 
   @GetMapping("{userId}")
-  public ResponseEntity<UserModel> search(@PathVariable Integer userId) {
+  public ResponseEntity<UserDTO> search(@PathVariable Integer userId) {
     return userService.findById(userId)
         .map(user ->
-            ResponseEntity.ok(userAssembler.toModel(user))
+            ResponseEntity.ok(userAssembler.entityToDTO(user))
         )
         .orElse(ResponseEntity.notFound().build());
   }
 
   @GetMapping("me")
-  public UserModel searchLoggedUser() {
+  public UserDTO searchLoggedUser() {
     User loggedUser = LoggedUser.getUser();
-    return userAssembler.toModel(loggedUser);
+    return userAssembler.entityToDTO(loggedUser);
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public UserModel add(@Valid @RequestBody UserInput userInput) {
-    User user = userAssembler.toEntity(userInput);
+  public UserDTO add(@Valid @RequestBody UserInputDTODTO userInputDTO) {
+    User user = userAssembler.DTOToEntity(userInputDTO);
 
     User savedUser = userService.save(user);
-    return userAssembler.toModel(savedUser);
+    return userAssembler.entityToDTO(savedUser);
   }
 
   @PutMapping("{userId}")
-  public ResponseEntity<UserModel> update(@PathVariable Integer userId,
-                                          @Valid @RequestBody UserEditInput userEditInput) {
+  public ResponseEntity<UserDTO> update(@PathVariable Integer userId,
+                                        @Valid @RequestBody UserEditInputDTO userEditInputDTO) {
     if (!userService.existsById(userId)) {
       return ResponseEntity.notFound().build();
     }
 
-    userEditInput.setId(userId);
-    User user = userAssembler.toEntity(userEditInput);
+    userEditInputDTO.setId(userId);
+    User user = userAssembler.DTOToEntity(userEditInputDTO);
 
     User savedUser = userService.save(user);
-    return ResponseEntity.ok(userAssembler.toModel(savedUser));
+    return ResponseEntity.ok(userAssembler.entityToDTO(savedUser));
   }
 
   @DeleteMapping("{userId}")

@@ -2,16 +2,16 @@ package io.github.marcoantoniossilva.assets_manager.api.model;
 
 import java.time.LocalDateTime;
 
-public class TokenModel {
+public class TokenDTO {
 
   private String token;
 
   private LocalDateTime expirationTime;
 
-  public TokenModel() {
+  public TokenDTO() {
   }
 
-  public TokenModel(String token, LocalDateTime expirationTime) {
+  public TokenDTO(String token, LocalDateTime expirationTime) {
     this.token = token;
     this.expirationTime = expirationTime;
   }

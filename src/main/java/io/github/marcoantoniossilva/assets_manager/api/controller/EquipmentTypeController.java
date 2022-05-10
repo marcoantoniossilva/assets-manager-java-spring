@@ -1,7 +1,7 @@
 package io.github.marcoantoniossilva.assets_manager.api.controller;
 
 import io.github.marcoantoniossilva.assets_manager.api.assembler.EquipmentTypeAssembler;
-import io.github.marcoantoniossilva.assets_manager.api.model.EquipmentTypeModel;
+import io.github.marcoantoniossilva.assets_manager.api.model.EquipmentTypeDTO;
 import io.github.marcoantoniossilva.assets_manager.domain.model.EquipmentType;
 import io.github.marcoantoniossilva.assets_manager.domain.service.EquipmentTypeService;
 import org.springframework.http.HttpStatus;
@@ -24,36 +24,36 @@ public class EquipmentTypeController {
   }
 
   @GetMapping
-  public List<EquipmentTypeModel> list() {
-    return equipmentTypeAssembler.toCollectionModel(equipmentTypeService.findAll());
+  public List<EquipmentTypeDTO> list() {
+    return equipmentTypeAssembler.entityCollectionToDTOCollection(equipmentTypeService.findAll());
   }
 
   @GetMapping("{equipmentTypeId}")
-  public ResponseEntity<EquipmentTypeModel> search(@PathVariable Integer equipmentTypeId) {
+  public ResponseEntity<EquipmentTypeDTO> search(@PathVariable Integer equipmentTypeId) {
     return equipmentTypeService.findById(equipmentTypeId)
-        .map(equipmentType -> ResponseEntity.ok(equipmentTypeAssembler.toModel(equipmentType)))
+        .map(equipmentType -> ResponseEntity.ok(equipmentTypeAssembler.entityToDTO(equipmentType)))
         .orElse(ResponseEntity.notFound().build());
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public EquipmentTypeModel add(@Valid @RequestBody EquipmentTypeModel equipmentTypeModel) {
-    EquipmentType equipmentType = equipmentTypeAssembler.toEntity(equipmentTypeModel);
+  public EquipmentTypeDTO add(@Valid @RequestBody EquipmentTypeDTO equipmentTypeDTO) {
+    EquipmentType equipmentType = equipmentTypeAssembler.DTOToEntity(equipmentTypeDTO);
     EquipmentType savedEquipmentType = equipmentTypeService.save(equipmentType);
-    return equipmentTypeAssembler.toModel(savedEquipmentType);
+    return equipmentTypeAssembler.entityToDTO(savedEquipmentType);
   }
 
   @PutMapping("{equipmentTypeId}")
-  public ResponseEntity<EquipmentTypeModel> update(@PathVariable Integer equipmentTypeId,
-                                                   @Valid @RequestBody EquipmentTypeModel equipmentTypeModel) {
+  public ResponseEntity<EquipmentTypeDTO> update(@PathVariable Integer equipmentTypeId,
+                                                 @Valid @RequestBody EquipmentTypeDTO equipmentTypeDTO) {
     if (!equipmentTypeService.existsById(equipmentTypeId)) {
       return ResponseEntity.notFound().build();
     }
-    equipmentTypeModel.setId(equipmentTypeId);
-    EquipmentType equipmentType = equipmentTypeAssembler.toEntity(equipmentTypeModel);
+    equipmentTypeDTO.setId(equipmentTypeId);
+    EquipmentType equipmentType = equipmentTypeAssembler.DTOToEntity(equipmentTypeDTO);
     EquipmentType savedEquipmentType = equipmentTypeService.save(equipmentType);
 
-    return ResponseEntity.ok(equipmentTypeAssembler.toModel(savedEquipmentType));
+    return ResponseEntity.ok(equipmentTypeAssembler.entityToDTO(savedEquipmentType));
   }
 
   @DeleteMapping("{equipmentTypeId}")
