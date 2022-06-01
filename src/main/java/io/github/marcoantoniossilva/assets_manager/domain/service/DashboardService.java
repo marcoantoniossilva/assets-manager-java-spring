@@ -1,5 +1,7 @@
 package io.github.marcoantoniossilva.assets_manager.domain.service;
 
+import io.github.marcoantoniossilva.assets_manager.domain.model.ChartItem;
+import io.github.marcoantoniossilva.assets_manager.domain.model.Company;
 import io.github.marcoantoniossilva.assets_manager.domain.model.DashboardModel;
 import io.github.marcoantoniossilva.assets_manager.domain.model.Equipment;
 import org.springframework.stereotype.Service;
@@ -8,6 +10,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DashboardService {
@@ -27,6 +32,13 @@ public class DashboardService {
         equipmentsCount(),
         companiesCount()
     );
+  }
+
+  public List<ChartItem> getChart() {
+    return companyService.findAll().stream()
+        .map(company ->
+            new ChartItem(company.getFantasyName(), equipmentService.countByCompanyId(company.getId()))
+        ).collect(Collectors.toList());
   }
 
   private Long equipmentsCount() {

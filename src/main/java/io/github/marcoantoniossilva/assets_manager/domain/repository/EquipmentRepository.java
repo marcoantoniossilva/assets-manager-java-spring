@@ -14,4 +14,5 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Integer> {
 
   Page<Equipment> findAll(Pageable pageable);
 
+  Long countByCompanyId(Integer companyId);
 }

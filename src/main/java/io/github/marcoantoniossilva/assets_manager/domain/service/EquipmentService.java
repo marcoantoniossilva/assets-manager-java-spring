@@ -23,4 +23,7 @@ public class EquipmentService extends BaseCrudService<Equipment, Integer> {
     return this.equipmentRepository;
   }
 
+  public Long countByCompanyId(Integer CompanyId){
+    return equipmentRepository.countByCompanyId(CompanyId);
+  }
 }
